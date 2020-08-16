@@ -1,0 +1,210 @@
+#-----------Général-----------#
+
+#Redirection sur la page home
+/:
+  controller: Home
+  action: default
+
+#Affichge de la page Home
+/home:
+  controller: Home
+  action: default
+
+#Affichage de la page pour se connecter
+/se-connecter:
+  controller: User
+  action: login
+
+#Affichage de la page pour se déconnecter
+/se-deconnecter:
+  controller: User
+  action: logout
+
+#Affichage de la page pour s'inscrire
+/s-inscrire:
+  controller: User
+  action: register
+
+/confirmation:
+  controller: User
+  action: registerConfirm
+
+/mot-de-passe-oublie:
+  controller: User
+  action: forgotPassword
+
+/nouveau-mot-de-passe:
+  controller: User
+  action: newPassword
+
+/suppression-de-compte:
+  controller: User
+  action: delete
+
+/se-connecter/verifications:
+  controller: User
+  action: logCheck
+
+#Affichage de la page en cas d'erreur 404
+/vous-etes-perdu:
+  controller: Errors
+  action: quatreCentQuatre
+
+#Affichage de la page de profil
+/profile:
+    controller: User
+    action: index
+
+
+#Modifier son profil
+/profile/update:
+  controller: User
+  action: update
+
+
+/create_hotel:
+  controller: DashboardUser
+  action: createHotel
+
+/add_hotel:
+  controller: Hotel
+  action: create
+
+
+#-----------Connexion client HF / Dashboard Client-----------#
+
+#Affichage de l'accueil du backoffice client
+/settings:
+  controller: User
+  action: default
+
+#Affichage de la gestion des pages clientes
+/settings/mes-pages:
+  controller: Page
+  action: list
+
+#Affichage de la page pour gérer l'apparence des pages clientes
+/settings/apparences:
+  controller: Style
+  action: list
+
+#Affichage de la page paramètre du client
+/settings/parametres:
+  controller: Comment
+  action: formComment
+
+#Créer commentaire
+/settings/create:
+  controller: Comment
+  action: create
+
+#Affichage de la FAQ
+/settings/faq:
+  controller: Question
+  action: list
+
+#Poser une question
+/settings/faq/create:
+  controller: Question
+  action: create
+
+
+#---Actions---#
+
+#Créer un commentaire
+/settings/parametres/add_comment:
+  controller: Comment
+  action: comment
+
+#Ajouter une question
+/settings/faq/add_question:
+  controller: Question
+  action: create
+
+#-----------Connexion admin HF / Dashboard Admin-----------#
+
+#Affichage de la vue
+/dashboard:
+  controller: User
+  action: default
+
+#Backoffice gestion des pages HF
+/dashboard/mes-pages:
+  controller: Page
+  action: list
+
+#Backoffice gestion de l'apprence du site HF
+/dashboard/apparences:
+  controller: Style
+  action: list
+
+#Backoffice gestion des paramètres HF
+/dashboard/parametres:
+  controller: Setting
+  action: list
+
+#Backoffice gestion de la FAQ
+/dashboard/faq:
+  controller: Question
+  action: list
+
+#Afficher ou cacher une question
+/dashboard/faq/update:
+  controller: Question
+  action: update
+
+#Backoffice gestion des réponses aux FAQ
+/dashboard/faq/anwser:
+  controller: Answer
+  action: default
+
+#Action de création de la réponse à une question
+/dashboard/faq/answer/create:
+  controller: Answer
+  action: create
+
+#Affichage questions pour répondre
+/dashboard/faq/answer/show:
+  controller: Answer
+  action: show
+
+#---Actions---#
+
+#Lister les commentaires des utilisateurs
+/dashboard/comments:
+  controller: Comment
+  action: list
+
+#Afficher les commentaires sur l'accueil
+/dashboard/comment_active:
+  controller: Comment
+  action: update
+
+#Lister les utilisateurs et leurs roles
+/dashboard/permissions:
+  controller: User
+  action: list
+
+#Changer le role d'un user
+/dashboard/perm_modify:
+  controller: User
+  action: update
+
+
+#Lister les hotels et leurs status
+/dashboard/hotels:
+  controller: Hotel
+  action: list
+
+
+#Affichage des détails de l'hotel
+/dashboard/details_hotel:
+  controller: Hotel
+  action: show
+
+
+#Valider hotel
+/dashboard/update:
+  controller: Hotel
+  action: update
+

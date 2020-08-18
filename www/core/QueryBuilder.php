@@ -38,31 +38,31 @@ class QueryBuilder extends Manager
         }
         return $this;
     }
-//    public function queryFrom()
-//    {
-//        $this->selector .= "FROM ".$this->table . " ";
-//    }
-//    public function queryManyFrom($columns)
-//    {
-//        $this->selector .= "FROM ";
-//        if (is_array($columns)) {
-//            $lastElement = count($columns);
-//            $i = 1;
-//            foreach ($columns as $column) {
-//                $column = DB_PREFIXE.$column;
-//                $this->selector .= $column;
-//                if ($i != $lastElement) {
-//                    $this->selector .= ", ";
-//                } else {
-//                    $this->selector .= " ";
-//                }
-//                $i++;
-//            }
-//        } else {
-//            $this->selector .= DB_PREFIXE.$columns . " ";
-//        }
-//        return $this;
-//    }
+    public function queryFrom()
+    {
+        $this->selector .= "FROM ".$this->table . " ";
+    }
+    public function queryManyFrom($columns)
+    {
+        $this->selector .= "FROM ";
+        if (is_array($columns)) {
+            $lastElement = count($columns);
+            $i = 1;
+            foreach ($columns as $column) {
+                $column = DB_PREFIXE.$column;
+                $this->selector .= $column;
+                if ($i != $lastElement) {
+                    $this->selector .= ", ";
+                } else {
+                    $this->selector .= " ";
+                }
+                $i++;
+            }
+        } else {
+            $this->selector .= DB_PREFIXE.$columns . " ";
+        }
+        return $this;
+    }
 
     public function update($table)
     {
@@ -128,26 +128,40 @@ class QueryBuilder extends Manager
 
     public function queryJoin(string $table1, string $table2, string $table1param, string $table2param )
     {
-        return $this->join = "SELECT * FROM ".$table1." INNER JOIN table2 ON table1.".$table1param."= table2.".$table2param;
+        return $this->join = " INNER JOIN ".DB_PREFIXE.$table2." ON ". DB_PREFIXE.$table1.".".$table1param." = " .DB_PREFIXE.$table2.".".$table2param;
     }
 
 
-    public function queryGget()
+    private function queryGet()
     {
         if (!isset($this->selector) || !isset($this->table)) {
             return false;
         } else {
             $this->query =
                 $this->selector
-                . " FROM " . $this->table . " "
-                . (!empty($this->where) ? "WHERE" . $this->where : "")
-                . (!empty($this->groupBy) ? "GROUP BY" . $this->groupBy : "")
-                . (!empty($this->order) ? "ORDER BY" . $this->order : "")
-                . (!empty($this->limit) ? "LIMIT" . $this->limit : "");
-            $result = $this->connection->query($this->query);
-            return $result->getResult();
+                . (!empty($this->join) ? $this->join : "")
+                . (!empty($this->where) ? " WHERE" . $this->where : "")
+                . (!empty($this->groupBy) ? " GROUP BY" . $this->groupBy : "")
+                . (!empty($this->order) ? " ORDER BY" . $this->order : "")
+                . (!empty($this->limit) ? " LIMIT" . $this->limit : "");
         }
+        return $this->connection->query($this->query);
     }
+
+    public function queryGetValue()
+    {
+        $result = $this->queryGet();
+        //echo $this->query;
+        return $result->getResult();
+    }
+
+    public function queryGetArray()
+    {
+        $result = $this->queryGet();
+        //echo $this->query;
+        return $result->getArrayResult();
+    }
+
 
     public function querySave()
     {

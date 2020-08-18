@@ -13,6 +13,9 @@ class Validator
 
         if (count($configForm["fields"]) == count($data)) {
             foreach ($configForm["fields"] as $key => $config) {
+                if(!isset($config["contrainte"]))
+                    $this->$key = $config["contrainte"];
+                else
                 $this->$key = $data[$key];
                 //Vérifie que l'on a bien les champs attendus
                 //Vérifier les required
@@ -81,10 +84,16 @@ class Validator
         $requete = new QueryBuilder(Utilisateur::class, $table["table"]);
         $requete->querySelect($table["column"]);
         $requete->queryWhere($table["column"], "=", $data);
-        $result = $requete->queryGget();
+        $result = $requete->queryGetValue();
         if($result == $data)
             return false;
         return true;
+    }
+
+    private function mission($mission)
+    {
+        if(empty($mission) || !is_numeric($mission))
+            return false;
     }
 
 

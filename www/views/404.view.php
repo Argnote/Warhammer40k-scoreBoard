@@ -1,6 +1,6 @@
 <?php
 
-use HotelFactory\core\Helper;
+use warhammerScoreBoard\core\Helper;
 
 if(empty($_SESSION['role'])) {
   $chemin = Helper::getUrl("Home","default");

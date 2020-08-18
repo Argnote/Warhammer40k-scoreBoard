@@ -1,6 +1,6 @@
 <?php
 
-namespace HotelFactory\connection;
+namespace warhammerScoreBoard\connection;
 
 
 class PDOConnection implements BDDInterface

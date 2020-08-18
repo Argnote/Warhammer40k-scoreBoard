@@ -6,7 +6,7 @@
   <a href="/s-inscrire">S'inscrire</a>
 
     </br>
-    <a href="<?= Helper::getUrl("Partie","Create")?>">nouvel partie</a>
+    <a href="<?= Helper::getUrl("Partie","initialisationPartie")?>">nouvel partie</a>
 
 
 </div>

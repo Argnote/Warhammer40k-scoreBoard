@@ -1,6 +1,6 @@
 <?php
 
-namespace HotelFactory\core\tools;
+namespace warhammerScoreBoard\core\tools;
 
 class Token
 {

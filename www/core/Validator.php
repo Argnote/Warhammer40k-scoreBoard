@@ -10,19 +10,25 @@ class Validator
     public function checkForm($configForm, $data)
     {
         $errosMsg = [];
+//        echo "<pre>";
+//        print_r($configForm["fields"]);
+//        print_r($data);
+//        echo "</pre>";
 
         if (count($configForm["fields"]) == count($data)) {
             foreach ($configForm["fields"] as $key => $config) {
-                if(!isset($config["contrainte"]))
+                if(isset($config["contrainte"]))
                     $this->$key = $config["contrainte"];
+
                 else
                 $this->$key = $data[$key];
                 //Vérifie que l'on a bien les champs attendus
                 //Vérifier les required
                 if (!array_key_exists($key, $data) || ($config["required"] && empty($data[$key]))) {
-                    return ["Tentative de hack !!!"];
+                    return ["Un problème est survenue dans le nombre de champs remplis"];
                 }
                 $method = 'check' . ucfirst($key);
+                //echo $method."<br/>";
                 if (method_exists(get_called_class(), $method)) {
                     if (!$this->$method($data[$key], $config)) {
                         $errosMsg[$key] = $config["errorMsg"];
@@ -90,10 +96,18 @@ class Validator
         return true;
     }
 
-    private function mission($mission)
+    private function checkNumeric($number)
     {
-        if(empty($mission) || !is_numeric($mission))
+        if(!is_numeric($number))
             return false;
+        return true;
+    }
+
+    private function checkFormat($format)
+    {
+        if(!is_numeric($format) && $format < 100000)
+            return false;
+        return true;
     }
 
 

@@ -164,7 +164,7 @@ class UtilisateurController extends Controller
             $requete->querySelect(["id","idHfRole"]);
             $requete->queryWhere("email", "=", htmlspecialchars(urldecode($_GET['key'])));
             $requete->queryWhere("token", "=", htmlspecialchars(urldecode($_GET['token'])));
-            $result = $requete->queryGet();
+            $result = $requete->queryGetValue();
             if (!empty($result))
             {
                 if ($result["idHfRole"] == 4)
@@ -226,7 +226,7 @@ class UtilisateurController extends Controller
                 $requete = new QueryBuilder(Utilisateur::class, 'user');
                 $requete->querySelect(["id"]);
                 $requete->queryWhere("email", "=", $_POST['email']);
-                $result = $requete->queryGet();
+                $result = $requete->queryGetValue();
                 if (!empty($result))
                 {
                     $token = Token::getToken();
@@ -252,7 +252,7 @@ class UtilisateurController extends Controller
             $requete->querySelect(["id"]);
             $requete->queryWhere("id", "=", htmlspecialchars(urldecode($_GET['id'])));
             $requete->queryWhere("token", "=", htmlspecialchars(urldecode($_GET['token'])));
-            $result = $requete->queryGet();
+            $result = $requete->queryGetValue();
             if (!empty($result))
             {
                 $myView = new View("user/newPassword", "front");

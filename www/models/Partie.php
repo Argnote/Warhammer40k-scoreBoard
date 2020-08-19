@@ -10,7 +10,6 @@ class Partie extends Model
     protected $dateDebut;
     protected $dateFin;
     protected $format;
-    protected $idMissionPartie;
 
     public function setIdPartie(int $idPartie)
     {
@@ -32,12 +31,7 @@ class Partie extends Model
         $this->format = $format;
     }
 
-    public function setIdMissionPartie(int $idMissionPartie)
-    {
-        $this->idMissionPartie = $idMissionPartie;
-    }
-
-    public function GetIdPartie()
+    public function GetId()
     {
         return $this->idPartie;
     }
@@ -57,8 +51,4 @@ class Partie extends Model
         return $this->format;
     }
 
-    public function GetIdMissionPartie()
-    {
-        return $this->idMissionPartie;
-    }
 }

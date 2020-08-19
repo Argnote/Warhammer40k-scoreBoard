@@ -43,7 +43,7 @@ class Joueur extends Model
         $this->idPartie = $idPartie;
     }
 
-    public function getIdJoueur()
+    public function getId()
     {
         return $this->idJoueur;
     }

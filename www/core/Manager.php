@@ -47,7 +47,8 @@ class Manager
             //array_shift($columns);
             //array_shift($params);
             //INSERT
-            $sql = "INSERT INTO ".$this->table." (".implode(",", $columns).") VALUES (:".implode(",:", $columns).");";
+            $firstValue = !empty($columns)?":":"";
+            $sql = "INSERT INTO ".$this->table." (".implode(",", $columns).") VALUES (".$firstValue.implode(",:", $columns).");";
         } else {
 
             //UPDATE
@@ -57,10 +58,12 @@ class Manager
 
             $sql = "UPDATE ".$this->table." SET ".implode(",", $sqlUpdate)." WHERE id=:id;";
         }
-//        echo($sql);
+        //echo($sql);
 //        echo("<br/>");
 //        print_r($params);
         $this->connection->query($sql, $params);
+        return $this->connection->getIdQuery();
+        //print_r($this->connection->query($sql, $params));
     }
 
     public function find(int $id): ?Model

@@ -49,7 +49,7 @@ class mission
         $this->marquageFinPartie = $marquageFinPartie;
     }
 
-    public function getIdMission()
+    public function getId()
     {
         return $this->idMission;
     }

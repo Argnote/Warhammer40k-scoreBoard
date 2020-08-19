@@ -35,4 +35,8 @@ class PDOConnection implements BDDInterface
             return new PDOResult($queryPrepared);
         }
     }
+    public function getIdQuery()
+    {
+        return $this->pdo->lastInsertId();
+    }
 }

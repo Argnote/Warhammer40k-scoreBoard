@@ -19,7 +19,7 @@ class Model
         foreach ( $donnees as $key => $value) {
 
             $method = 'set'.ucfirst($key);
-            if (method_exists($articleObj, $method)) {
+            if (method_exists($articleObj, $method) && !empty($value)) {
                 $articleObj->$method($value);
             }
         }

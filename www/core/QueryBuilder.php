@@ -108,9 +108,11 @@ class QueryBuilder extends Manager
         return $this;
     }
 
-    public function queryOrderBy($column, $order)
+    public function queryOrderBy($column, $order, $table = null)
     {
-        $this->order .= " " . $column . " " . $order . " ";
+        if (!empty($table))
+            $table = DB_PREFIXE.$table.".";
+        $this->order .= " ".$table. $column . " " . $order . " ";
         return $this;
     }
 
@@ -158,7 +160,7 @@ class QueryBuilder extends Manager
     public function queryGetArray()
     {
         $result = $this->queryGet();
-        //echo $this->query;
+        //echo $this->query."<br/>";
         return $result->getArrayResult();
     }
 

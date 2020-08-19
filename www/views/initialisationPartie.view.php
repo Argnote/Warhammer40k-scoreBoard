@@ -6,33 +6,25 @@ use warhammerScoreBoard\core\Helper;
     <form method=<?=$initPartie["config"]["method"]?> action="<?=$initPartie["config"]["action"]?>" id="<?=$initPartie["config"]["id"]?>">
         <div class="row">
             <div class="col-sm-6 col-inner">
-                <?php $missionPrincipale += ["config"=>["name" => "MissionPrincipale"]];
-                $missionPrincipale["config"]["defaultValue"] = "Objectif Pricipale";
-                $missionPrincipale["config"]["form"] = $initPartie["config"]["id"];
-                $this->addModal("select", $missionPrincipale);?>
+                <?php
+                $this->addModal("select",$initPartie["fields"]["missionPrincipale"], $missionPrincipale);?>
             </div>
             <div class="col-sm-6 col-inner">
-                <input type="number" placeholder="Nombre de point de la partie" name="nombrePoint">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 col-inner">
-                <p><?= $_SESSION['joueur1']??'joueur1' ?></p>
-            </div>
-            <div class="col-sm-6 col-inner">
-                <p><?= $_SESSION['joueur2']??'joueur2' ?></p>
+                <input type="number" placeholder="Nombre de point de la partie" name="format">
             </div>
         </div>
         <div class="row">
             <?php
             for($j = 1; $j <=2; $j++):?>
-                <div class="col-sm-6 col-inner">
+                <div class="col-sm-6">
+                    <div class="col-inner"><p><?=$_SESSION['pseudoJoueur'.$j]??'joueur'.$j ?></p></div>
+                    <div class="col-inner">
+                        <?php
+                        $this->addModal("select",$initPartie["fields"]["armee".$j], $armee);?>
+                    </div>
                 <?php
-                for($i = 1; $i<=3; $i++):
-                    $missionSecondaire["config"]["name"] = "MissionSecondaire{$i}_Joueur{$j}";
-                    $missionSecondaire["config"]["defaultValue"] = "Objectif secondaire $i";
-                    $missionSecondaire["config"]["form"] = $initPartie["config"]["id"];?>
-                    <div><?=$this->addModal("select", $missionSecondaire);?></div>
+                for($i = 1; $i<=3; $i++):?>
+                    <div class="col-inner"><?=$this->addModal("select",$initPartie["fields"]["missionSecondaire{$i}_Joueur{$j}"] ,$missionSecondaire);?></div>
                <?php endfor; ?>
                 </div>
             <?php endfor;?>

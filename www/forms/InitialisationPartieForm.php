@@ -29,7 +29,7 @@ class InitialisationPartieForm
                     "defaultValue" => "Objectif Pricipale",
                     "form" => "formInitPartie",
                     "required" => true,
-                    "contrainte" => "number",
+                    "contrainte" => "numeric",
                     "errorMsg" => "Vous devez selectionner une mission différente à chaques fois"
                 ]
             ]
@@ -41,7 +41,7 @@ class InitialisationPartieForm
 
     private static function getMissionSecondaire()
     {
-        $result = [];
+        $result = array();
         for ($j = 1; $j <= 2; $j++) {
             $result += ["armee{$j}" => [
                 "required" => false,
@@ -52,13 +52,26 @@ class InitialisationPartieForm
                 "errorMsg" => "Vous devez selectionner une armée valide"
             ]
             ];
+            $tabCompare = array();
+            $missionJoueur = 1;
             for ($i = 1; $i <= 3; $i++) {
+                if ($missionJoueur == $j)
+                {
+                    array_push($tabCompare,"missionSecondaire{$i}_Joueur{$j}");
+                }
+                else
+                {
+                    $tabCompare = array();
+                    array_push($tabCompare,"missionSecondaire{$i}_Joueur{$j}");
+                }
+                $missionJoueur = $j;
                 $result += ["missionSecondaire{$i}_Joueur{$j}" => [
                     "required" => true,
                     "name" => "missionSecondaire{$i}_Joueur{$j}",
                     "defaultValue" => "Objectif secondaire $i",
                     "form" => "formInitPartie",
-                    "contrainte" => "number",
+                    "contrainte" => "mission",
+                    "compare" => $tabCompare,
                     "errorMsg" => "Vous devez selectionner une mission différente à chaques fois"
                 ]
                 ];

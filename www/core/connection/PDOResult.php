@@ -1,6 +1,6 @@
 <?php 
 
-namespace warhammerScoreBoard\connection;
+namespace warhammerScoreBoard\core\connection;
 
 use Throwable;
 

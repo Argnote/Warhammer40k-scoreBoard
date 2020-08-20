@@ -3,11 +3,7 @@
 
 namespace warhammerScoreBoard\controllers;
 
-
-use PHPMailer\PHPMailer\Exception;
-use warhammerScoreBoard\connection\ResultInterface;
 use warhammerScoreBoard\core\Controller;
-use warhammerScoreBoard\core\QueryBuilder;
 use warhammerScoreBoard\core\Validator;
 use warhammerScoreBoard\core\View;
 use warhammerScoreBoard\forms\InitialisationPartieForm;
@@ -17,10 +13,8 @@ use warhammerScoreBoard\managers\MissionJoueurManager;
 use warhammerScoreBoard\managers\missionManager;
 use warhammerScoreBoard\managers\PartieManager;
 use warhammerScoreBoard\models\Joueur;
-use warhammerScoreBoard\models\mission;
 use warhammerScoreBoard\models\MissionJoueur;
 use warhammerScoreBoard\models\Partie;
-use warhammerScoreBoard\models\Utilisateur;
 
 class PartieController extends Controller
 {
@@ -73,7 +67,6 @@ class PartieController extends Controller
                     //attribution de la mission principale
                     $missionJoueur = new MissionJoueur();
                     $associationMission = ["idJoueur" => $_SESSION["idJoueur" . $i]];
-                    print_r($_POST);
                     $associationMission["idMission"] = $_POST["missionPrincipale"];
                     $missionJoueur = $missionJoueur->hydrate($associationMission);
                     $missionJoueurManager->save($missionJoueur);
@@ -92,59 +85,10 @@ class PartieController extends Controller
             }
             else
             {
-                print_r($errors);
+                $errors = array_unique($errors);
+                $myView->assign("erreurs", $errors);
             }
         }
 
-    }
-
-    public function creationPartieAction()
-    {
-        try {
-            //création de la partie
-            $partieManager = new PartieManager();
-            $partie = new Partie();
-            if (isset($_POST)) {
-                $partie = $partie->hydrate($_POST);
-            }
-            $_SESSION["idPartie"] = $partieManager->save($partie);
-
-            //création des 2 joueurs participant à la partie
-            $missionJoueurManager = new MissionJoueurManager();
-            $joueurManager = new JoueurManager();
-            for ($i = 1; $i <= 2; $i++) {
-                //création d'un joueur
-                $joueur = [
-                    "nomJoueur" => $_SESSION['pseudoJoueur' . $i] ?? 'joueur' . $i,
-                    "idUtilisateur" => $_SESSION['idUtilisateur' . $i] ?? '',
-                    "idArmee"=>$_POST['armee'.$i]??'',
-                    "idPartie" => $_SESSION['idPartie'],
-                ];
-                $joueur{$i} = new Joueur();
-                $joueur{$i} = $joueur{$i}->hydrate($joueur);
-                $_SESSION["idJoueur". $i] = $joueurManager->save($joueur{$i});
-
-                //attribution des missions du joueur
-                //attribution de la mission principale
-                $missionJoueur = new MissionJoueur();
-                $associationMission = ["idJoueur" => $_SESSION["idJoueur".$i]];
-                $associationMission["idMission"] = $_POST["missionPrincipale"];
-                $missionJoueur = $missionJoueur->hydrate($associationMission);
-                $missionJoueurManager->save($missionJoueur);
-                //attribution des missions secondaires
-                $m = 1;
-                foreach ($_POST as $key => $value) {
-                    if ($key == "missionSecondaire" . $m . "_Joueur" . $i) {
-                        $m++;
-                        $associationMission["idMission"] = $value;
-                        $missionJoueur = $missionJoueur->hydrate($associationMission);
-                        $missionJoueurManager->save($missionJoueur);
-                    }
-                }
-            }
-
-        } catch (Exception $e) {
-        die("la partie n'a pas pu etre créer");
-        }
     }
 }

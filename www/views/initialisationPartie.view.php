@@ -2,7 +2,24 @@
 use warhammerScoreBoard\core\Helper;
 ?>
 <main>
+<!--    <pre>-->
+<!--        --><?php //print_r($initPartie["fields"]);?>
+<!--    </pre>-->
     <h1>initialisation de la partie</h1>
+    <?php if(isset($erreurs)):?>
+    <div class="row">
+        <div class="col-sm-12 col-inner">
+            <div class="col-inner">
+                <p>La partie n'a pas été ignitialisé car les érreurs suivantes sont survenues</p>
+            </div>
+            <?php foreach ($erreurs as $erreur):?>
+            <div class="col-inner">
+                <p><?=$erreur?></p>
+            </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+    <?php endif;?>
     <form method=<?=$initPartie["config"]["method"]?> action="<?=$initPartie["config"]["action"]?>" id="<?=$initPartie["config"]["id"]?>">
         <div class="row">
             <div class="col-sm-6 col-inner">

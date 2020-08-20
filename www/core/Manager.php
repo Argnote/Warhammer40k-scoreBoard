@@ -2,8 +2,8 @@
 
 namespace warhammerScoreBoard\core;
 
-use warhammerScoreBoard\connection\BDDInterface;
-use warhammerScoreBoard\connection\PDOConnection;
+use warhammerScoreBoard\core\connection\BDDInterface;
+use warhammerScoreBoard\core\connection\PDOConnection;
 use warhammerScoreBoard\models\Model;
 
 class Manager

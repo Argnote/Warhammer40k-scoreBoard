@@ -2,6 +2,7 @@
 
 namespace warhammerScoreBoard\core;
 
+use warhammerScoreBoard\forms\InitialisationPartieForm;
 use warhammerScoreBoard\models\Utilisateur;
 use function Sodium\compare;
 
@@ -14,29 +15,29 @@ class Validator
 //        print_r($configForm["fields"]);
 //        print_r($data);
 //        echo "</pre>";
-
+//echo count($configForm["fields"]);
+//        echo count($data);
         if (count($configForm["fields"]) == count($data)) {
             foreach ($configForm["fields"] as $key => $config) {
-                if(isset($config["contrainte"]))
-                    $this->$key = $config["contrainte"];
-
-                else
                 $this->$key = $data[$key];
                 //Vérifie que l'on a bien les champs attendus
                 //Vérifier les required
                 if (!array_key_exists($key, $data) || ($config["required"] && empty($data[$key]))) {
                     return ["Un problème est survenue dans le nombre de champs remplis"];
                 }
+                if (isset($config["contrainte"]))
+                    $method = 'check' . ucfirst($config["contrainte"]);
+                else
                 $method = 'check' . ucfirst($key);
-                //echo $method."<br/>";
+                //echo $method . "<br/>";
                 if (method_exists(get_called_class(), $method)) {
                     if (!$this->$method($data[$key], $config)) {
                         $errosMsg[$key] = $config["errorMsg"];
                     }
                 }
             }
+            return $errosMsg;
         }
-        return $errosMsg;
     }
 
     private function checkFirstname($firstname)
@@ -105,10 +106,32 @@ class Validator
 
     private function checkFormat($format)
     {
-        if(!is_numeric($format) && $format < 100000)
+        if(!$this->checkNumeric($format) && !empty($armee))
+            return false;
+        if($format > 100000)
+            return false;
+        return true;
+    }
+    private function checkArmee($armee)
+    {
+        if(!$this->checkNumeric($armee) && !empty($armee))
             return false;
         return true;
     }
 
+    private function checkMission($mission, $config)
+    {
+        if(!$this->checkNumeric($mission))
+            return false;
+        foreach ($config["compare"] as $value)
+        {
+            $config["compare"] = array_merge($config["compare"],[$this->$value]);
+            unset($config["compare"][array_search($value,$config["compare"])]);
+
+        }
+        if($config["compare"] != array_unique($config["compare"]))
+            return false;
+        return true;
+    }
 
 }

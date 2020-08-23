@@ -85,8 +85,11 @@ class QueryBuilder extends Manager
         return $this;
     }
 
-    public function queryWhere($column, $operator, $value = null)
+    public function queryWhere($column, $operator, $value = null, $table = null)
     {
+        if (!empty($table))
+            $table = DB_PREFIXE.$table.".";
+
         if (!isset($value)) {
             $value = $operator;
             $operator = "=";
@@ -95,7 +98,7 @@ class QueryBuilder extends Manager
         {
             $this->where.= " AND ";
         }
-        $this->where .= " " . $column . " " . $operator;
+        $this->where .= " " .$table.$column . " " . $operator;
         $this->where .= (is_int($value)) ? " " . $value : " '".$value."'";
         return $this;
     }
@@ -130,7 +133,7 @@ class QueryBuilder extends Manager
 
     public function queryJoin(string $table1, string $table2, string $table1param, string $table2param )
     {
-        return $this->join = " INNER JOIN ".DB_PREFIXE.$table2." ON ". DB_PREFIXE.$table1.".".$table1param." = " .DB_PREFIXE.$table2.".".$table2param;
+        return $this->join .= " INNER JOIN ".DB_PREFIXE.$table2." ON ". DB_PREFIXE.$table1.".".$table1param." = " .DB_PREFIXE.$table2.".".$table2param;
     }
 
 
@@ -147,6 +150,7 @@ class QueryBuilder extends Manager
                 . (!empty($this->order) ? " ORDER BY" . $this->order : "")
                 . (!empty($this->limit) ? " LIMIT" . $this->limit : "");
         }
+        //echo $this->query;
         return $this->connection->query($this->query);
     }
 

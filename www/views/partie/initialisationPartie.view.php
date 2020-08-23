@@ -10,11 +10,11 @@ use warhammerScoreBoard\core\Helper;
     <div class="row">
         <div class="col-sm-12 col-inner">
             <div class="col-inner">
-                <p>La partie n'a pas été ignitialisé car les érreurs suivantes sont survenues</p>
+                <p>La partie n'a pas été initialisé car les érreurs suivantes sont survenues : </p>
             </div>
             <?php foreach ($erreurs as $erreur):?>
             <div class="col-inner">
-                <p><?=$erreur?></p>
+                <p> - <?=$erreur?></p>
             </div>
             <?php endforeach;?>
         </div>
@@ -34,7 +34,7 @@ use warhammerScoreBoard\core\Helper;
             <?php
             for($j = 1; $j <=2; $j++):?>
                 <div class="col-sm-6">
-                    <div class="col-inner"><p><?=$_SESSION['pseudoJoueur'.$j]??'joueur'.$j ?></p></div>
+                    <div class="col-inner"><p><?=$_SESSION['pseudoJoueur'.$j]??'Joueur '.$j ?></p></div>
                     <div class="col-inner">
                         <?php
                         $this->addModal("select",$initPartie["fields"]["armee".$j], $armee);?>

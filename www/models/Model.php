@@ -20,7 +20,7 @@ class Model
 
             $method = 'set'.ucfirst($key);
             if (method_exists($articleObj, $method) && !empty($value)) {
-                $articleObj->$method($value);
+                $articleObj->$method(htmlspecialchars($value));
             }
         }
         return $articleObj;

@@ -58,9 +58,10 @@ class Manager
 
             $sql = "UPDATE ".$this->table." SET ".implode(",", $sqlUpdate)." WHERE id=:id;";
         }
-        //echo($sql);
-//        echo("<br/>");
+//        echo($sql."<br/>");
+//        echo "<pre>";
 //        print_r($params);
+//        echo "</pre>";
         $this->connection->query($sql, $params);
         return $this->connection->getIdQuery();
         //print_r($this->connection->query($sql, $params));

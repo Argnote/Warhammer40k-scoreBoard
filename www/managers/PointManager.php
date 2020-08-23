@@ -32,7 +32,7 @@ class PointManager extends Manager
                     $requete->queryWhere($condition[0], $condition[1], $condition[2]);
                 }
             }
-            $requete->queryOrderBy("typeCategorie,nomMission","ASC");
+            $requete->queryOrderBy("numeroTour,typeCategorie,nomMission","ASC");
             return $requete->queryGetArray();
         }
     }

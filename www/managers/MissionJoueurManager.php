@@ -32,7 +32,7 @@ class MissionJoueurManager extends Manager
             }
         }
 
-        $requete->queryOrderBy("nomMission","ASC");
+        $requete->queryOrderBy("typeCategorie,nomMission","ASC");
         return $requete->queryGetArray();
     }
 }

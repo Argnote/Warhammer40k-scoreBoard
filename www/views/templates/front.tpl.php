@@ -8,6 +8,7 @@ use warhammerScoreBoard\core\Helper;
     <link rel="stylesheet" href="../../public/css/grille.css">
     <script src="../../public/lib/jquery-3.5.1.min.js"></script>
     <script src="../../public/script/activeSelectedDisabled.js"></script>
+    <script src="../../public/script/disableSubmit.js"></script>
 	<title>Warhammer 40000 score-board</title>
 
 </head>

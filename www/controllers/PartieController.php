@@ -105,13 +105,18 @@ class PartieController extends Controller
         if (!isset($_SESSION['idPartie']))
             $this->redirectTo("Home","default");
 
-        $pointManager = new PointManager();
-        $score = $pointManager->getPoint(["*"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']]]);
 
-        $myView = new View("partie/validationTour", "front");
-        $myView->assign("score", $score);
+
+        $pointManager = new PointManager();
         $tourManager = new TourManager();
         $missionsJoueurManager = new MissionJoueurManager();
+        $myView = new View("partie/validationTour", "front");
+        $scoreJoueur1 = $pointManager->getPoint(["*"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur1']]]);
+        $scoreJoueur2 = $pointManager->getPoint(["*"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur2']]]);
+        //$nomMissionJoueur1 = $missionsJoueurManager->getMission(["nomMission"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur1']]]);
+
+        $myView->assign("scoreJoueur1", $scoreJoueur1);
+        $myView->assign("scoreJoueur2", $scoreJoueur2);
 
         $tourInfo = count($tourManager->getTour(["*"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]))+1;
 //     echo "<pre>";

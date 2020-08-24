@@ -21,3 +21,7 @@
 /sauvegarde-des-points:
   controller: Partie
   action: savePoint
+
+/points-de-fin-de-partie:
+  controller: Partie
+  action: finPartie

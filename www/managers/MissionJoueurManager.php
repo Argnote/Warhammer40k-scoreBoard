@@ -35,4 +35,14 @@ class MissionJoueurManager extends Manager
         $requete->queryOrderBy("typeCategorie,nomMission","ASC");
         return $requete->queryGetArray();
     }
+
+    public function checkMissionJoueur(int $idJoueur, int $idMission)
+    {
+        $requete = new QueryBuilder(MissionJoueur::class, "joueur_has_mission");
+        $requete->querySelect(["idMission"]);
+        $requete->queryFrom();
+        $requete->queryWhere("idJoueur", "=", $idJoueur);
+        $requete->queryWhere("idMission", "=", $idMission);
+        return $requete->queryGetValue();
+    }
 }

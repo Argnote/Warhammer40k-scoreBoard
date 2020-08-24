@@ -95,7 +95,7 @@ class PartieController extends Controller
             else
             {
                 $errors = array_unique($errors);
-                $myView->assign("erreurs", $errors);
+                $myView->assign("errors", $errors);
             }
         }
     }
@@ -104,13 +104,41 @@ class PartieController extends Controller
     {
         if (!isset($_SESSION['idPartie']))
             $this->redirectTo("Home","default");
-
-
-
         $pointManager = new PointManager();
         $tourManager = new TourManager();
         $missionsJoueurManager = new MissionJoueurManager();
+        $tourInfo = count($tourManager->getTour(["*"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]))+1;
+        if ($tourInfo > 6)
+        {
+            $this->redirectTo("Partie", "finPartie");
+        }
+        $joueurs = array();
+        for($j=1;$j<=2;$j++)
+        {
+            $missionsJoueur{$j} = $missionsJoueurManager->getMissionJoueur([DB_PREFIXE."joueur.idJoueur","nomJoueur",DB_PREFIXE."mission.idMission AS idMission","nomMission","nombrePointPossiblePartie","nombrePointPossibletour","typeCategorie","marquageFinPartie"],[[DB_PREFIXE."joueur.idJoueur","=",$_SESSION["idJoueur".$j]]]);
+            $joueurs = array_merge($joueurs,[$missionsJoueur{$j}[0]["nomJoueur"]]);
+        }
+
+        $missionsJoueur1 = ValidationTourForm::getForm($missionsJoueur{$j=1});
+        $missionsJoueur2 = ValidationTourForm::getForm($missionsJoueur{$j=2});
+
+        $configForm = $missionsJoueur1;
+        $configForm["fields"] = array_merge($configForm["fields"],$missionsJoueur2["fields"]);
         $myView = new View("partie/validationTour", "front");
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $validator = new Validator();
+            $errors = $validator->checkAddPoint($configForm["fields"], $_POST);
+            if (empty($errors))
+            {
+                    $_SESSION['savePoint'] = $_POST;
+                    $this->redirectTo("Partie", "savePoint");
+            }
+            else
+            {
+                $errors = array_unique($errors);
+                $myView->assign("errors", $errors);
+            }
+        }
         $scoreJoueur1 = $pointManager->getPoint(["*"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur1']]]);
         $scoreJoueur2 = $pointManager->getPoint(["*"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur2']]]);
         //$nomMissionJoueur1 = $missionsJoueurManager->getMission(["nomMission"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur1']]]);
@@ -118,36 +146,25 @@ class PartieController extends Controller
         $myView->assign("scoreJoueur1", $scoreJoueur1);
         $myView->assign("scoreJoueur2", $scoreJoueur2);
 
-        $tourInfo = count($tourManager->getTour(["*"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]))+1;
 //     echo "<pre>";
 //     print_r($tourInfo);
 //     echo "</pre>";
         $myView->assign("tourInfo", $tourInfo);
-        //echo count($tourInfo);
-        $joueurs = array();
-        for($j=1;$j<=2;$j++)
-        {
-            $missionsJoueur{$j} = $missionsJoueurManager->getMissionJoueur([DB_PREFIXE."joueur.idJoueur","nomJoueur",DB_PREFIXE."mission.idMission AS idMission","nomMission","nombrePointPossiblePartie","nombrePointPossibletour","typeCategorie","marquageFinPartie"],[[DB_PREFIXE."joueur.idJoueur","=",$_SESSION["idJoueur".$j]]]);
-            $joueurs = array_merge($joueurs,[$missionsJoueur{$j}[0]["nomJoueur"]]);
-        }
         $myView->assign("joueurs", $joueurs);
-
-        $missionsJoueur1 = ValidationTourForm::getForm($missionsJoueur{$j=1});
-        $missionsJoueur2 = ValidationTourForm::getForm($missionsJoueur{$j=2});
+        //echo count($tourInfo);
         $myView->assign("missionsJoueur1", $missionsJoueur1);
         $myView->assign("missionsJoueur2", $missionsJoueur2);
 
         //$myView->assign("initTour", $initTourJ2);
-        //     echo "<pre>";
-        //     print_r($initTour);
-        //     echo "</pre>";
+//             echo "<pre>";
+//             print_r($configForm);
+//             echo "</pre>";
     }
 
     public function savePointAction()
     {
         $tourManager = new TourManager();
         $tourInfo = count($tourManager->getTour(["*"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]))+1;
-        if($_SERVER["REQUEST_METHOD"] == "POST") {
             $nouveauTour = [
                 "numeroTour"=> $tourInfo,
                 "idPartie"=>$_SESSION['idPartie']
@@ -157,7 +174,7 @@ class PartieController extends Controller
             $idTour = $tourManager->save($tour);
 
             $pointManager = new PointManager();
-            foreach ($_POST as $data)
+            foreach ($_SESSION['savePoint'] as $data)
             {
                 $point = new Point();
                 $point = $point->hydrate($data);
@@ -167,9 +184,14 @@ class PartieController extends Controller
 
 
             }
+            $_SESSION['savePoint'] = null;
             $this->redirectTo("Partie", "validationTour");
             //$tourInfo->setFinTour(getdate());
             //$tourManager->save($tourManager);
         }
+
+    public function finPartieAction()
+    {
+        echo "coucou";
     }
 }

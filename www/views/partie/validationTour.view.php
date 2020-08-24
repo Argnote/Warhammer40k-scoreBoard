@@ -2,6 +2,9 @@
 ?>
 <main>
     <h1>Round <?=$tourInfo?></h1>
+    <?php if(isset($errors)):
+        $this->addModal("errors",$errors);
+    endif;?>
     <?php if(!empty($scoreJoueur1) && !empty($scoreJoueur2)):?>
     <div class="row">
         <div class="col-sm-6">

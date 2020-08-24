@@ -13,7 +13,7 @@ class ValidationTourForm
         $form = array();
         $form = ["config"=>[
             "method"=>"POST",
-            "action"=>Helper::getUrl("Partie", "savePoint"),
+            "action"=>Helper::getUrl("Partie", "validationTour"),
             "class"=>"Partie",
             "id"=>"formValidationPartie",
             "submit"=>"Valider le tour"
@@ -32,21 +32,27 @@ class ValidationTourForm
                     $data =>[
                         "type" =>"number",
                         "value" => 0,
-                        "pointMaxTour" => $mission["nombrePointPossibletour"],
+                        "contrainte" =>"score",
+                        "nombrePointPossibletour" => $mission["nombrePointPossibletour"],
                         "id" => "mission".$mission["idMission"],
                         "name" => $data."[nombrePoint]",
                         "marquageFinPartie" => $mission["marquageFinPartie"],
-                        "errorMsg"=>"La mission : \"".$mission["nomMission"]."\" ne peut pas rapporter plus de ".$mission["nombrePointPossibletour"]." points par round."
+                        "errorMsg"=>"La mission : \"".$mission["nomMission"]."\" ne peut pas rapporter plus de ".$mission["nombrePointPossibletour"]." points par round et moins de 0."
                     ],
                     $data."_joueurId" =>[
                         "type" => "hidden",
+                        "contrainte" =>"joueur",
                         "value" => $mission["idJoueur"],
-                        "name" => $data."[idJoueur]"
+                        "name" => $data."[idJoueur]",
+                        "errorMsg"=>"Aucun joueur portant cette id n'est connecté, merci de ne pas modifier le DOM!"
                     ],
                     $data."_missionId" =>[
                         "type" => "hidden",
+                        "contrainte" =>"missionJoueur",
+                        "idJoueur" => $mission["idJoueur"],
                         "value" => $mission["idMission"],
-                        "name" => $data."[idMission]"
+                        "name" => $data."[idMission]",
+                        "errorMsg"=>"Cette mission n'a pas été selectionnée par un joueur, merci de ne pas modifier le DOM!"
                     ]
                 ];
 //                echo "<pre>";

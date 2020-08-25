@@ -9,7 +9,7 @@ use warhammerScoreBoard\core\Helper;
     <?php if(isset($errors)):
         $this->addModal("errors",$errors);
     endif;?>
-    <form method=<?=$initPartie["config"]["method"]?> action="<?=$initPartie["config"]["action"]?>" id="<?=$initPartie["config"]["id"]?>">
+    <form method=<?=$initPartie["config"]["method"]?> action="<?=$initPartie["config"]["action"]?>" id="<?=$initPartie["config"]["id"]?>" class="<?=$initPartie["config"]["class"]?>">
         <div class="row">
             <div class="col-sm-6 col-inner">
                 <?php
@@ -35,15 +35,7 @@ use warhammerScoreBoard\core\Helper;
                 </div>
             <?php endfor;?>
         </div>
-        <input type="submit" value="Commencer la partie">
-        <script>
-            $(function()
-            {
-                $('#formInitPartie').submit(function()
-                {
-                    $('#button').attr("disabled", "disabled");
-                });
-            });
-        </script>
+        <button class="btn btn-primary buttonDisabled" id ="button">Commencer la partie</button>
+
     </form>
 </main>

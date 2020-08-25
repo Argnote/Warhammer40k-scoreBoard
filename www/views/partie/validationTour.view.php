@@ -35,15 +35,7 @@
             <div class="col-sm-6">
             <?php $this->addModal("formScore",$missionsJoueur2);?>
             </div>
-        <button class="btn btn-primary" id ="button"><?= $missionsJoueur1["config"]["submit"];?></button>
-            <script>
-                $(function()
-                {
-                    $('#formValidationPartie').submit(function()
-                    {
-                        $('#button').attr("disabled", "disabled");
-                    });
-                });
-            </script>
+        <button class="btn btn-primary buttonDisabled" id ="button"><?= $missionsJoueur1["config"]["submit"];?></button>
+
     </form>
 </main>

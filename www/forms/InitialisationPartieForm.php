@@ -12,7 +12,7 @@ class InitialisationPartieForm
             "config" => [
                 "method" => "POST",
                 "action" => Helper::getUrl("Partie", "initialisationPartie"),
-                "class" => "Partie",
+                "class" => "Partie formDisabled",
                 "id" => "formInitPartie"
             ],
 

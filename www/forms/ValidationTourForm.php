@@ -10,11 +10,10 @@ class ValidationTourForm
 {
     public static function getForm(array $missionJoueur)
     {
-        $form = array();
         $form = ["config"=>[
             "method"=>"POST",
             "action"=>Helper::getUrl("Partie", "validationTour"),
-            "class"=>"Partie",
+            "class"=>"Partie formDisabled",
             "id"=>"formValidationPartie",
             "submit"=>"Valider le tour"
             ]

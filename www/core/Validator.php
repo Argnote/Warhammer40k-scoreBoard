@@ -16,10 +16,10 @@ class Validator
         $errosMsg = [];
 //        echo "<pre>";
 //        print_r($configForm["fields"]);
-//        print_r($data);
+//       print_r($data);
 //        echo "</pre>";
 //echo count($configForm["fields"])."<br/>";
-        echo count($data);
+        //echo count($data);
         if (count($configForm["fields"]) == count($data)) {
             foreach ($configForm["fields"] as $key => $config) {
                 $this->$key = $data[$key];

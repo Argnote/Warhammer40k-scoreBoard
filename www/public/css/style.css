@@ -1,0 +1,18 @@
+header
+{
+    /*height: 200px;*/
+    /*overflow: hidden;*/
+    background-color: rgb(109,7,26);
+}
+.logo
+{
+    width: 150px;
+    margin-left: 1em;
+}
+.header
+{
+    text-align: center;
+    padding: 2em ;
+    color: white;
+    /*margin-top: 50%;*/
+}

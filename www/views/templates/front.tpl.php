@@ -1,17 +1,43 @@
 <?php
-use warhammerScoreBoard\core\Helper;
+use warhammerScoreBoard\forms\navForm;
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
     <link rel="stylesheet" href="../../public/css/grille.css">
+    <link rel="stylesheet" href="../../public/css/style.css">
 	<title>Warhammer 40000 score-board</title>
 
 </head>
 <body>
   <div>
-        <?php include "views/".$this->view.".view.php";?>
+      <header>
+          <div class="row">
+                  <div class="col-sm-3">
+<!--                      <div class="col-inner header">-->
+                          <img src="../../public/img/logoOrchido.png" class="logo">
+<!--                      </div>-->
+                  </div>
+                  <div class="col-sm-6">
+                      <div class="col-inner header">
+                          <h1>Warhammer40K scoreboard</h1>
+                      </div>
+                  </div>
+              </div>
+      </header>
+      <div class="row">
+          <div class="col-sm-4">
+              <nav>
+                  <?php $this->setNav(navForm::getForm());
+                  include "views/modals/nav.mod.php";?>
+              </nav>
+            </div>
+            <div class="col-sm-8">
+                <?php include "views/".$this->view.".view.php";?>
+            </div>
+      </div>
   </div>
   <script src="../../public/lib/jquery-3.5.1.min.js"></script>
   <script src="../../public/script/activeSelectedDisabled.js"></script>

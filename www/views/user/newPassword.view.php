@@ -1,8 +1,8 @@
 <?php
-use HotelFactory\core\Helper;
+use warhammerScoreBoard\core\Helper;
 ?>
 <div>
-    <h1>Nouveau mot de passe</h1>
+    <h2>Nouveau mot de passe</h2>
     <?php $this->addModal("form", $configFormUser); ?>
     </br>
     <a href="<?= Helper::getUrl("Home","default")?>">Retour à l'accueil</a>

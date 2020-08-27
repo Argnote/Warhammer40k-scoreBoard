@@ -2,6 +2,7 @@
 
 namespace warhammerScoreBoard\core;
 
+use DateTime;
 use warhammerScoreBoard\forms\InitialisationPartieForm;
 use warhammerScoreBoard\managers\MissionJoueurManager;
 use warhammerScoreBoard\managers\missionManager;
@@ -11,9 +12,9 @@ use function Sodium\compare;
 
 class Validator
 {
+protected $errosMsg;
     public function checkForm($configForm, $data)
     {
-        $errosMsg = [];
 //        echo "<pre>";
 //        print_r($configForm["fields"]);
 //       print_r($data);
@@ -35,7 +36,7 @@ class Validator
                 //echo $method . "<br/>";
                 if (method_exists(get_called_class(), $method)) {
                     if (!$this->$method($data[$key], $config)) {
-                        $errosMsg[$key] = $config["errorMsg"];
+                        $this->errosMsg[$key] = $config["errorMsg"];
                     }
                 }
             }
@@ -44,7 +45,7 @@ class Validator
         {
             return ["Un problème est survenue dans le nombre de champs remplis"];
         }
-        return $errosMsg;
+        return $this->errosMsg;
     }
 
     public function checkAddPoint($configForm, $data)
@@ -53,7 +54,6 @@ class Validator
 //        print_r($configForm);
 //        print_r($data);
 //        echo "</pre>";
-        $errosMsg = [];
         if (count($data) == 8)
         {
             foreach ($data as $key => $value)
@@ -73,19 +73,19 @@ class Validator
         {
             return ["Un problème est survenue dans le nombre de champs remplis"];
         }
-        return $errosMsg;
+        return $this->errosMsg;
     }
 
-    private function checkFirstname($firstname)
+    private function checkPrenom($prenom)
     {
-        if (!preg_match("#^[\p{Latin}' -]+$#u", $firstname) || count_chars($firstname) < 50)
+        if (!preg_match("#^[\p{Latin}' -]+$#u", $prenom) || strlen($prenom) > 50)
             return false;
         return true;
     }
 
-    private function checkName($name)
+    private function checkNomUtilisateur($nom)
     {
-        if (!preg_match("#^[\p{Latin}' -]+$#u", $name) || count_chars($name) < 100)
+        if (!preg_match("#^[\p{Latin}' -]+$#u", $nom) || strlen($nom) > 100)
             return false;
         return true;
     }
@@ -93,20 +93,19 @@ class Validator
     private function checkEmail($email, $config)
     {
         if(array_key_exists("uniq",$config))
-            if(!$this->uniq($email,$config["uniq"]))
-                return false;
+            $this->uniq($email,$config["uniq"]);
 
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
-    private function checkPassword($password)
+    private function checkMotDePasse($motDePasse)
     {
-        return preg_match('#(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{8,20}$#', $password);
+        return preg_match('#(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).{8,20}$#', $motDePasse);
     }
 
-    private function checkPasswordConfirm($passwordConfirm)
+    private function checkConfirmationMotDePasse($confirmationMotDePasse)
     {
-        return $this->password == $passwordConfirm;
+        return $this->motDePasse == $confirmationMotDePasse;
     }
 
     private function checkCaptcha($captcha)
@@ -114,23 +113,29 @@ class Validator
         return strtolower($captcha) == $_SESSION["captcha"];
     }
 
-    private function checkBirthdate($birthdate)
+    private function checkDateDeNaissance($dateDeNaissance)
     {
-        $birthdate = new \DateTime($birthdate);
-        $date = new \DateTime("now");
-        $date->modify('-18 years');
-        return $date >= $birthdate;
+        $this->checkValidateDate($dateDeNaissance,"Y-m-d");
+        return true;
+    }
+
+    private function checkValidateDate($date, $format = 'Y-m-d H:i:s')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        if(!($d && $d->format($format) == $date))
+            $this->errosMsg[$date] = $date." est une date nom valide";
     }
 
     private function uniq($data,$table)
     {
-        $requete = new QueryBuilder(Utilisateur::class, $table["table"]);
+        $class = ucfirst($table["table"])."::class";
+        $requete = new QueryBuilder($class, $table["table"]);
         $requete->querySelect($table["column"]);
+        $requete->queryFrom();
         $requete->queryWhere($table["column"], "=", $data);
         $result = $requete->queryGetValue();
-        if($result == $data)
-            return false;
-        return true;
+        if($result[$table["column"]] == $data)
+            $this->errosMsg[$data."Unique"] = "\"".$data."\" est déja utilisé";
     }
 
     private function checkNumeric($number)
@@ -194,8 +199,17 @@ class Validator
         if(!$this->checkNumeric($mission))
             return false;
         $missionJoueurManager = new MissionJoueurManager();
-        $result = $missionJoueurManager->checkMissionJoueur($joueur,$mission);
+        $result = $missionJoueurManager->missionJoueurExist($joueur,$mission);
         if(empty($result))
+            return false;
+        return true;
+    }
+
+    private function checkPseudo($pseudo,$config)
+    {
+        if(array_key_exists("uniq",$config))
+            $this->uniq($pseudo,$config["uniq"]);
+        if (!preg_match("#[a-zA-Z0-9]+$#", $pseudo) || strlen($pseudo) > 50)
             return false;
         return true;
     }

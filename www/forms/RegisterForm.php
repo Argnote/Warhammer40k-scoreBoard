@@ -4,78 +4,96 @@ namespace warhammerScoreBoard\forms;
 use warhammerScoreBoard\core\Helper;
 
 class RegisterForm {
-    
     public static function getForm(){
         return [
             "config"=>[
                 "method"=>"POST",
-                "action"=>Helper::getUrl("User", "register"),
-                "class"=>"User",
+                "action"=>Helper::getUrl("Utilisateur", "register"),
+                "class"=>"User formDesabled",
                 "id"=>"formRegisterUser",
                 "submit"=>"S'inscrire"
             ],
 
             "fields"=>[
-                "firstname"=>[
+                "prenom"=>[
                     "type"=>"text",
                     "placeholder"=>"Votre prénom",
                     "class"=>"form-control form-control-user",
-                    "id"=>"",
+                    "id"=>"prenom",
+                    "label"=>"Votre prenom :",
                     "required"=>true,
-                    "min-length"=>2,
+                    "min-length"=>1,
                     "max-length"=>50,
                     "errorMsg"=>"Votre prénom doit faire entre 1 et 50 caractères et ne doit pas contenir de caractères spéciaux ni de nombres"
                 ],
-                "name"=>[
+                "nomUtilisateur"=>[
                     "type"=>"text",
                     "placeholder"=>"Votre nom",
                     "class"=>"form-control form-control-user",
-                    "id"=>"",
+                    "id"=>"nomUtilisateur",
+                    "label"=>"Votre nom:",
                     "required"=>true,
-                    "min-length"=>2,
+                    "min-length"=>1,
                     "max-length"=>100,
                     "errorMsg"=>"Votre nom doit faire entre 1 et 100 caractères et ne doit pas contenir de caractères spéciaux ni de nombres"
+                ],
+                "pseudo"=>[
+                    "type"=>"text",
+                    "placeholder"=>"Votre pseudo",
+                    "class"=>"form-control form-control-user",
+                    "id"=>"pseudo",
+                    "label"=>"Votre pseudo :",
+                    "required"=>true,
+                    "uniq"=>["table"=>"utilisateur","column"=>"pseudo"],
+                    "min-length"=>1,
+                    "max-length"=>50,
+                    "errorMsg"=>"Votre pseudo doit faire entre 1 et 50 caractères et ne doit pas contenir de caractères spéciaux"
                 ],
                 "email"=>[
                     "type"=>"email",
                     "placeholder"=>"Votre email",
                     "class"=>"form-control form-control-user",
-                    "id"=>"",
+                    "id"=>"email",
+                    "label"=>"votre adresse email :",
                     "required"=>true,
-                    "uniq"=>["table"=>"user","column"=>"email"],
-                    "errorMsg"=>"Adresse mail invalide ou déja utilisée"
+                    "uniq"=>["table"=>"utilisateur","column"=>"email"],
+                    "errorMsg"=>"Adresse mail invalide"
                 ],
-                "password"=>[
+                "motDePasse"=>[
                     "type"=>"password",
                     "placeholder"=>"Votre mot de passe",
                     "class"=>"form-control form-control-user",
-                    "id"=>"",
+                    "id"=>"password",
+                    "label"=>"Votre mot de passe :",
                     "required"=>true,
                     "errorMsg"=>"Votre mot de passe doit faire entre 8 et 20 caractères avec une minuscule, une majuscule, un nombre et un caractère spécial"
                 ],
-                "passwordConfirm"=>[
+                "confirmationMotDePasse"=>[
                     "type"=>"password",
                     "placeholder"=>"Confirmation",
                     "class"=>"form-control form-control-user",
-                    "id"=>"",
+                    "id"=>"passwordConfirm",
+                    "label"=>"Confirmez le mot de passe :",
                     "required"=>true,
                     "confirmWith"=>"pwd",
                     "errorMsg"=>"Votre mot de passe de confirmation ne correspond pas"
                 ],
+                "dateDeNaissance"=>[
+                    "type"=>"date",
+                    "class"=>"form-control form-control-user",
+                    "id"=>"dateDeNaissance",
+                    "label"=>"Votre date de naissance :",
+                    "required"=>true,
+                    "errorMsg"=>"Vous devez avoir plus de 18 ans pour vous inscrire"
+                ],
                 "captcha"=>[
                     "type"=>"captcha",
                     "class"=>"form-control form-control-user",
-                    "id"=>"",
+                    "id"=>"captcha",
+                    "label"=>"Merci de recopier le texte de l'image:",
                     "required"=>true,
                     "placeholder"=>"Veuillez saisir les caractères",
                     "errorMsg"=>"Captcha incorrect"
-                ],
-                "birthdate"=>[
-                    "type"=>"date",
-                    "class"=>"form-control form-control-user",
-                    "id"=>"",
-                    "required"=>true,
-                    "errorMsg"=>"Vous devez avoir plus de 18 ans pour vous inscrire"
                 ]
             ]
         ];

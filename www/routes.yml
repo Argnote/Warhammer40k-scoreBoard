@@ -10,6 +10,10 @@
   controller: Home
   action: default
 
+/vous-etes-perdu:
+  controller: Errors
+  action: quatreCentQuatre
+
 /initialisation-partie:
   controller: Partie
   action: initialisationPartie
@@ -25,3 +29,23 @@
 /points-de-fin-de-partie:
   controller: Partie
   action: finPartie
+
+/s-inscrire:
+  controller: Utilisateur
+  action: register
+
+/confirmation-inscription:
+  controller: Utilisateur
+  action: registerConfirm
+
+/se-connecter:
+  controller: Utilisateur
+  action: login
+
+/se-deconnecter:
+  controller: Utilisateur
+  action: logout
+
+/mot-de-passe-oublie:
+  controller: Utilisateur
+  action: forgotPassword

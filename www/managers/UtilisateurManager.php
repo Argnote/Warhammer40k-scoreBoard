@@ -11,7 +11,7 @@ class UtilisateurManager extends Manager {
 
     public function __construct()
     {
-        parent::__construct(Utilisateur::class, 'user');
+        parent::__construct(Utilisateur::class, 'utilisateur');
     }
 
     public function manageUserToken($id,$token,$values = null)
@@ -23,7 +23,7 @@ class UtilisateurManager extends Manager {
             $user = $user->hydrate($values);
         }
         //innitialisation du token dans la db pour l'id indiqué
-        $user->setId($id);
+        $user->setIdUtilisateur($id);
         $user->setToken($token);
         $this->save($user);
     }

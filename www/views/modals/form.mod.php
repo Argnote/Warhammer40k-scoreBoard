@@ -13,7 +13,7 @@ class="<?= $data["config"]["class"]?>">
     <div class="row">
             <?php if(!empty($configField["label"])):?>
             <div class="col-sm-6">
-                <div class="col-inner">
+                <div class="col-inner  col-left">
                     <label for="<?= $configField["id"]??'' ?>">
                         <?= $configField["label"] ?>
                     </label>
@@ -21,7 +21,7 @@ class="<?= $data["config"]["class"]?>">
             </div>
             <?php endif;?>
             <div class="col-sm-6">
-                <div class="col-inner">
+                <div class="col-inner col-right">
                     <input
                         value="<?= (isset($inputData[$name]) && $configField["type"]!="password")?$inputData[$name]:'' ?>"
                         type="<?= $configField["type"]??'' ?>"
@@ -33,7 +33,7 @@ class="<?= $data["config"]["class"]?>">
                 </div>
 
               <?php if($configField["type"] == "captcha"): ?>
-                <div class="col-inner">
+                <div class="col-inner col-right">
                   <img id="captcha" src="script/captcha.php" width="300px">
                 </div>
               <?php endif;?>
@@ -43,5 +43,5 @@ class="<?= $data["config"]["class"]?>">
 
 
 
-  <button class="btn btn-primary buttonDesabled"><?= $data["config"]["submit"];?></button>
+  <button type="submit" class="btn btn-primary buttonDesabled"><?= $data["config"]["submit"];?></button>
 </form>

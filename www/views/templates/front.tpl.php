@@ -5,7 +5,7 @@ use warhammerScoreBoard\forms\navForm;
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+    <meta http-equiv="Content-Type" content="utf-8"/>
     <link rel="stylesheet" href="../../public/css/grille.css">
     <link rel="stylesheet" href="../../public/css/style.css">
 	<title>Warhammer 40000 score-board</title>
@@ -14,7 +14,7 @@ use warhammerScoreBoard\forms\navForm;
 <body>
   <div>
       <header>
-          <div class="row">
+          <div class="row container" >
                   <div class="col-sm-3">
 <!--                      <div class="col-inner header">-->
                           <img src="../../public/img/logoOrchido.png" class="logo">
@@ -27,15 +27,21 @@ use warhammerScoreBoard\forms\navForm;
                   </div>
               </div>
       </header>
-      <div class="row">
-          <div class="col-sm-4">
-              <nav>
-                  <?php $this->setNav(navForm::getForm());
-                  include "views/modals/nav.mod.php";?>
-              </nav>
+      <div class="row container ">
+          <div class="col-sm-3">
+              <div class="col-inner nav">
+                  <nav>
+                      <?php $this->setNav(navForm::getForm());
+                      include "views/modals/nav.mod.php";?>
+                  </nav>
+              </div>
             </div>
-            <div class="col-sm-8">
-                <?php include "views/".$this->view.".view.php";?>
+            <div class="col-sm-9">
+                <div class="col-inner main">
+                    <main>
+                        <?php include "views/".$this->view.".view.php";?>
+                    </main>
+                </div>
             </div>
       </div>
   </div>

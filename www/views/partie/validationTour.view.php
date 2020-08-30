@@ -1,7 +1,6 @@
 <?php
 ?>
-<main>
-    <h1>Round <?=$tourInfo?></h1>
+    <h2>Round <?=$tourInfo?></h2>
     <?php if(isset($errors)):
         $this->addModal("errors",$errors);
     endif;?>
@@ -38,4 +37,3 @@
         <button class="btn btn-primary buttonDisabled" id ="button"><?= $missionsJoueur1["config"]["submit"];?></button>
 
     </form>
-</main>

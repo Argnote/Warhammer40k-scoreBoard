@@ -3,6 +3,7 @@
 use warhammerScoreBoard\core\tools\enumStatuNav;
 
 $nav = $this->getNav();?>
+<h2>Menu</h2>
 <ul>
 <?php foreach ($nav as $link):
         switch ($link["statu"]):

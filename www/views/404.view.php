@@ -3,8 +3,6 @@
 use warhammerScoreBoard\core\Helper;
 
 ?>
-<div>
-  <h2>Erreur 404</h2>
-  <p>Vous êtes perdu ?</p>
-  <a href="<?= Helper::getUrl("Home","default"); ?>">Retour à l'accueil</a>
-</div>
+  <h2>Page non trouvé</h2>
+  <p>Attention, il s'emblerait que vous êtes perdu dans une tempête warp !</p>
+

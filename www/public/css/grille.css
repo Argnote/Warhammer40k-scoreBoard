@@ -59,6 +59,12 @@
     padding: 0 10px; /* La moitié de la gouttière */
 }
 
+.col-sm-9{
+    flex-basis: calc(100% - (100% / 4));
+    width: calc(100% - (100% / 4));
+    padding: 0 10px; /* La moitié de la gouttière */
+}
+
 .col-sm-12{
     flex-basis: 100%;
     width: 100%;

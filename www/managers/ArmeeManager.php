@@ -28,7 +28,7 @@ class ArmeeManager extends Manager
                 $requete->queryWhere($condition[0], $condition[1], $condition[2]);
             }
         }
-        $requete->queryOrderBy("idFaction","ASC","faction");
+        $requete->queryOrderBy("idFaction,nomArmee","ASC","faction");
         return $requete->queryGetArray();
     }
 }

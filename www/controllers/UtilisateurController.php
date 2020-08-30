@@ -71,7 +71,7 @@ class UtilisateurController extends Controller
         $configFormUser = LoginForm::getForm();
         $myView = new View("user/login", "front");
         $myView->assign("configFormUser", $configFormUser);
-
+        print_r($_POST);
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser, $_POST);
@@ -82,7 +82,7 @@ class UtilisateurController extends Controller
                 $user = $userManager->findBy($_POST);
                 if (count($user) == 1)
                 {
-                    if($user[0]->getIdRole() != 3)
+                    if($user[0]->getIdRole() != 1)
                     {
                         if(empty($_SESSION['idUtilisateur1']) && empty($_SESSION['token']))
                         {
@@ -92,21 +92,25 @@ class UtilisateurController extends Controller
                             $_SESSION['role'] = $user[0]->getIdRole();
                             $_SESSION['token'] = Token::getToken();
                             $userManager = new UtilisateurManager();
-                            $userManager->manageUserToken($_SESSION['id'],$_SESSION['token']);
+                            $userManager->manageUserToken($_SESSION['idUtilisateur1'],$_SESSION['token']);
                         }
                         else {
                             if ($user[0]->getId() != $_SESSION['idUtilisateur1'])
                             {
+                                echo "ferfefer";
                                 $_SESSION['idUtilisateur2'] = $user[0]->getId();
                                 $_SESSION['pseudoJoueur2'] = $user[0]->getPseudo();
+                                $this->redirectTo('Home', 'default');
                             }
                             else
                             {
+                                echo "blalal";
                                 $errors["connecte"] = "Vous êtes déja connecté avec ce compte!";
                                 $myView->assign("errors", $errors);
+                                $this->redirectTo('Utilisateur', 'login');
                             }
                         }
-                        $this->redirectTo('Home', 'default');
+                        //$this->redirectTo('Home', 'default');
                     }
                     else
                     {
@@ -182,11 +186,11 @@ class UtilisateurController extends Controller
             $result = $requete->queryGetValue();
             if (!empty($result))
             {
-                if ($result["idRole"] == 3)
+                if ($result["idRole"] == 1)
                 {
                     //si un utilisateur est trouvé et que son role est 4, passe le role a 2 en même temps que la réinitialisation de son token
                     $userManager = new UtilisateurManager();
-                    $userManager->manageUserToken($result["idUtilisateur"],0,["idRole"=>1]);
+                    $userManager->manageUserToken($result["idUtilisateur"],0,["idRole"=>2]);
                     $message = Message::mailInscriptionSucess();
                     $view = new View("message", "front");
                     $view->assign("message",$message);

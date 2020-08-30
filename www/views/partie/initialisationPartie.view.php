@@ -1,11 +1,10 @@
 <?php
 use warhammerScoreBoard\core\Helper;
 ?>
-<main>
 <!--    <pre>-->
 <!--        --><?php //print_r($initPartie["fields"]);?>
 <!--    </pre>-->
-    <h1>initialisation de la partie</h1>
+    <h2>initialisation de la partie</h2>
     <?php if(isset($errors)):
         $this->addModal("errors",$errors);
     endif;?>
@@ -42,4 +41,3 @@ use warhammerScoreBoard\core\Helper;
         <button class="btn btn-primary buttonDisabled" id ="button">Commencer la partie</button>
 
     </form>
-</main>

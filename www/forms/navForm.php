@@ -20,6 +20,13 @@ class navForm
                 "id" => "",
                 "class" => "",
             ],
+            "inscription" => [
+                "url" => Helper::getUrl("Utilisateur","register"),
+                "text" => "S'inscrire",
+                "statu" => enumStatuNav::offline,
+                "id" => "",
+                "class" => "",
+            ],
             "connexion" => [
                 "url" => Helper::getUrl("Utilisateur","login"),
                 "text" => "Se connecter",
@@ -28,7 +35,7 @@ class navForm
                 "class" => "",
             ],
             "motDePasseOublie" => [
-                "url" => Helper::getUrl("Utilisateur","login"),
+                "url" => Helper::getUrl("Utilisateur","forgotPassword"),
                 "text" => "Mot de passe oublié",
                 "statu" => enumStatuNav::offline,
                 "id" => "",

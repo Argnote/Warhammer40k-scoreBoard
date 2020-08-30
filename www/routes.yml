@@ -46,6 +46,10 @@
   controller: Utilisateur
   action: logout
 
+/deconnecter-le-compte-invite:
+  controller: Utilisateur
+  action: logoutGuest
+
 /mot-de-passe-oublie:
   controller: Utilisateur
   action: forgotPassword

@@ -41,7 +41,7 @@ class PartieController extends Controller
         $armee = $armees->getArmee();
         $myView->assign("armee", $armee);
 
-        $missionsSecondaire = $missions->getMission(["idMission","nomMission"],[["typeCategorie","=","2"]]);
+        $missionsSecondaire = $missions->getMission(["idMission","nomMission","nomCategorie"],[["typeCategorie","=","2"]]);
         $myView->assign("missionSecondaire", $missionsSecondaire);
 
         if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -142,6 +142,13 @@ class PartieController extends Controller
         $scoreJoueur1 = $pointManager->getPoint(["*"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur1']]]);
         $scoreJoueur2 = $pointManager->getPoint(["*"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur2']]]);
         //$nomMissionJoueur1 = $missionsJoueurManager->getMission(["nomMission"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur1']]]);
+        foreach ($missionsJoueur{$j=1} as $score)
+        {
+            echo "<pre>";
+            print_r($score);
+            echo "</pre>";
+
+        }
 
         $myView->assign("scoreJoueur1", $scoreJoueur1);
         $myView->assign("scoreJoueur2", $scoreJoueur2);

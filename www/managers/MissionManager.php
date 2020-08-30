@@ -28,7 +28,7 @@ class missionManager extends Manager
                 $requete->queryWhere($condition[0], $condition[1], $condition[2]);
             }
         }
-        $requete->queryOrderBy("typeCategorie,nomMission","ASC");
+        $requete->queryOrderBy("typeCategorie,nomCategorie,nomMission","ASC");
         return $requete->queryGetArray();
     }
 }

@@ -9,7 +9,7 @@ class RegisterForm {
             "config"=>[
                 "method"=>"POST",
                 "action"=>Helper::getUrl("Utilisateur", "register"),
-                "class"=>"User formDesabled",
+                "class"=>"User formDisabled",
                 "id"=>"formRegisterUser",
                 "submit"=>"S'inscrire"
             ],

@@ -71,7 +71,6 @@ class UtilisateurController extends Controller
         $configFormUser = LoginForm::getForm();
         $myView = new View("user/login", "front");
         $myView->assign("configFormUser", $configFormUser);
-        print_r($_POST);
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser, $_POST);
@@ -86,7 +85,7 @@ class UtilisateurController extends Controller
                     {
                         if(empty($_SESSION['idUtilisateur1']) && empty($_SESSION['token']))
                         {
-                            //si un utilisateur est trouvé, sauvgarde de ses éléments de session et initialisation de son token en db
+                            //si un utilisateur est trouvé, sauvegarde de ses éléments de session et initialisation de son token en db
                             $_SESSION['idUtilisateur1'] = $user[0]->getId();
                             $_SESSION['pseudoJoueur1'] = $user[0]->getPseudo();
                             $_SESSION['role'] = $user[0]->getIdRole();
@@ -97,20 +96,18 @@ class UtilisateurController extends Controller
                         else {
                             if ($user[0]->getId() != $_SESSION['idUtilisateur1'])
                             {
-                                echo "ferfefer";
                                 $_SESSION['idUtilisateur2'] = $user[0]->getId();
                                 $_SESSION['pseudoJoueur2'] = $user[0]->getPseudo();
                                 $this->redirectTo('Home', 'default');
                             }
                             else
                             {
-                                echo "blalal";
                                 $errors["connecte"] = "Vous êtes déja connecté avec ce compte!";
                                 $myView->assign("errors", $errors);
-                                $this->redirectTo('Utilisateur', 'login');
+                                //$this->redirectTo('Utilisateur', 'login');
                             }
                         }
-                        //$this->redirectTo('Home', 'default');
+                        $this->redirectTo('Home', 'default');
                     }
                     else
                     {
@@ -225,7 +222,14 @@ class UtilisateurController extends Controller
         //réinitialisation du token et destruction de la session
         $userManager = new UtilisateurManager();
         $userManager->manageUserToken($_SESSION['idUtilisateur1'],0);
+        $_SESSION = null;
         session_destroy();
+        $this->redirectTo("Home","default");
+    }
+    public function logoutGuestAction()
+    {
+        $_SESSION['idUtilisateur2'] = null;
+        $_SESSION['pseudoJoueur2'] = null;
         $this->redirectTo("Home","default");
     }
 

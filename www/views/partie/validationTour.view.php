@@ -34,6 +34,6 @@
             <div class="col-sm-6">
             <?php $this->addModal("formScore",$missionsJoueur2);?>
             </div>
-        <button class="btn btn-primary buttonDisabled" id ="button"><?= $missionsJoueur1["config"]["submit"];?></button>
+        <button class="btn btn-primary buttonDisabled"><?= $missionsJoueur1["config"]["submit"];?></button>
 
     </form>

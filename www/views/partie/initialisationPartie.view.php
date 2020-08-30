@@ -38,6 +38,6 @@ use warhammerScoreBoard\core\Helper;
                 </div>
             <?php endfor;?>
         </div>
-        <button class="btn btn-primary buttonDisabled" id ="button">Commencer la partie</button>
+        <button class="btn btn-primary buttonDisabled">Commencer la partie</button>
 
     </form>

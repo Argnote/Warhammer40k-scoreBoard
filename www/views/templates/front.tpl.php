@@ -5,7 +5,7 @@ use warhammerScoreBoard\forms\navForm;
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/htlm; utf-8"/>
     <link rel="stylesheet" href="../../public/css/grille.css">
     <link rel="stylesheet" href="../../public/css/style.css">
 	<title>Warhammer 40000 score-board</title>

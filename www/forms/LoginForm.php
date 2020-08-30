@@ -10,7 +10,7 @@ class LoginForm {
             "config"=>[
                 "method"=>"POST",
                 "action"=>Helper::getUrl("Utilisateur", "login"),
-                "class"=>"User formDesabled",
+                "class"=>"User formDisabled",
                 "id"=>"formLoginUser",
                 "submit"=>"Se connecter"
             ],

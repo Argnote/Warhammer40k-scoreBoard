@@ -36,4 +36,15 @@ class PointManager extends Manager
             return $requete->queryGetArray();
         }
     }
+
+    public function totalPoint(int $idJoueur, int $mission = null)
+    {
+        $requete = new QueryBuilder(Point::class, "point");
+        $requete->querySelect(["SUM(nombrePoint) as total"]);
+        $requete->queryFrom();
+        $requete->queryWhere("idJoueur", "=", $idJoueur);
+        if (!empty($mission))
+            $requete->queryWhere("idMission", "=", $mission);
+        return $requete->queryGetValue();
+    }
 }

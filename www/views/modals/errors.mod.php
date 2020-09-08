@@ -1,5 +1,5 @@
     <div class="row">
-        <div class="col-sm-12 col-inner">
+        <div class="col-sm-12">
             <div class="col-inner">
                 <p>les érreurs suivantes sont survenues : </p>
             </div>

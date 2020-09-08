@@ -1,22 +1,25 @@
 <?php
 use warhammerScoreBoard\core\Helper;
 ?>
-<main>
 <!--    <pre>-->
 <!--        --><?php //print_r($initPartie["fields"]);?>
 <!--    </pre>-->
-    <h1>initialisation de la partie</h1>
+    <h2>initialisation de la partie</h2>
     <?php if(isset($errors)):
         $this->addModal("errors",$errors);
     endif;?>
-    <form method=<?=$initPartie["config"]["method"]?> action="<?=$initPartie["config"]["action"]?>" id="<?=$initPartie["config"]["id"]?>">
+    <form method=<?=$initPartie["config"]["method"]?> action="<?=$initPartie["config"]["action"]?>" id="<?=$initPartie["config"]["id"]?>" class="<?=$initPartie["config"]["class"]?>">
         <div class="row">
-            <div class="col-sm-6 col-inner">
+            <div class="col-sm-6">
+                <div class="col-inner">
                 <?php
                 $this->addModal("select",$initPartie["fields"]["missionPrincipale"], $missionPrincipale);?>
+                </div>
             </div>
-            <div class="col-sm-6 col-inner">
+            <div class="col-sm-6">
+                <div class="col-inner">
                 <input type="number" placeholder="Nombre de point de la partie" name="format">
+                </div>
             </div>
         </div>
         <div class="row">
@@ -35,15 +38,6 @@ use warhammerScoreBoard\core\Helper;
                 </div>
             <?php endfor;?>
         </div>
-        <input type="submit" value="Commencer la partie">
-        <script>
-            $(function()
-            {
-                $('#formInitPartie').submit(function()
-                {
-                    $('#button').attr("disabled", "disabled");
-                });
-            });
-        </script>
+        <button class="btn btn-primary buttonDisabled">Commencer la partie</button>
+
     </form>
-</main>

@@ -1,0 +1,99 @@
+body
+{
+    margin: 0;
+    background-color: #222;
+    color: white;
+}
+a
+{
+    color: #7eb3d7;
+}
+h2
+{
+    text-align: center;
+}
+header
+{
+    /*height: 200px;*/
+    /*overflow: hidden;*/
+    background-color: #4c4C4C;
+}
+.logo
+{
+    width: 100px;
+    margin-left: 1em;
+}
+.header
+{
+    text-align: center;
+    padding: 1em ;
+    color: white;
+    /*margin-top: 50%;*/
+}
+.nav,.main
+{
+    /*height: 100%;*/
+    /*box-shadow: 0 0 8px black;*/
+    background-color: #4c4C4C;
+    border: white solid 1px;
+}
+nav a
+{
+    text-decoration: none;
+}
+
+nav li:hover
+{
+    background:-webkit-linear-gradient(left,#369 0%, black 100%);
+}
+nav ul{
+    list-style: none;
+    padding: 0;
+}
+.main
+{
+    /*box-shadow: 0 0 8px black;*/
+}
+.container
+{
+    width: 1170px;
+    padding: 0 15px;
+    margin: 0 auto 1em;
+    position: relative;
+}
+th,td
+{
+    text-align: center;
+    border: white solid 1px;
+}
+form .row
+{
+    padding: 0;
+}
+form
+{
+    text-align: center;
+}
+form .col-left
+{
+    text-align: right;
+}
+form .col-right
+{
+    text-align: left;
+}
+.homeCard
+{
+    background-color: #5c5C5C;
+    text-align: center;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
+}
+.joueur
+{
+    text-align: center;
+    text-decoration: underline;
+}
+.valuePoint
+{
+    width: 90%;
+}

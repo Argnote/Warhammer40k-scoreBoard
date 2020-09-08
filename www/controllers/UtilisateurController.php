@@ -68,51 +68,68 @@ class UtilisateurController extends Controller
 
     public function loginAction()
     {
-        Helper::checkDisconnected();
         $configFormUser = LoginForm::getForm();
-        $myView = new View("login", "front");
+        $myView = new View("user/login", "front");
         $myView->assign("configFormUser", $configFormUser);
-
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser, $_POST);
             if (empty($errors)) {
                 //cryptage du mot de passe pour qu'il corresponde à la db puis recherche de celui ci
-                $_POST['password'] = sha1($_POST['password']);
+                $_POST['motDePasse'] = sha1($_POST['motDePasse']);
                 $userManager = new UtilisateurManager();
                 $user = $userManager->findBy($_POST);
                 if (count($user) == 1)
                 {
-                    if($user[0]->getIdHfRole() != 4)
+                    if($user[0]->getIdRole() != 1)
                     {
-                        //si un utilisateur est trouvé, sauvgarde de ses éléments de session et initialisation de son token en db
-                        $_SESSION['id'] = $user[0]->getId();
-                        $_SESSION['role'] = $user[0]->getIdHfRole();
-                        $_SESSION['token'] = Token::getToken();
-                        $userManager = new UtilisateurManager();
-                        $userManager->manageUserToken($_SESSION['id'],$_SESSION['token']);
-                        if ($_SESSION['role'] == 1 ||$_SESSION['role'] == 3) {
-                            $_SESSION['dir'] = "admin/";
-                        }elseif($_SESSION['role'] == 2){
-                            $_SESSION['dir'] = "user/";
+                        if(empty($_SESSION['idUtilisateur1']) && empty($_SESSION['token']))
+                        {
+                            //si un utilisateur est trouvé, sauvegarde de ses éléments de session et initialisation de son token en db
+                            $_SESSION['idUtilisateur1'] = $user[0]->getId();
+                            $_SESSION['pseudoJoueur1'] = $user[0]->getPseudo();
+                            $_SESSION['role'] = $user[0]->getIdRole();
+                            $_SESSION['token'] = Token::getToken();
+                            $userManager = new UtilisateurManager();
+                            $userManager->manageUserToken($_SESSION['idUtilisateur1'],$_SESSION['token']);
                         }
-                        $this->redirectTo('User', 'default');
+                        else {
+                            if ($user[0]->getId() != $_SESSION['idUtilisateur1'])
+                            {
+                                $_SESSION['idUtilisateur2'] = $user[0]->getId();
+                                $_SESSION['pseudoJoueur2'] = $user[0]->getPseudo();
+                                $this->redirectTo('Home', 'default');
+                            }
+                            else
+                            {
+                                $errors["connecte"] = "Vous êtes déja connecté avec ce compte!";
+                                $myView->assign("errors", $errors);
+                                //$this->redirectTo('Utilisateur', 'login');
+                            }
+                        }
+                        $this->redirectTo('Home', 'default');
                     }
                     else
-                        echo "Vous devez valider votre email avant de vous connecter !";
-
-                } else
-                    echo("identifiant ou mot de passe incorrect");
+                    {
+                        $errors["invalide"] = "Vous devez valider votre email avant de vous connecter !";
+                        $myView->assign("errors", $errors);
+                    }
+                }
+                else
+                {
+                    $errors["identifiantsFaux"] = "Adresse email ou mot de passe incorrect !";
+                    $myView->assign("errors", $errors);
+                }
             }
             else
-                echo("identifiant ou mot de passe incorrect");
+                $myView->assign("errors", $errors);
         }
     }
 
     public function registerAction()
     {
-        Helper::checkDisconnected();
         $configFormUser = RegisterForm::getForm();
+        $myView = new View("user/register", "front");
         if($_SERVER["REQUEST_METHOD"] == "POST")
         {
             $validator = new Validator();
@@ -131,56 +148,55 @@ class UtilisateurController extends Controller
 //                $configMail = ConfirmAccountMail::getMail($user->getEmail(), $user->getFirstname(),$url);
 //                $mail = new Mail();
 //                $mail->sendMail($configMail);
-                $this->sendMailAccountConfirmation($user->getEmail(),$user->getToken(),$user->getFirstname());
+                $this->sendMailAccountConfirmation($user->getEmail(),$user->getToken(),$user->getPseudo());
 
                 //en attente de validation du mail
                 $_SESSION["newUser"] = 1;
-                $this->redirectTo("User","registerConfirm");
+                $this->redirectTo("Utilisateur","registerConfirm");
             }
             else
             {
-                print_r($errors);
+                $myView->assign("errors", $errors);
             }
         }
-        $myView = new View("register", "front");
         $myView->assign("configFormUser", $configFormUser);
     }
 
-    private function sendMailAccountConfirmation($key, $value, $name)
+    private function sendMailAccountConfirmation($key, $value, $Pseudo)
     {
-        $url = URL_HOST.Helper::getUrl("User","registerConfirm")."?key=".urlencode($key)."&token=".urlencode($value);
-        $configMail = ConfirmAccountMail::getMail($key, $name,$url);
+        $url = URL_HOST.Helper::getUrl("Utilisateur","registerConfirm")."?key=".urlencode($key)."&token=".urlencode($value);
+        $configMail = ConfirmAccountMail::getMail($key, $Pseudo,$url);
         $mail = new Mail();
         $mail->sendMail($configMail);
     }
     public function registerConfirmAction()
     {
-        Helper::checkDisconnected();
         if(!empty($_GET['key']) && !empty($_GET['token']))
         {
             //acces a la page avec des paramètres
             //recherche en db d'un utilisateur correspondant à la key(email) et au token
-            $requete = new QueryBuilder(Utilisateur::class, 'user');
-            $requete->querySelect(["id","idHfRole"]);
+            $requete = new QueryBuilder(Utilisateur::class, 'utilisateur');
+            $requete->querySelect(["idUtilisateur","idRole"]);
+            $requete->queryFrom();
             $requete->queryWhere("email", "=", htmlspecialchars(urldecode($_GET['key'])));
             $requete->queryWhere("token", "=", htmlspecialchars(urldecode($_GET['token'])));
             $result = $requete->queryGetValue();
             if (!empty($result))
             {
-                if ($result["idHfRole"] == 4)
+                if ($result["idRole"] == 1)
                 {
                     //si un utilisateur est trouvé et que son role est 4, passe le role a 2 en même temps que la réinitialisation de son token
                     $userManager = new UtilisateurManager();
-                    $userManager->manageUserToken($result["id"],0,["idHfRole"=>2]);
+                    $userManager->manageUserToken($result["idUtilisateur"],0,["idRole"=>2]);
                     $message = Message::mailInscriptionSucess();
                     $view = new View("message", "front");
                     $view->assign("message",$message);
                 }
                 else
-                    die("votre compte est deja validé");
+                    $this->redirectTo(  "Errors","quatreCentQuatre");
             }
             else
-                die("le lien n'est pas bon");
+                $this->redirectTo(  "Errors","quatreCentQuatre");
         }
         else
         {
@@ -205,8 +221,15 @@ class UtilisateurController extends Controller
     {
         //réinitialisation du token et destruction de la session
         $userManager = new UtilisateurManager();
-        $userManager->manageUserToken($_SESSION['id'],0);
+        $userManager->manageUserToken($_SESSION['idUtilisateur1'],0);
+        $_SESSION = null;
         session_destroy();
+        $this->redirectTo("Home","default");
+    }
+    public function logoutGuestAction()
+    {
+        $_SESSION['idUtilisateur2'] = null;
+        $_SESSION['pseudoJoueur2'] = null;
         $this->redirectTo("Home","default");
     }
 
@@ -292,7 +315,7 @@ class UtilisateurController extends Controller
             }
             else
             {
-                print_r($errors);
+                //print_r($errors);
                 $myView = new View("user/newPassword", "front");
                 $myView->assign("configFormUser", $configFormUser);
             }

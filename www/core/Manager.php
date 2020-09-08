@@ -9,6 +9,7 @@ use warhammerScoreBoard\models\Model;
 class Manager
 {
     protected $table;
+    protected $id;
     protected $connection;
     protected $class;
 
@@ -16,6 +17,7 @@ class Manager
     {
         $this->class = $class;
         $this->table =  DB_PREFIXE.$table;
+        $this->id = "id".ucfirst($table);
 
         $this->connection = $connection;
         if(NULL === $connection)
@@ -56,7 +58,7 @@ class Manager
                 $sqlUpdate[] = $column."=:".$column;
             }
 
-            $sql = "UPDATE ".$this->table." SET ".implode(",", $sqlUpdate)." WHERE id=:id;";
+            $sql = "UPDATE ".$this->table." SET ".implode(",", $sqlUpdate)." WHERE ".$this->id."=:".$this->id.";";
         }
 //        echo($sql."<br/>");
 //        echo "<pre>";
@@ -113,9 +115,7 @@ class Manager
         // Select * FROM users WHERE firstname LIKE :firstname ORDER BY id desc
 
         foreach($params as $key => $value) {
-            if(is_string($value))
-                $comparator = 'LIKE';
-            else
+
                 $comparator = '=';
 
             $sql .= " $key $comparator :$key and";
@@ -135,7 +135,8 @@ class Manager
             $sql .= "ORDER BY ". key($order). " ". $order[key($order)];
         }
         // Select * FROM users WHERE firstname LIKE :firstname ORDER BY id desc
-        //echo($sql);
+        //echo($sql."<br/>");
+        //print_r($params);
         $result = $this->connection->query($sql, $params);
         $rows = $result->getArrayResult();
         foreach($rows as $row) {

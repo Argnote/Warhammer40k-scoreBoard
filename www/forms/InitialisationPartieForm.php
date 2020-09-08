@@ -12,7 +12,7 @@ class InitialisationPartieForm
             "config" => [
                 "method" => "POST",
                 "action" => Helper::getUrl("Partie", "initialisationPartie"),
-                "class" => "Partie",
+                "class" => "Partie formDisabled",
                 "id" => "formInitPartie"
             ],
 
@@ -26,6 +26,7 @@ class InitialisationPartieForm
                 ],
                 "missionPrincipale" => [
                     "name" => "missionPrincipale",
+                    "class" => "select",
                     "defaultValue" => "Objectif Pricipale",
                     "form" => "formInitPartie",
                     "required" => true,
@@ -47,6 +48,7 @@ class InitialisationPartieForm
                 "required" => false,
                 "defaultValue" => "choix de l'armée",
                 "name" => "armee".$j,
+                "class" => "select",
                 "form" => "formInitPartie",
                 "contrainte" => "armee",
                 "errorMsg" => "Vous devez selectionner une armée valide"
@@ -68,11 +70,12 @@ class InitialisationPartieForm
                 $result += ["missionSecondaire{$i}_Joueur{$j}" => [
                     "required" => true,
                     "name" => "missionSecondaire{$i}_Joueur{$j}",
+                    "class" => "select",
                     "defaultValue" => "Objectif secondaire $i",
                     "form" => "formInitPartie",
                     "contrainte" => "mission",
                     "compare" => $tabCompare,
-                    "errorMsg" => "Vous devez selectionner une mission différente à chaques fois"
+                    "errorMsg" => "Vous devez selectionner des missions différente issue de catégories différente"
                 ]
                 ];
             }

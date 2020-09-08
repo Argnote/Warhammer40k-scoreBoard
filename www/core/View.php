@@ -2,19 +2,30 @@
 
 namespace warhammerScoreBoard\core;
 
+use warhammerScoreBoard\forms\navForm;
+
 class View
 {
     private $template;
     private $view;
+    private $nav;
     private $data = [];
 
     public function __construct($view, $template)
     {
         $this->setTemplate($template);
+        $this->nav = navForm::getForm();
         $this->setView($view);
     }
+    protected function getNav()
+    {
+        return $this->nav;
+    }
 
-
+    public function setNav($nav)
+    {
+        $this->nav = $nav;
+    }
     public function setTemplate($t)
     {
         $this->template = strtolower(trim($t));

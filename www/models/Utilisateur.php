@@ -14,6 +14,7 @@ class Utilisateur extends Model
     protected $token;
     protected $equipe;
     protected $idRole;
+    protected $dateInscription;
 
 
     /* SETTERS */
@@ -47,7 +48,7 @@ class Utilisateur extends Model
         $this->prenom=ucfirst(strtolower($prenom));
     }
 
-    public function setDateDeNaissance(\DateTime $dateDeNaissance)
+    public function setDateDeNaissance( $dateDeNaissance)
     {
         $this->dateDeNaissance=$dateDeNaissance;
     }
@@ -64,6 +65,10 @@ class Utilisateur extends Model
     public function setToken(string $token)
     {
         $this->token = $token;
+    }
+    public function setDateInscription( $dateInscription)
+    {
+        $this->dateInscription = $dateInscription;
     }
 
     /* GETTERS */
@@ -115,7 +120,11 @@ class Utilisateur extends Model
 
     public function getPseudo()
     {
-        return $this->equipe;
+        return $this->pseudo;
+    }
+    public function getDateInscription()
+    {
+        return $this->dateInscription;
     }
 }
 

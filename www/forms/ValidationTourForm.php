@@ -8,20 +8,31 @@ use warhammerScoreBoard\core\Helper;
 
 class ValidationTourForm
 {
-    public static function getForm(array $missionJoueur)
+    public static function getForm(array $missionJoueur, bool $finPartie)
     {
-        $form = array();
+        if(!$finPartie)
+        {
+            $url = Helper::getUrl("Partie", "validationTour");
+        }
+        else
+        {
+            $url = Helper::getUrl("Partie", "validationTour");
+        }
+        $fields = 0;
         $form = ["config"=>[
             "method"=>"POST",
-            "action"=>Helper::getUrl("Partie", "validationTour"),
-            "class"=>"Partie",
+            "action"=>$url,
+            "class"=>"Partie formDisabled",
             "id"=>"formValidationPartie",
-            "submit"=>"Valider le tour"
+            "submit"=>"Valider le tour",
+            "finTour"=>$finPartie,
+            "nbFields"=>$fields
             ]
         ];
         $form["fields"] = array();
             foreach ($missionJoueur as $mission)
             {
+                $form["config"]["nbFields"] ++;
                 $data = $mission["idJoueur"]."mission".$mission["idMission"];
                 $configMission = [
                     $data."_label" =>[
@@ -35,6 +46,7 @@ class ValidationTourForm
                         "contrainte" =>"score",
                         "nombrePointPossibletour" => $mission["nombrePointPossibletour"],
                         "id" => "mission".$mission["idMission"],
+                        "class" => "valuePoint",
                         "name" => $data."[nombrePoint]",
                         "marquageFinPartie" => $mission["marquageFinPartie"],
                         "errorMsg"=>"La mission : \"".$mission["nomMission"]."\" ne peut pas rapporter plus de ".$mission["nombrePointPossibletour"]." points par round et moins de 0."
@@ -54,6 +66,7 @@ class ValidationTourForm
                         "name" => $data."[idMission]",
                         "errorMsg"=>"Cette mission n'a pas été selectionnée par un joueur, merci de ne pas modifier le DOM!"
                     ]
+
                 ];
 //                echo "<pre>";
 //                print_r($configMission);

@@ -1,5 +1,5 @@
 jQuery(function ($) {
     $('form').bind('submit', function () {
-        $(this).find(':selected').prop('disabled', false);
+        $(this).find(':selected',':input').prop('disabled', false);
     });
 });

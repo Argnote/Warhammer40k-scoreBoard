@@ -41,7 +41,7 @@ class PartieController extends Controller
         $armee = $armees->getArmee();
         $myView->assign("armee", $armee);
 
-        $missionsSecondaire = $missions->getMission(["idMission","nomMission"],[["typeCategorie","=","2"]]);
+        $missionsSecondaire = $missions->getMission(["idMission","nomMission","nomCategorie"],[["typeCategorie","=","2"]]);
         $myView->assign("missionSecondaire", $missionsSecondaire);
 
         if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -107,10 +107,37 @@ class PartieController extends Controller
         $pointManager = new PointManager();
         $tourManager = new TourManager();
         $missionsJoueurManager = new MissionJoueurManager();
-        $tourInfo = count($tourManager->getTour(["*"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]))+1;
-        if ($tourInfo > 6)
+        $tourInfo = count($tourManager->getTour(["idTour"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]))+1;
+        if ($tourInfo == 7)
+        {
+            $tourInfo = "Points de fin de partie";
+            $finPartie = 1;
+            $missionManager = new missionManager();
+            $missionJoueur = new MissionJoueur();
+            $missions = $missionManager->getMission(["idMission"],[["typeCategorie","=","3"]]);
+            foreach ($missions as $mission)
+            {
+                for ($i = 1; $i <= 2; $i++)
+                {
+                    $associationMission = ["idJoueur" => $_SESSION["idJoueur".$i]];
+                    $associationMission["idMission"] = $mission["idMission"];
+                    $missionJoueur = $missionJoueur->hydrate($associationMission);
+                    $missionsJoueurManager->save($missionJoueur);
+                }
+            }
+//            $associationMission = ["idJoueur" => $_SESSION["idJoueur1"]];
+//            $associationMission["idMission"] = $_POST["missionPrincipale"];
+//            $missionJoueur = $missionJoueur->hydrate($associationMission);
+//            $missionJoueurManager->save($missionJoueur)
+        }
+        elseif ($tourInfo > 7)
         {
             $this->redirectTo("Partie", "finPartie");
+        }
+        else
+        {
+            $tourInfo = "Round ".$tourInfo;
+            $finPartie = 0;
         }
         $joueurs = array();
         for($j=1;$j<=2;$j++)
@@ -119,17 +146,19 @@ class PartieController extends Controller
             $joueurs = array_merge($joueurs,[$missionsJoueur{$j}[0]["nomJoueur"]]);
         }
 
-        $missionsJoueur1 = ValidationTourForm::getForm($missionsJoueur{$j=1});
-        $missionsJoueur2 = ValidationTourForm::getForm($missionsJoueur{$j=2});
+        $missionsJoueur1 = ValidationTourForm::getForm($missionsJoueur{$j=1},$finPartie);
+        $missionsJoueur2 = ValidationTourForm::getForm($missionsJoueur{$j=2},$finPartie);
 
         $configForm = $missionsJoueur1;
         $configForm["fields"] = array_merge($configForm["fields"],$missionsJoueur2["fields"]);
+        $configForm["config"]["nbFields"] = $configForm["config"]["nbFields"] + $missionsJoueur2["config"]["nbFields"];
         $myView = new View("partie/validationTour", "front");
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             $validator = new Validator();
-            $errors = $validator->checkAddPoint($configForm["fields"], $_POST);
+            $errors = $validator->checkAddPoint($configForm, $_POST);
             if (empty($errors))
             {
+                //print_r($_POST);
                     $_SESSION['savePoint'] = $_POST;
                     $this->redirectTo("Partie", "savePoint");
             }
@@ -142,6 +171,14 @@ class PartieController extends Controller
         $scoreJoueur1 = $pointManager->getPoint(["*"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur1']]]);
         $scoreJoueur2 = $pointManager->getPoint(["*"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur2']]]);
         //$nomMissionJoueur1 = $missionsJoueurManager->getMission(["nomMission"],[[DB_PREFIXE."tour.idPartie","=",$_SESSION['idPartie']],[DB_PREFIXE."point.idJoueur","=",$_SESSION['idJoueur1']]]);
+//        foreach ($missionsJoueur{$j=1} as $score)
+//        {
+//            $score["idMission"];
+//            echo "<pre>";
+//            print_r($score);
+//            echo "</pre>";
+//
+//        }
 
         $myView->assign("scoreJoueur1", $scoreJoueur1);
         $myView->assign("scoreJoueur2", $scoreJoueur2);
@@ -164,18 +201,39 @@ class PartieController extends Controller
     public function savePointAction()
     {
         $tourManager = new TourManager();
-        $tourInfo = count($tourManager->getTour(["*"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]))+1;
+        $pointManager = new PointManager();
+        $missionManager = new missionManager();
+        $tourInfo = $tourManager->getTour(["idTour"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]);
+
+        $numeroTour = count($tourInfo)+1;
+//        echo $numeroTour;
             $nouveauTour = [
-                "numeroTour"=> $tourInfo,
+                "numeroTour"=> $numeroTour,
                 "idPartie"=>$_SESSION['idPartie']
             ];
             $tour = new Tour();
             $tour = $tour->hydrate($nouveauTour);
             $idTour = $tourManager->save($tour);
 
-            $pointManager = new PointManager();
+
             foreach ($_SESSION['savePoint'] as $data)
             {
+            if(empty($data["nombrePoint"]))
+                $data["nombrePoint"] = 0;
+//                echo "<pre>";
+//                print_r($data);
+//                echo "</pre>";
+
+                $totalMission = $pointManager->totalPoint($data["idJoueur"],$data["idMission"])["total"];
+                $max = $missionManager->getMission(["nombrePointPossiblePartie"],[["idMission","=",$data["idMission"]]])[0]["nombrePointPossiblePartie"];
+                echo $totalMission."==".$max."<br/>";
+                if(($totalMission + $data["nombrePoint"]) > $max )
+                    $data["nombrePoint"] = $max - $totalMission;
+                if($data["nombrePoint"] < 0)
+                {
+                    $data["nombrePoint"] = 0;
+                }
+
                 $point = new Point();
                 $point = $point->hydrate($data);
                 $point->setIdTour($idTour);
@@ -186,12 +244,53 @@ class PartieController extends Controller
             }
             $_SESSION['savePoint'] = null;
             $this->redirectTo("Partie", "validationTour");
-            //$tourInfo->setFinTour(getdate());
-            //$tourManager->save($tourManager);
-        }
+    }
 
     public function finPartieAction()
     {
-        echo "coucou";
+        //redirige à l'acceuil si aucune partie n'est en cours
+        if (!isset($_SESSION['idPartie']))
+        {
+            $this->redirectTo("Home","default");
+        }
+        else {
+            $pointManager = new PointManager();
+            $joueurManager = new JoueurManager();
+            $partieManager = new PartieManager();
+
+            //met à jour la date de fin de la parti
+            $finPartie = [
+                "idPartie" => $_SESSION['idPartie'],
+                "dateFin" => date("Y-m-m H:i:s")
+            ];
+            $partie = new Partie();
+            $partie = $partie->hydrate($finPartie);
+            $partieManager->save($partie);
+
+            //récupere le total de points des 2 joueurs
+            $totalJoueur1 = $pointManager->totalPoint($_SESSION["idJoueur1"]);
+            $totalJoueur2 = $pointManager->totalPoint($_SESSION["idJoueur2"]);
+
+
+            // Met a jour le statue de victoire des 2 joueurs
+            if ($totalJoueur1["total"] > $totalJoueur2["total"])
+                $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"]);
+            elseif ($totalJoueur1["total"] < $totalJoueur2["total"])
+                $joueurManager->defGagnantStatue($_SESSION["idJoueur2"], $_SESSION["idJoueur1"]);
+            else
+                $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"], 1);
+
+            //affiche le tableau de score final
+            $scoreJoueur1 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur1']]]);
+            $scoreJoueur2 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur2']]]);
+            $myView = new View("partie/finPartie", "front");
+            $myView->assign("scoreJoueur1", $scoreJoueur1);
+            $myView->assign("scoreJoueur2", $scoreJoueur2);
+
+            //vide les variable de session concernant la partie
+            unset($_SESSION['idPartie']);
+            unset($_SESSION['idJoueur1']);
+            unset($_SESSION['idJoueur2']);
+        }
     }
 }

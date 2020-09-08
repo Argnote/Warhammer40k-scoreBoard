@@ -14,4 +14,31 @@ class JoueurManager extends Manager
     {
         parent::__construct(Joueur::class, 'joueur');
     }
+
+    public function defGagnantStatue(int $idGagnant, int $idPerdant, bool $egalite = false)
+    {
+        $victoire = 1;
+        $defaite = -1;
+        if($egalite == true)
+        {
+            $victoire = 2;
+            $defaite = 2;
+        }
+
+        $joueur = new Joueur();
+        $gagnant = [
+            "idJoueur" => $idGagnant,
+            "gagnant" => $victoire
+        ];
+        $joueur = $joueur->hydrate($gagnant);
+        $this->save($joueur);
+
+        $perdant = [
+            "idJoueur" => $idPerdant,
+            "gagnant" => $defaite
+        ];
+        $joueur = $joueur->hydrate($perdant);
+        $this->save($joueur);
+
+    }
 }

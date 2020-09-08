@@ -12,6 +12,7 @@ class mission
     protected $nombrePointPossiblePartie;
     protected $nombrePointPossibleTour;
     protected $idCategorie;
+    protected $nomCategorie;
     protected $marquageFinPartie;
 
     public function setIdMission(int $idMission)
@@ -49,6 +50,11 @@ class mission
         $this->marquageFinPartie = $marquageFinPartie;
     }
 
+    public function setNomCategorie($nomCategorie)
+    {
+        $this->nomCategorie = $nomCategorie;
+    }
+
     public function getId()
     {
         return $this->idMission;
@@ -82,5 +88,10 @@ class mission
     public function getMarquageFinPartie()
     {
         return $this->marquageFinPartie;
+    }
+
+    public function getNomCategorie()
+    {
+        return $this->nomCategorie;
     }
 }

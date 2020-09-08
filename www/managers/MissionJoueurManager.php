@@ -36,7 +36,7 @@ class MissionJoueurManager extends Manager
         return $requete->queryGetArray();
     }
 
-    public function checkMissionJoueur(int $idJoueur, int $idMission)
+    public function missionJoueurExist(int $idJoueur, int $idMission)
     {
         $requete = new QueryBuilder(MissionJoueur::class, "joueur_has_mission");
         $requete->querySelect(["idMission"]);

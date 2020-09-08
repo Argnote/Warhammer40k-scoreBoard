@@ -15,10 +15,10 @@ class ArmeeManager extends Manager
         parent::__construct(Armee::class, 'armee');
     }
 
-    public function getArmee(array $data = ["*"], array $conditions = null)
+    public function getArmee(array $conditions = null)
     {
         $requete = new QueryBuilder(Armee::class, "armee");
-        $requete->querySelect($data);
+        $requete->querySelect(["idArmee","nomArmee","nomFaction"]);
         $requete->queryFrom();
         $requete->queryJoin("armee","faction","idFaction","idFaction");
         if(!empty($conditions))
@@ -28,7 +28,7 @@ class ArmeeManager extends Manager
                 $requete->queryWhere($condition[0], $condition[1], $condition[2]);
             }
         }
-        $requete->queryOrderBy("idFaction","ASC","faction");
+        $requete->queryOrderBy("idFaction,nomArmee","ASC","faction");
         return $requete->queryGetArray();
     }
 }

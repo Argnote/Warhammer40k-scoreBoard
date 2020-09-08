@@ -1,7 +1,7 @@
-// $(function(form)
-// {
-//     $('#formValidationPartie').submit(function()
-//     {
-//         $('#button').attr("disabled", "disabled");
-//     });
-// });
+$(function()
+{
+    $('.formDisabled').submit(function()
+    {
+        $('.buttonDisabled').attr("disabled", "disabled");
+    });
+});

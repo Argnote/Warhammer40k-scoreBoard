@@ -22,6 +22,8 @@
                                         disabled="disabled"
                                     <?php else:?>
                                         value="<?= $configField["value"]??'' ?>"
+                                        min="0"
+                                        max="<?= $configField["nombrePointPossibletour"]??'' ?>"
                                     <?php endif;?>>
 
                             </div>

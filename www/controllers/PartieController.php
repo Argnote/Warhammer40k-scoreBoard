@@ -201,6 +201,8 @@ class PartieController extends Controller
     public function savePointAction()
     {
         $tourManager = new TourManager();
+        $pointManager = new PointManager();
+        $missionManager = new missionManager();
         $tourInfo = $tourManager->getTour(["idTour"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]);
 
         $numeroTour = count($tourInfo)+1;
@@ -213,9 +215,25 @@ class PartieController extends Controller
             $tour = $tour->hydrate($nouveauTour);
             $idTour = $tourManager->save($tour);
 
-            $pointManager = new PointManager();
+
             foreach ($_SESSION['savePoint'] as $data)
             {
+            if(empty($data["nombrePoint"]))
+                $data["nombrePoint"] = 0;
+//                echo "<pre>";
+//                print_r($data);
+//                echo "</pre>";
+
+                $totalMission = $pointManager->totalPoint($data["idJoueur"],$data["idMission"])["total"];
+                $max = $missionManager->getMission(["nombrePointPossiblePartie"],[["idMission","=",$data["idMission"]]])[0]["nombrePointPossiblePartie"];
+                echo $totalMission."==".$max."<br/>";
+                if(($totalMission + $data["nombrePoint"]) > $max )
+                    $data["nombrePoint"] = $max - $totalMission;
+                if($data["nombrePoint"] < 0)
+                {
+                    $data["nombrePoint"] = 0;
+                }
+
                 $point = new Point();
                 $point = $point->hydrate($data);
                 $point->setIdTour($idTour);

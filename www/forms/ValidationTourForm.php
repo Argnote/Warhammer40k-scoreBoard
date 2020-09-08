@@ -46,6 +46,7 @@ class ValidationTourForm
                         "contrainte" =>"score",
                         "nombrePointPossibletour" => $mission["nombrePointPossibletour"],
                         "id" => "mission".$mission["idMission"],
+                        "class" => "valuePoint",
                         "name" => $data."[nombrePoint]",
                         "marquageFinPartie" => $mission["marquageFinPartie"],
                         "errorMsg"=>"La mission : \"".$mission["nomMission"]."\" ne peut pas rapporter plus de ".$mission["nombrePointPossibletour"]." points par round et moins de 0."

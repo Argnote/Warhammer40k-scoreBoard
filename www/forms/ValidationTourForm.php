@@ -8,19 +8,31 @@ use warhammerScoreBoard\core\Helper;
 
 class ValidationTourForm
 {
-    public static function getForm(array $missionJoueur)
+    public static function getForm(array $missionJoueur, bool $finPartie)
     {
+        if(!$finPartie)
+        {
+            $url = Helper::getUrl("Partie", "validationTour");
+        }
+        else
+        {
+            $url = Helper::getUrl("Partie", "validationTour");
+        }
+        $fields = 0;
         $form = ["config"=>[
             "method"=>"POST",
-            "action"=>Helper::getUrl("Partie", "validationTour"),
+            "action"=>$url,
             "class"=>"Partie formDisabled",
             "id"=>"formValidationPartie",
-            "submit"=>"Valider le tour"
+            "submit"=>"Valider le tour",
+            "finTour"=>$finPartie,
+            "nbFields"=>$fields
             ]
         ];
         $form["fields"] = array();
             foreach ($missionJoueur as $mission)
             {
+                $form["config"]["nbFields"] ++;
                 $data = $mission["idJoueur"]."mission".$mission["idMission"];
                 $configMission = [
                     $data."_label" =>[
@@ -53,6 +65,7 @@ class ValidationTourForm
                         "name" => $data."[idMission]",
                         "errorMsg"=>"Cette mission n'a pas été selectionnée par un joueur, merci de ne pas modifier le DOM!"
                     ]
+
                 ];
 //                echo "<pre>";
 //                print_r($configMission);

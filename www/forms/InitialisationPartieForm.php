@@ -75,7 +75,7 @@ class InitialisationPartieForm
                     "form" => "formInitPartie",
                     "contrainte" => "mission",
                     "compare" => $tabCompare,
-                    "errorMsg" => "Vous devez selectionner une mission différente à chaques fois"
+                    "errorMsg" => "Vous devez selectionner des missions différente issue de catégories différente"
                 ]
                 ];
             }

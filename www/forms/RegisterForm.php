@@ -31,7 +31,7 @@ class RegisterForm {
                     "placeholder"=>"Votre nom",
                     "class"=>"form-control form-control-user",
                     "id"=>"nomUtilisateur",
-                    "label"=>"Votre nom:",
+                    "label"=>"Votre nom :",
                     "required"=>true,
                     "min-length"=>1,
                     "max-length"=>100,
@@ -90,7 +90,7 @@ class RegisterForm {
                     "type"=>"captcha",
                     "class"=>"form-control form-control-user",
                     "id"=>"captcha",
-                    "label"=>"Merci de recopier le texte de l'image:",
+                    "label"=>"Merci de recopier le texte de l'image :",
                     "required"=>true,
                     "placeholder"=>"Veuillez saisir les caractères",
                     "errorMsg"=>"Captcha incorrect"

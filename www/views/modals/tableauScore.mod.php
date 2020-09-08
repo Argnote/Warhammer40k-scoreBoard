@@ -19,31 +19,49 @@
         $nomMission = array_unique($nomMission);
         foreach ($nomMission as $nom):?>
              <th><?= $nom?></th>
-        <?php endforeach;
-        $tour = 0;
+        <?php endforeach;?>
 
+    </tr>
+        <?php
+        $points = array();
+        $tour = 0;
+        $max = 0;
         foreach ($data as $point):
+        if(empty($total{$point["idMission"]}))
+            $total{$point["idMission"]} = 0;
+//        echo "<pre>";
+//        print_r($point);
+//        echo "</pre>";
+         $total{$point["idMission"]} += $point["nombrePoint"];
+         $points["total{$point["idMission"]}"] = $total{$point["idMission"]}." / ".$point["nombrePointPossiblePartie"];
             if($tour != $point["numeroTour"]):?>
                 <tr>
-                <td><?= $point["numeroTour"]?></td>
+                    <?php if($point["numeroTour"] == 7): ?>
+                        <td>Fin partie</td>
+                    <?php else: ?>
+                        <td><?= $point["numeroTour"]?></td>
+                    <?php endif; ?>
             <?php endif;
             $tour = $point["numeroTour"];
             ?>
             <td><?= $point["nombrePoint"]??"0"?></td>
         <?php if($tour != $point["numeroTour"]):?>
-            <tr>
         <?php endif;
         ?>
 
-
-
-
-
         <?php
         endforeach;?>
-
-
+                </tr>
+    <tr>
+        <td>Total</td>
+        <?php foreach ($points as $total):?>
+            <td><?= $total?></td>
+        <?php endforeach;?>
     </tr>
+        <tr>
+            <td><?= array_sum($points)." / 100"?></td>
+        </tr>
+
 
 
 

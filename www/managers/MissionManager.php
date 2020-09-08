@@ -31,4 +31,13 @@ class missionManager extends Manager
         $requete->queryOrderBy("typeCategorie,nomCategorie,nomMission","ASC");
         return $requete->queryGetArray();
     }
+
+    public function getCategorie(int $idMission)
+    {
+        $requete = new QueryBuilder(Mission::class, "mission");
+        $requete->querySelect("idCategorie");
+        $requete->queryFrom();
+        $requete->queryWhere("idMission", "=", $idMission);
+        return $requete->queryGetValue();
+    }
 }

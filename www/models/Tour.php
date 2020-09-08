@@ -11,7 +11,7 @@ class Tour extends Model
     protected $finTour;
     protected $idPartie;
 
-    public function setIdTour(int $idTour)
+    public function setIdTour( $idTour)
     {
         $this->idTour = $idTour;
     }
@@ -21,12 +21,12 @@ class Tour extends Model
         $this->numeroTour = $numeroTour;
     }
 
-    public function setDebutTour(\DateTime $debutTour)
+    public function setDebutTour( $debutTour)
     {
         $this->debutTour = $debutTour;
     }
 
-    public function setFinTour(\DateTime $finTour)
+    public function setFinTour( $finTour)
     {
         $this->finTour = $finTour;
     }

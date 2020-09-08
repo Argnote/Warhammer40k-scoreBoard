@@ -1,23 +1,13 @@
 <?php
 ?>
-    <h2>Round <?=$tourInfo?></h2>
+    <h2><?=$tourInfo?></h2>
     <?php if(isset($errors)):
         $this->addModal("errors",$errors);
     endif;?>
-    <?php if(!empty($scoreJoueur1) && !empty($scoreJoueur2)):?>
-    <div class="row">
-        <div class="col-sm-6">
-            <?php $this->addModal("tableauScore",$scoreJoueur1);?>
-        </div>
-        <div class="col-sm-6">
-            <?php $this->addModal("tableauScore",$scoreJoueur2);?>
-        </div>
-    </div>
-    <?php endif;?>
         <div class="row">
             <?php foreach ($joueurs as $joueur):?>
             <div class="col-sm-6">
-                <div class="col-inner">
+                <div class="col-inner joueur">
                     <p><?=$joueur;?></p>
                 </div>
             </div>
@@ -29,11 +19,27 @@
           class="<?= $missionsJoueur1["config"]["class"]?>">
         <div class="row">
             <div class="col-sm-6">
-            <?php $this->addModal("formScore",$missionsJoueur1);?>
+                    <?php $this->addModal("formScore",$missionsJoueur1);?>
             </div>
             <div class="col-sm-6">
             <?php $this->addModal("formScore",$missionsJoueur2);?>
             </div>
-        <button class="btn btn-primary buttonDisabled"><?= $missionsJoueur1["config"]["submit"];?></button>
+            <div class="col-sm-12">
+                <div class="col-inner">
+                    <button class="btn btn-primary buttonDisabled"><?= $missionsJoueur1["config"]["submit"];?></button>
+                </div>
+            </div>
+        </div>
 
     </form>
+
+<?php if(!empty($scoreJoueur1) && !empty($scoreJoueur2)):?>
+    <div class="row">
+        <div class="col-sm-6">
+            <?php $this->addModal("tableauScore",$scoreJoueur1);?>
+        </div>
+        <div class="col-sm-6">
+            <?php $this->addModal("tableauScore",$scoreJoueur2);?>
+        </div>
+    </div>
+<?php endif;?>

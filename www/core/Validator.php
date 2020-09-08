@@ -51,17 +51,19 @@ protected $errosMsg;
     public function checkAddPoint($configForm, $data)
     {
 //        echo "<pre>";
-//        print_r($configForm);
+//        print_r($configForm["fields"]);
 //        print_r($data);
 //        echo "</pre>";
-        if (count($data) == 8)
+        $fields = $configForm["fields"];
+        //echo count($data)."<br/>".$configForm["config"]["nbFields"];
+        if (count($data) == $configForm["config"]["nbFields"])
         {
             foreach ($data as $key => $value)
             {
 
                 //echo $configForm[$key]["errorMsg"];
-                if(!$this->checkScore($value["nombrePoint"],$configForm[$key]))
-                    $errosMsg[$key] = $configForm[$key]["errorMsg"];
+                if(!$this->checkScore($value["nombrePoint"],$fields[$key]))
+                    $errosMsg[$key] = $fields[$key]["errorMsg"];
                 if(!$this->checkJoueur($value["idJoueur"]))
                     $errosMsg[$key."_joueur"] = "Aucun joueur portant l'id ".$value["idJoueur"]." n'est connecté, merci de ne pas modifier le DOM!";
                 if(!$this->checkMissionJoueur($value["idMission"],$value["idJoueur"]))
@@ -164,13 +166,26 @@ protected $errosMsg;
     {
         if(!$this->checkNumeric($mission))
             return false;
+        $missionManager = new missionManager();
+        $missions = array();
+        $categories = array();
         foreach ($config["compare"] as $value)
         {
-            $config["compare"] = array_merge($config["compare"],[$this->$value]);
-            unset($config["compare"][array_search($value,$config["compare"])]);
+            if(empty($missionManager->getCategorie($this->$value)["idCategorie"]))
+            {
+                $this->errosMsg["missioninconnue"] = "mission inconnue";
+                return false;
+            }
 
+            array_push($missions,$this->$value);
+            //unset($config["compare"][array_search($value,$config["compare"])]);
+            array_push($categories,$missionManager->getCategorie($this->$value)["idCategorie"]);
         }
-        if($config["compare"] != array_unique($config["compare"]))
+//        echo "<pre>";
+//        print_r($missions);
+//        print_r($categories);
+//        echo "</pre>";
+        if(($missions != array_unique($missions))||($categories != array_unique($categories)))
             return false;
         return true;
     }

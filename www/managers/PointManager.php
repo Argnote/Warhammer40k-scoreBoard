@@ -37,18 +37,12 @@ class PointManager extends Manager
         }
     }
 
-    public function sumPoint(int $idJoueur, int $idMission)
+    public function totalPoint(int $idJoueur)
     {
         $requete = new QueryBuilder(Point::class, "point");
-        $requete->querySelect(["nomMission","SUM(nombrePoint)"]);
+        $requete->querySelect(["SUM(nombrePoint) as total"]);
         $requete->queryFrom();
-        $requete->queryJoin("point","joueur","idjoueur","idjoueur");
-        $requete->queryJoin("point","tour","idTour","idTour");
-        $requete->queryJoin("point","mission","idMission","idMission");
-        $requete->queryJoin("mission","categorie","idCategorie","idCategorie");
-        $requete->queryWhere("idJoueur", "=", $idJoueur);
-        $requete->queryWhere("idMission", "=", $idMission);
-        $requete->queryOrderBy("numeroTour,typeCategorie,nomMission","ASC");
-        return $requete->queryGetArray();
+        $requete->queryWhere(DB_PREFIXE."point.idJoueur", "=", $idJoueur);
+        return $requete->queryGetValue();
     }
 }

@@ -315,7 +315,7 @@ class UtilisateurController extends Controller
             }
             else
             {
-                print_r($errors);
+                //print_r($errors);
                 $myView = new View("user/newPassword", "front");
                 $myView->assign("configFormUser", $configFormUser);
             }

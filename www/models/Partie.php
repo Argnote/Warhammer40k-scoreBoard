@@ -11,17 +11,17 @@ class Partie extends Model
     protected $dateFin;
     protected $format;
 
-    public function setIdPartie(int $idPartie)
+    public function setIdPartie($idPartie)
     {
         $this->idPartie = $idPartie;
     }
 
-    public function setDateDebut(\DateTime $dateDebut)
+    public function setDateDebut( $dateDebut)
     {
         $this->dateDebut = $dateDebut;
     }
 
-    public function setDateFin(\DateTime $dateFin)
+    public function setDateFin( $dateFin)
     {
         $this->dateFin = $dateFin;
     }

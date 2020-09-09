@@ -13,12 +13,12 @@ use warhammerScoreBoard\core\Helper;
             <div class="col-sm-6">
                 <div class="col-inner">
                 <?php
-                $this->addModal("select",$initPartie["fields"]["missionPrincipale"], $missionPrincipale);?>
+                $this->addModal("select",$initPartie["fields"]["missionPrincipal"], $missionPrincipal);?>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="col-inner">
-                <input type="number" placeholder="Nombre de point de la partie" name="format">
+                <input type="number" placeholder="Nombre de points" name="format">
                 </div>
             </div>
         </div>

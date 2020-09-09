@@ -5,8 +5,8 @@
         <div class="col-inner homeCard">
             <p>
                 Warhammer40k scoreboard est un outil permettant d'enregistrer facilement ses parties de warhammer 40k V9.<br/>
-                Il est possible de jouer de facon anonyme ou alors de se connecter afin de consulter ses parties jouer.<br/>
-                Jouer en mode connecter permet également de connaitre ses statistiques personnel au fur et à mesure des parties.
+                Il est possible de jouer de facon anonyme ou alors de se connecter afin de consulter ses parties jouées.<br/>
+                Jouer en mode connecté permet également de connaitre ses statistiques personnel au fur et à mesure des parties.
             </p>
         </div>
     </div>

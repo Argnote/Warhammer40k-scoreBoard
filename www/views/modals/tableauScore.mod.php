@@ -36,7 +36,7 @@
          $points["total{$point["idMission"]}"] = $total[$point["idMission"]]." / ".$point["nombrePointPossiblePartie"];
             if($tour != $point["numeroTour"]):?>
                 <tr>
-                    <?php if($point["numeroTour"] == 7): ?>
+                    <?php if($point["numeroTour"] == 6): ?>
                         <td>Fin partie</td>
                     <?php else: ?>
                         <td><?= $point["numeroTour"]?></td>

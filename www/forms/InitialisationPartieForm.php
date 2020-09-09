@@ -24,10 +24,10 @@ class InitialisationPartieForm
                     "required" => false,
                     "errorMsg" => "Une partie à plus de 100 000 points? Mais vous êtes fou!!"
                 ],
-                "missionPrincipale" => [
-                    "name" => "missionPrincipale",
+                "missionPrincipal" => [
+                    "name" => "missionPrincipal",
                     "class" => "select",
-                    "defaultValue" => "Objectif Pricipale",
+                    "defaultValue" => "Objectif Pricipal",
                     "form" => "formInitPartie",
                     "required" => true,
                     "contrainte" => "numeric",

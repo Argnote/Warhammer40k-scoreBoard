@@ -32,11 +32,8 @@ class PartieController extends Controller
         $myView->assign("initPartie", $initPartie);
 
 
-        $missionsPrincipale = $missions->getMission(["idMission","nomMission"],[["typeCategorie","=","1"]]);
-//        echo "<pre>";
-//        print_r($missionsPrincipale);
-//        echo "</pre>";
-        $myView->assign("missionPrincipale", $missionsPrincipale);
+        $missionsPrincipal = $missions->getMission(["idMission","nomMission"],[["typeCategorie","=","1"]]);
+        $myView->assign("missionPrincipal", $missionsPrincipal);
 
         $armee = $armees->getArmee();
         $myView->assign("armee", $armee);
@@ -72,10 +69,10 @@ class PartieController extends Controller
                     $_SESSION["idJoueur" . $i] = $joueurManager->save($joueur[$i] );
 
                     //attribution des missions du joueur
-                    //attribution de la mission principale
+                    //attribution de la mission principal
                     $missionJoueur = new MissionJoueur();
                     $associationMission = ["idJoueur" => $_SESSION["idJoueur" . $i]];
-                    $associationMission["idMission"] = $_POST["missionPrincipale"];
+                    $associationMission["idMission"] = $_POST["missionPrincipal"];
                     $missionJoueur = $missionJoueur->hydrate($associationMission);
                     $missionJoueurManager->save($missionJoueur);
                     //attribution des missions secondaires
@@ -108,7 +105,7 @@ class PartieController extends Controller
         $tourManager = new TourManager();
         $missionsJoueurManager = new MissionJoueurManager();
         $tourInfo = count($tourManager->getTour(["idTour"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]))+1;
-        if ($tourInfo == 7)
+        if ($tourInfo == 6)
         {
             $tourInfo = "Points de fin de partie";
             $finPartie = 1;
@@ -130,7 +127,7 @@ class PartieController extends Controller
 //            $missionJoueur = $missionJoueur->hydrate($associationMission);
 //            $missionJoueurManager->save($missionJoueur)
         }
-        elseif ($tourInfo > 7)
+        elseif ($tourInfo > 6)
         {
             $this->redirectTo("Partie", "finPartie");
         }

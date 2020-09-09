@@ -4,7 +4,7 @@
 namespace warhammerScoreBoard\models;
 
 
-class mission
+class Mission
 {
     protected $idMission;
     protected $nomMission;

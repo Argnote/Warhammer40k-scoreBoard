@@ -28,7 +28,7 @@ class View
     }
     public function setTemplate($t)
     {
-        $this->template = strtolower(trim($t));
+        $this->template = trim($t);
         if (!file_exists("views/templates/" . $this->template . ".tpl.php")) {
             die("Le template n'existe pas");
         }
@@ -37,7 +37,7 @@ class View
 
     public function setView($v)
     {
-        $this->view = strtolower(trim($v));
+        $this->view = trim($v);
         if (!file_exists("views/".$this->view.".view.php")) {
             die("La vue n'existe pas");
         }

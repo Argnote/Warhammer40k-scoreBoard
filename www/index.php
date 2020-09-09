@@ -15,12 +15,13 @@ function myAutoloader($class)
         $class = substr($class, 1);
     if (file_exists($class))
         include ($class);
+    else
+        die("class ".$class." non trouvé");
 }
 
 spl_autoload_register("myAutoloader");
 
-new ConstantLoader();
-
+new ConstantLoader("prod");
 
 $uri = $_SERVER["REQUEST_URI"];
 MiddleWareManager::launch('onRequest');

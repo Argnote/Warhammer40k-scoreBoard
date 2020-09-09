@@ -5,7 +5,7 @@ namespace warhammerScoreBoard\core;
 use DateTime;
 use warhammerScoreBoard\forms\InitialisationPartieForm;
 use warhammerScoreBoard\managers\MissionJoueurManager;
-use warhammerScoreBoard\managers\missionManager;
+use warhammerScoreBoard\managers\MissionManager;
 use warhammerScoreBoard\models\MissionJoueur;
 use warhammerScoreBoard\models\Utilisateur;
 use function Sodium\compare;
@@ -136,7 +136,7 @@ protected $errosMsg;
         $requete->queryFrom();
         $requete->queryWhere($table["column"], "=", $data);
         $result = $requete->queryGetValue();
-        if($result[$table["column"]] == $data)
+        if(!empty($result[$table["column"]]))
             $this->errosMsg[$data."Unique"] = "\"".$data."\" est déja utilisé";
     }
 
@@ -166,7 +166,7 @@ protected $errosMsg;
     {
         if(!$this->checkNumeric($mission))
             return false;
-        $missionManager = new missionManager();
+        $missionManager = new MissionManager();
         $missions = array();
         $categories = array();
         foreach ($config["compare"] as $value)

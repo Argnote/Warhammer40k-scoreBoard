@@ -17,14 +17,14 @@ class Mail
         $this->email = new PHPMailer(true);
         try {
 //Server settings
-            //$this->email->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+//            $this->email->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
             $this->email->isSMTP();                                            // Send using SMTP
             $this->email->Host = MAIL_HOST;                    // Set the SMTP server to send through
             $this->email->SMTPAuth = true;                                   // Enable SMTP authentication
             $this->email->Username = MAIL_USER;                     // SMTP username
             $this->email->Password = MAIL_PWD;                               // SMTP password
             $this->email->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-            $this->email->Port = 587;
+            $this->email->Port = MAIL_PORT;
 
             foreach ($settings as $key => $config) {
                 $method = 'add' . ucfirst($key);

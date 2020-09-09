@@ -11,7 +11,7 @@ use warhammerScoreBoard\forms\ValidationTourForm;
 use warhammerScoreBoard\managers\ArmeeManager;
 use warhammerScoreBoard\managers\JoueurManager;
 use warhammerScoreBoard\managers\MissionJoueurManager;
-use warhammerScoreBoard\managers\missionManager;
+use warhammerScoreBoard\managers\MissionManager;
 use warhammerScoreBoard\managers\PartieManager;
 use warhammerScoreBoard\managers\PointManager;
 use warhammerScoreBoard\managers\TourManager;
@@ -25,7 +25,7 @@ class PartieController extends Controller
 {
     public function initialisationPartieAction()
     {
-        $missions = new missionManager();
+        $missions = new MissionManager();
         $armees = new ArmeeManager();
         $myView = new View("partie/initialisationPartie", "front");
         $initPartie = InitialisationPartieForm::getForm();
@@ -67,9 +67,9 @@ class PartieController extends Controller
                         "idArmee" => $_POST['armee' . $i] ?? '',
                         "idPartie" => $_SESSION['idPartie'],
                     ];
-                    $joueur{$i} = new Joueur();
-                    $joueur{$i} = $joueur{$i}->hydrate($joueur);
-                    $_SESSION["idJoueur" . $i] = $joueurManager->save($joueur{$i});
+                    $joueur[$i] = new Joueur();
+                    $joueur[$i]  = $joueur[$i] ->hydrate($joueur);
+                    $_SESSION["idJoueur" . $i] = $joueurManager->save($joueur[$i] );
 
                     //attribution des missions du joueur
                     //attribution de la mission principale
@@ -112,7 +112,7 @@ class PartieController extends Controller
         {
             $tourInfo = "Points de fin de partie";
             $finPartie = 1;
-            $missionManager = new missionManager();
+            $missionManager = new MissionManager();
             $missionJoueur = new MissionJoueur();
             $missions = $missionManager->getMission(["idMission"],[["typeCategorie","=","3"]]);
             foreach ($missions as $mission)
@@ -142,12 +142,12 @@ class PartieController extends Controller
         $joueurs = array();
         for($j=1;$j<=2;$j++)
         {
-            $missionsJoueur{$j} = $missionsJoueurManager->getMissionJoueur([DB_PREFIXE."joueur.idJoueur","nomJoueur",DB_PREFIXE."mission.idMission AS idMission","nomMission","nombrePointPossiblePartie","nombrePointPossibletour","typeCategorie","marquageFinPartie"],[[DB_PREFIXE."joueur.idJoueur","=",$_SESSION["idJoueur".$j]]]);
-            $joueurs = array_merge($joueurs,[$missionsJoueur{$j}[0]["nomJoueur"]]);
+            $missionsJoueur[$j] = $missionsJoueurManager->getMissionJoueur([DB_PREFIXE."joueur.idJoueur","nomJoueur",DB_PREFIXE."mission.idMission AS idMission","nomMission","nombrePointPossiblePartie","nombrePointPossibletour","typeCategorie","marquageFinPartie"],[[DB_PREFIXE."joueur.idJoueur","=",$_SESSION["idJoueur".$j]]]);
+            $joueurs = array_merge($joueurs,[$missionsJoueur[$j][0]["nomJoueur"]]);
         }
 
-        $missionsJoueur1 = ValidationTourForm::getForm($missionsJoueur{$j=1},$finPartie);
-        $missionsJoueur2 = ValidationTourForm::getForm($missionsJoueur{$j=2},$finPartie);
+        $missionsJoueur1 = ValidationTourForm::getForm($missionsJoueur["1"] ,$finPartie);
+        $missionsJoueur2 = ValidationTourForm::getForm($missionsJoueur["2"],$finPartie);
 
         $configForm = $missionsJoueur1;
         $configForm["fields"] = array_merge($configForm["fields"],$missionsJoueur2["fields"]);
@@ -202,7 +202,7 @@ class PartieController extends Controller
     {
         $tourManager = new TourManager();
         $pointManager = new PointManager();
-        $missionManager = new missionManager();
+        $missionManager = new MissionManager();
         $tourInfo = $tourManager->getTour(["idTour"],[["idPartie","=",$_SESSION['idPartie'],"tour"]]);
 
         $numeroTour = count($tourInfo)+1;

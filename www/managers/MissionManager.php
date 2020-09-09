@@ -6,9 +6,9 @@ namespace warhammerScoreBoard\managers;
 
 use warhammerScoreBoard\core\Manager;
 use warhammerScoreBoard\core\QueryBuilder;
-use warhammerScoreBoard\models\mission;
+use warhammerScoreBoard\models\Mission;
 
-class missionManager extends Manager
+class MissionManager extends Manager
 {
     public function __construct()
     {

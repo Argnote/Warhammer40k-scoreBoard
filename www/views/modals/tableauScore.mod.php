@@ -27,13 +27,13 @@
         $tour = 0;
         $max = 0;
         foreach ($data as $point):
-        if(empty($total{$point["idMission"]}))
-            $total{$point["idMission"]} = 0;
+        if(empty($total[$point["idMission"]]))
+            $total[$point["idMission"]] = 0;
 //        echo "<pre>";
 //        print_r($point);
 //        echo "</pre>";
-         $total{$point["idMission"]} += $point["nombrePoint"];
-         $points["total{$point["idMission"]}"] = $total{$point["idMission"]}." / ".$point["nombrePointPossiblePartie"];
+         $total[$point["idMission"]] += $point["nombrePoint"];
+         $points["total{$point["idMission"]}"] = $total[$point["idMission"]]." / ".$point["nombrePointPossiblePartie"];
             if($tour != $point["numeroTour"]):?>
                 <tr>
                     <?php if($point["numeroTour"] == 7): ?>

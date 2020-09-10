@@ -14,7 +14,7 @@ use warhammerScoreBoard\forms\navForm;
 <body>
   <div>
       <header>
-          <div class="row container" >
+          <div class="row container header" >
                   <div class="col-sm-3">
 <!--                      <div class="col-inner header">-->
                           <img src="../../public/img/logoOrchido.png" class="logo">

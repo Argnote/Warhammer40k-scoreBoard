@@ -28,27 +28,6 @@ class UtilisateurController extends Controller
 
     }
 
-    public function indexAction()
-    {
-        $id = ["id"=>$_SESSION['id']];
-        $userManager = new UtilisateurManager();
-        $user = $userManager->findBy($id);
-        $configFromUser = Utilisateur::showUserTable($user);
-        $myView = new View("profile", "back");
-        $myView->assign("configFromUser", $configFromUser);
-
-    }
-
-
-    public function listAction(){
-        $userManager = new UtilisateurManager();
-        $users = $userManager->findAll();
-        $configTableUser = Utilisateur::showUserTable($users);
-
-        $myView = new View("admin/user/list", "back");
-        $myView->assign("configTableUser", $configTableUser);
-    }
-
     public function updateAction()
     {
         $userManager = new UtilisateurManager();
@@ -169,12 +148,14 @@ class UtilisateurController extends Controller
         $mail = new Mail();
         $mail->sendMail($configMail);
     }
+
     public function registerConfirmAction()
     {
         if(!empty($_GET['key']) && !empty($_GET['token']))
         {
             //acces a la page avec des paramètres
             //recherche en db d'un utilisateur correspondant à la key(email) et au token
+
             $requete = new QueryBuilder(Utilisateur::class, 'utilisateur');
             $requete->querySelect(["idUtilisateur","idRole"]);
             $requete->queryFrom();
@@ -196,7 +177,7 @@ class UtilisateurController extends Controller
                     $this->redirectTo(  "Errors","quatreCentQuatre");
             }
             else
-                $this->redirectTo(  "Errors","quatreCentQuatre");
+                $this->redirectTo("Errors", "linkNotFound");
         }
         else
         {
@@ -235,7 +216,6 @@ class UtilisateurController extends Controller
 
     public function forgotPasswordAction()
     {
-        Helper::checkDisconnected();
         $configFormUser = ForgotpasswordForm::getForm();
         $myView = new View("user/forgotPassword", "front");
         $myView->assign("configFormUser", $configFormUser);
@@ -246,55 +226,51 @@ class UtilisateurController extends Controller
             $errors = $validator->checkForm($configFormUser, $_POST);
             if (empty($errors))
             {
-                $requete = new QueryBuilder(Utilisateur::class, 'user');
-                $requete->querySelect(["id"]);
-                $requete->queryWhere("email", "=", $_POST['email']);
-                $result = $requete->queryGetValue();
+                $utilisateurManager = new UtilisateurManager();
+                $result = $utilisateurManager->getUtilisateur(["id"],[["email", "=", $_POST['email']]]);
                 if (!empty($result))
                 {
                     $token = Token::getToken();
-                    $userManager = new UtilisateurManager();
-                    $userManager->manageUserToken($result["id"],$token);
-                    $url = URL_HOST.Helper::getUrl("User","newPassword")."?id=".urlencode($result["id"])."&token=".urlencode($token);
+                    $utilisateurManager->manageUserToken($result["id"],$token);
+                    $url = URL_HOST.Helper::getUrl("Utilisateur","newPassword")."?id=".urlencode($result["id"])."&token=".urlencode($token);
                     $configMail = ForgotPasswordMail::getMail($_POST['email'],$url);
                     $mail = new Mail();
                     $mail->sendMail($configMail);
                 }
+                else
+                {
+                    $errors["emailNotFound"] = "aucune adresse mail n'a été trouvé";
+                    $myView->assign("errors", $errors);
+                }
+
             }
             else
-                print_r($errors);
+                $myView->assign("errors", $errors);
         }
     }
     public function newPasswordAction()
     {
-        Helper::checkDisconnected();
         $configFormUser = NewPasswordForm::getForm();
         if(!empty($_GET['id']) && !empty($_GET['token']))
         {
-            $requete = new QueryBuilder(Utilisateur::class, 'user');
-            $requete->querySelect(["id"]);
-            $requete->queryWhere("id", "=", htmlspecialchars(urldecode($_GET['id'])));
-            $requete->queryWhere("token", "=", htmlspecialchars(urldecode($_GET['token'])));
-            $result = $requete->queryGetValue();
+            $utilisateurManager = new UtilisateurManager();
+            $result = $utilisateurManager->getUtilisateur(["id"],[["id", "=", htmlspecialchars(urldecode($_GET['id']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
+                $utilisateurManager->manageUserToken($result["id"],0);
+                $_SESSION["idPassword"] = $result["id"];
                 $myView = new View("user/newPassword", "front");
                 $myView->assign("configFormUser", $configFormUser);
-                $userManager = new UtilisateurManager();
-                $userManager->manageUserToken($result["id"],0);
-                $_SESSION["idPassword"] = $result["id"];
             }
             else
             {
-                $message = Message::linkNoValid();
-                $view = new View("message", "front");
-                $view->assign("message",$message);
+                $this->redirectTo("Errors", "linkNotFound");
             }
         }
         else
         {
             if(empty($_SESSION["idPassword"]))
-                die("erreurs");
+                $this->redirectTo(  "Errors","quatreCentQuatre");
         }
 
         if($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_SESSION["idPassword"]))
@@ -315,9 +291,9 @@ class UtilisateurController extends Controller
             }
             else
             {
-                //print_r($errors);
                 $myView = new View("user/newPassword", "front");
                 $myView->assign("configFormUser", $configFormUser);
+                $myView->assign("errors", $errors);
             }
         }
     }

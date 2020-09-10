@@ -3,6 +3,7 @@
 namespace warhammerScoreBoard\managers;
 
 use warhammerScoreBoard\core\Manager;
+use warhammerScoreBoard\core\QueryBuilder;
 use warhammerScoreBoard\models\Utilisateur;
 
 
@@ -12,6 +13,20 @@ class UtilisateurManager extends Manager {
     public function __construct()
     {
         parent::__construct(Utilisateur::class, 'utilisateur');
+    }
+
+    public function getUtilisateur(array $data = ["*"], array $condition = null)
+    {
+        $requete = new QueryBuilder(Utilisateur::class, 'utilisateur');
+        $requete->querySelect($data);
+        if(!empty($conditions))
+        {
+            foreach ($conditions as $condition )
+            {
+                $requete->queryWhere($condition[0], $condition[1], $condition[2]);
+            }
+        }
+        return $requete->queryGetValue();
     }
 
     public function manageUserToken($id,$token,$values = null)

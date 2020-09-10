@@ -9,7 +9,7 @@ class ForgotpasswordForm {
         return [
             "config"=>[
                 "method"=>"POST",
-                "action"=>Helper::getUrl("User", "forgotPassword"),
+                "action"=>Helper::getUrl("Utilisateur", "forgotPassword"),
                 "class"=>"User",
                 "id"=>"formForgotpassword",
                 "submit"=>"Valider"
@@ -18,6 +18,7 @@ class ForgotpasswordForm {
             "fields"=>[
                 "email"=>[
                     "type"=>"email",
+                    "label"=>"Entrez votre l'adresse email du compte : ",
                     "placeholder"=>"Votre email",
                     "class"=>"form-control form-control-user",
                     "id"=>"",

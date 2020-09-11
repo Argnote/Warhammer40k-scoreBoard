@@ -35,8 +35,7 @@ class Message
             "title" => "Mot de passe oublié",
 
             "body" => [
-                "Votre compte à bien été enregistrer.",
-                "Merci de vérifier vos emails afin de valider votre compte."
+                "Un email vous à été envoyé afin de changer votre mot de passe.",
             ]
         ];
     }

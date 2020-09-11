@@ -10,18 +10,10 @@ class ValidationTourForm
 {
     public static function getForm(array $missionJoueur, bool $finPartie)
     {
-        if(!$finPartie)
-        {
-            $url = Helper::getUrl("Partie", "validationTour");
-        }
-        else
-        {
-            $url = Helper::getUrl("Partie", "validationTour");
-        }
         $fields = 0;
         $form = ["config"=>[
             "method"=>"POST",
-            "action"=>$url,
+            "action"=>Helper::getUrl("Partie", "validationTour"),
             "class"=>"Partie formDisabled",
             "id"=>"formValidationPartie",
             "submit"=>"Valider le tour",

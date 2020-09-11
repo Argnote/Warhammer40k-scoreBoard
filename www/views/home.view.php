@@ -20,6 +20,14 @@
         </div>
     </div>
     <?php endif;?>
+    <?php if(!empty($_SESSION["idUtilisateur1"]) && !empty($_SESSION["idUtilisateur2"])): ?>
+        <div class="col-sm-6">
+            <div class="col-inner homeCard">
+                <h4>Déconnecter un ami</h4>
+                <a href="<?= Helper::getUrl("Utilisateur","logoutGuest")?>">Déconnecter <?= $_SESSION["pseudoJoueur2"]?></a>
+            </div>
+        </div>
+    <?php endif;?>
     <div class="col-sm-6">
         <div class="col-inner homeCard">
             <h4>Débuter une partie</h4>

@@ -15,10 +15,11 @@ class UtilisateurManager extends Manager {
         parent::__construct(Utilisateur::class, 'utilisateur');
     }
 
-    public function getUtilisateur(array $data = ["*"], array $condition = null)
+    public function getUtilisateur(array $data = ["*"], array $conditions = null)
     {
         $requete = new QueryBuilder(Utilisateur::class, 'utilisateur');
         $requete->querySelect($data);
+        $requete->queryFrom();
         if(!empty($conditions))
         {
             foreach ($conditions as $condition )

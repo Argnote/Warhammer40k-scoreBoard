@@ -50,6 +50,10 @@
   controller: Utilisateur
   action: logout
 
+/deconnecter-compte-amis:
+  controller: Utilisateur
+  action: logoutGuest
+
 /deconnecter-le-compte-invite:
   controller: Utilisateur
   action: logoutGuest
@@ -57,3 +61,11 @@
 /mot-de-passe-oublie:
   controller: Utilisateur
   action: forgotPassword
+
+/nouveau-mot-de-passe:
+  controller: Utilisateur
+  action: newPassword
+
+/succes-utilisateur:
+  controller: Utilisateur
+  action: succesMessageUtilisateur

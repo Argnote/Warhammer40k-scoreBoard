@@ -10,7 +10,7 @@ class ForgotpasswordForm {
             "config"=>[
                 "method"=>"POST",
                 "action"=>Helper::getUrl("Utilisateur", "forgotPassword"),
-                "class"=>"User",
+                "class"=>"formDisabled",
                 "id"=>"formForgotpassword",
                 "submit"=>"Valider"
             ],

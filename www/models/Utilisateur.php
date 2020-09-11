@@ -19,31 +19,31 @@ class Utilisateur extends Model
 
     /* SETTERS */
 
-    public function setIdUtilisateur(int $id)
+    public function setIdUtilisateur($id)
     {
         $this->idUtilisateur=$id;
     }
 
-    public function setEmail(string $email)
+    public function setEmail($email)
     {
         $this->email=strtolower($email);
     }
 
-    public function setPseudo(string $pseudo)
+    public function setPseudo($pseudo)
     {
         $this->pseudo = $pseudo;
     }
-    public function setMotDePasse(string $motDePasse)
+    public function setMotDePasse($motDePasse)
     {
         $this->motDePasse=sha1($motDePasse);
     }
 
-    public function setNomUtilisateur(string $nomUtilisateur)
+    public function setNomUtilisateur($nomUtilisateur)
     {
         $this->nomUtilisateur=strtoupper($nomUtilisateur);
     }
 
-    public function setPrenom(string $prenom)
+    public function setPrenom($prenom)
     {
         $this->prenom=ucfirst(strtolower($prenom));
     }
@@ -53,16 +53,16 @@ class Utilisateur extends Model
         $this->dateDeNaissance=$dateDeNaissance;
     }
 
-    public function setIdRole(int $idRole)
+    public function setIdRole($idRole)
     {
         $this->idRole = $idRole;
     }
 
-    public function setEquipe(string $equipe)
+    public function setEquipe($equipe)
     {
         $this->equipe = $equipe;
     }
-    public function setToken(string $token)
+    public function setToken($token)
     {
         $this->token = $token;
     }

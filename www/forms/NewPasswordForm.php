@@ -9,24 +9,26 @@ class NewPasswordForm {
         return [
             "config"=>[
                 "method"=>"POST",
-                "action"=>Helper::getUrl("User", "newPassword"),
-                "class"=>"User",
+                "action"=>Helper::getUrl("Utilisateur", "newPassword"),
+                "class"=>"formDisabled",
                 "id"=>"formForgotpassword",
                 "submit"=>"Valider"
             ],
 
             "fields"=>[
-                "password"=>[
+                "motDePasse"=>[
                     "type"=>"password",
                     "placeholder"=>"Votre mot de passe",
+                    "label"=>"Entrez votre nouveau mot de passe : ",
                     "class"=>"form-control form-control-user",
                     "id"=>"",
                     "required"=>true,
                     "errorMsg"=>"Votre mot de passe doit faire entre 8 et 20 caractères avec une minuscule, une majuscule, un nombre et un caractère spécial"
                 ],
-                "passwordConfirm"=>[
+                "confirmationMotDePasse"=>[
                     "type"=>"password",
                     "placeholder"=>"Confirmation",
+                    "label"=>"Confirmez votre nouveau mot de passe : ",
                     "class"=>"form-control form-control-user",
                     "id"=>"",
                     "required"=>true,

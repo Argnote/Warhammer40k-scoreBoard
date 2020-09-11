@@ -22,10 +22,19 @@ use warhammerScoreBoard\core\View;
 
 class UtilisateurController extends Controller
 {
-    public function defaultAction()
+    
+    public function succesMessageUtilisateurAction()
     {
-        $myView = new View("{$_SESSION['dir']}/home", "back");
-
+        if(isset($_SESSION["SuccesMessageUtilisateur"]))
+        {
+            $view = new View("message", "front");
+            $view->assign("message",$_SESSION["SuccesMessageUtilisateur"]);
+            unset($_SESSION["SuccesMessageUtilisateur"]);
+        }
+        else
+        {
+            $this->redirectTo(  "Errors","quatreCentQuatre");
+        }
     }
 
     public function updateAction()
@@ -130,8 +139,8 @@ class UtilisateurController extends Controller
                 $this->sendMailAccountConfirmation($user->getEmail(),$user->getToken(),$user->getPseudo());
 
                 //en attente de validation du mail
-                $_SESSION["newUser"] = 1;
-                $this->redirectTo("Utilisateur","registerConfirm");
+                $_SESSION["SuccesMessageUtilisateur"] = message::InscriptionSucess();
+                $this->redirectTo("Utilisateur","succesMessageUtilisateur");
             }
             else
             {
@@ -155,23 +164,16 @@ class UtilisateurController extends Controller
         {
             //acces a la page avec des paramètres
             //recherche en db d'un utilisateur correspondant à la key(email) et au token
-
-            $requete = new QueryBuilder(Utilisateur::class, 'utilisateur');
-            $requete->querySelect(["idUtilisateur","idRole"]);
-            $requete->queryFrom();
-            $requete->queryWhere("email", "=", htmlspecialchars(urldecode($_GET['key'])));
-            $requete->queryWhere("token", "=", htmlspecialchars(urldecode($_GET['token'])));
-            $result = $requete->queryGetValue();
+            $utilisateurManager = new UtilisateurManager();
+            $result = $utilisateurManager->getUtilisateur(["idUtilisateur","idRole"],[["email", "=", htmlspecialchars(urldecode($_GET['key']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
                 if ($result["idRole"] == 1)
                 {
                     //si un utilisateur est trouvé et que son role est 4, passe le role a 2 en même temps que la réinitialisation de son token
-                    $userManager = new UtilisateurManager();
-                    $userManager->manageUserToken($result["idUtilisateur"],0,["idRole"=>2]);
-                    $message = Message::mailInscriptionSucess();
-                    $view = new View("message", "front");
-                    $view->assign("message",$message);
+                    $utilisateurManager->manageUserToken($result["idUtilisateur"],0,["idRole"=>2]);
+                    $_SESSION["SuccesMessageUtilisateur"] = message::mailInscriptionSucess();
+                    $this->redirectTo("Utilisateur","succesMessageUtilisateur");
                 }
                 else
                     $this->redirectTo(  "Errors","quatreCentQuatre");
@@ -181,19 +183,7 @@ class UtilisateurController extends Controller
         }
         else
         {
-            if (!empty($_SESSION["newUser"]) && $_SESSION["newUser"] == 1)
-            {
-                //acces à la page sans parametres (juste apres l'inscription quand l'email n'est pas encore validé)
-                //new View("registerConfirm", "front");
-                $message = message::InscriptionSucess();
-                $view = new View("message", "front");
-                $view->assign("message",$message);
-                unset($_SESSION["newUser"]);
-            }
-            else
-            {
-                $this->redirectTo(  "Errors","quatreCentQuatre");
-            }
+            $this->redirectTo(  "Errors","quatreCentQuatre");
         }
 
     }
@@ -227,15 +217,17 @@ class UtilisateurController extends Controller
             if (empty($errors))
             {
                 $utilisateurManager = new UtilisateurManager();
-                $result = $utilisateurManager->getUtilisateur(["id"],[["email", "=", $_POST['email']]]);
+                $result = $utilisateurManager->getUtilisateur(["idUtilisateur"],[["email", "=", $_POST['email']]]);
                 if (!empty($result))
                 {
                     $token = Token::getToken();
-                    $utilisateurManager->manageUserToken($result["id"],$token);
-                    $url = URL_HOST.Helper::getUrl("Utilisateur","newPassword")."?id=".urlencode($result["id"])."&token=".urlencode($token);
+                    $utilisateurManager->manageUserToken($result["idUtilisateur"],$token);
+                    $url = URL_HOST.Helper::getUrl("Utilisateur","newPassword")."?id=".urlencode($result["idUtilisateur"])."&token=".urlencode($token);
                     $configMail = ForgotPasswordMail::getMail($_POST['email'],$url);
                     $mail = new Mail();
                     $mail->sendMail($configMail);
+                    $_SESSION["SuccesMessageUtilisateur"] = message::sendMailForgotPasswordSucess();
+                    $this->redirectTo("Utilisateur","succesMessageUtilisateur");
                 }
                 else
                 {
@@ -251,68 +243,64 @@ class UtilisateurController extends Controller
     public function newPasswordAction()
     {
         $configFormUser = NewPasswordForm::getForm();
+        $myView = new View("user/newPassword", "front");
+        $myView->assign("configFormUser", $configFormUser);
+
         if(!empty($_GET['id']) && !empty($_GET['token']))
         {
             $utilisateurManager = new UtilisateurManager();
-            $result = $utilisateurManager->getUtilisateur(["id"],[["id", "=", htmlspecialchars(urldecode($_GET['id']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
+            $result = $utilisateurManager->getUtilisateur(["idUtilisateur"],[["idUtilisateur", "=", htmlspecialchars(urldecode($_GET['id']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
-                $utilisateurManager->manageUserToken($result["id"],0);
-                $_SESSION["idPassword"] = $result["id"];
-                $myView = new View("user/newPassword", "front");
-                $myView->assign("configFormUser", $configFormUser);
+                $utilisateurManager->manageUserToken($result["idUtilisateur"],0);
+                $_SESSION["idUtilisateurNewPassword"] = $result["idUtilisateur"];
             }
             else
             {
                 $this->redirectTo("Errors", "linkNotFound");
             }
         }
-        else
-        {
-            if(empty($_SESSION["idPassword"]))
-                $this->redirectTo(  "Errors","quatreCentQuatre");
-        }
-
-        if($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_SESSION["idPassword"]))
+        elseif($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_SESSION["idUtilisateurNewPassword"]))
         {
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser, $_POST);
             if (empty($errors))
             {
                 $user = new Utilisateur();
-                $user->setMotDePasse($_POST["password"]);
-                $user->setIdUtilisateur($_SESSION["idPassword"]);
+                $user->setMotDePasse($_POST["motDePasse"]);
+                $user->setIdUtilisateur($_SESSION["idUtilisateurNewPassword"]);
                 $userManager = new UtilisateurManager();
                 $userManager->save($user);
-                unset($_SESSION["idPassword"]);
-                $message = message::newPasswordSucess();
-                $view = new View("message", "front");
-                $view->assign("message",$message);
+                unset($_SESSION["idUtilisateurNewPassword"]);
+                $_SESSION["SuccesMessageUtilisateur"] = message::newPasswordSucess();
+                $this->redirectTo("Utilisateur","succesMessageUtilisateur");
             }
             else
             {
-                $myView = new View("user/newPassword", "front");
-                $myView->assign("configFormUser", $configFormUser);
                 $myView->assign("errors", $errors);
             }
         }
+        else
+        {
+            $this->redirectTo(  "Errors","quatreCentQuatre");
+        }
     }
 
-    public function deleteAction()
-    {
-        //la supression du compte d'un utilisateur désactive le compte et le déconnecte
-        if(!empty($_SESSION["id"]))
-        {
-            $userManager = new UtilisateurManager();
-            $userManager->manageUserToken($_SESSION['id'],0,["idHfRole"=>4]);
-            session_destroy();
-            $this->redirectTo("Home","default");
-        }
-        //la suppresion de compte par un admin permet de supprimer le compte en db
-        if(!empty($_SESSION["role"]) && !empty($_GET["idDelete"]) && $_SESSION['role'] == 1)
-        {
-            $userManager = new UtilisateurManager();
-            $userManager->delete($_GET["idDelete"]);
-        }
-    }
+//    public function deleteAction()
+//    {
+//        //la supression du compte d'un utilisateur désactive le compte et le déconnecte
+//        if(!empty($_SESSION["id"]))
+//        {
+//            $userManager = new UtilisateurManager();
+//            $userManager->manageUserToken($_SESSION['id'],0,["idHfRole"=>4]);
+//            session_destroy();
+//            $this->redirectTo("Home","default");
+//        }
+//        //la suppresion de compte par un admin permet de supprimer le compte en db
+//        if(!empty($_SESSION["role"]) && !empty($_GET["idDelete"]) && $_SESSION['role'] == 3)
+//        {
+//            $userManager = new UtilisateurManager();
+//            $userManager->delete($_GET["idDelete"]);
+//        }
+//    }
 }

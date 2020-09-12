@@ -48,6 +48,13 @@ class navForm
                 "id" => "",
                 "class" => "",
             ],
+            "listeDesParties" => [
+                "url" => Helper::getUrl("Partie","getListPartie"),
+                "text" => "Consulter ses parties",
+                "statu" => enumStatuNav::online,
+                "id" => "",
+                "class" => "",
+            ],
         ];
     }
 }

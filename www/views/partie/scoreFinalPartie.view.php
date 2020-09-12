@@ -1,5 +1,5 @@
 
-<h2>Fin de partie</h2>
+<h2>Score de la partie</h2>
 <div class="row">
     <div class="col-sm-12">
         <div class="col-inner joueur">

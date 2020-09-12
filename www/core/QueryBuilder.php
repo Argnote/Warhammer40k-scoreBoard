@@ -90,6 +90,10 @@ class QueryBuilder extends Manager
         if (!empty($table))
             $table = DB_PREFIXE.$table.".";
 
+        if($operator == "in")
+            $value = " (".$value.")";
+        else
+            $value = " '".$value."'";
         if (!isset($value)) {
             $value = $operator;
             $operator = "=";
@@ -99,7 +103,7 @@ class QueryBuilder extends Manager
             $this->where.= " AND ";
         }
         $this->where .= " " .$table.$column . " " . $operator;
-        $this->where .= (is_int($value)) ? " " . $value : " '".$value."'";
+        $this->where .= (is_int($value)) ? " " . $value : $value;
         return $this;
     }
 
@@ -137,7 +141,7 @@ class QueryBuilder extends Manager
     }
 
 
-    private function queryGet()
+    public function queryGet()
     {
         if (!isset($this->selector) || !isset($this->table)) {
             return false;
@@ -151,19 +155,22 @@ class QueryBuilder extends Manager
                 . (!empty($this->limit) ? " LIMIT" . $this->limit : "");
         }
         //echo $this->query;
-        return $this->connection->query($this->query);
+        //return $this->connection->query($this->query);
+        return $this->query;
     }
 
     public function queryGetValue()
     {
-        $result = $this->queryGet();
+        $this->queryGet();
+        $result = $this->connection->query($this->query);
         //echo $this->query;
         return $result->getResult();
     }
 
     public function queryGetArray()
     {
-        $result = $this->queryGet();
+        $this->queryGet();
+        $result = $this->connection->query($this->query);
         //echo $this->query."<br/>";
         return $result->getArrayResult();
     }

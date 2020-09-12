@@ -34,6 +34,10 @@
   controller: Partie
   action: finPartie
 
+/points-de-partie:
+  controller: Partie
+  action: scorePartie
+
 /s-inscrire:
   controller: Utilisateur
   action: register
@@ -69,3 +73,7 @@
 /succes-utilisateur:
   controller: Utilisateur
   action: succesMessageUtilisateur
+
+/liste-des-parties-joue:
+  controller: Partie
+  action: getListPartie

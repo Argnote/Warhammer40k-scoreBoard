@@ -247,12 +247,8 @@ class PartieController extends Controller
     {
         //redirige à l'acceuil si aucune partie n'est en cours
         if (!isset($_SESSION['idPartie']))
-        {
             $this->redirectTo("Home","default");
-        }
         else {
-            $pointManager = new PointManager();
-            $joueurManager = new JoueurManager();
             $partieManager = new PartieManager();
 
             //met à jour la date de fin de la parti
@@ -263,31 +259,54 @@ class PartieController extends Controller
             $partie = new Partie();
             $partie = $partie->hydrate($finPartie);
             $partieManager->save($partie);
-
-            //récupere le total de points des 2 joueurs
-            $totalJoueur1 = $pointManager->totalPoint($_SESSION["idJoueur1"]);
-            $totalJoueur2 = $pointManager->totalPoint($_SESSION["idJoueur2"]);
-
-
-            // Met a jour le statue de victoire des 2 joueurs
-            if ($totalJoueur1["total"] > $totalJoueur2["total"])
-                $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"]);
-            elseif ($totalJoueur1["total"] < $totalJoueur2["total"])
-                $joueurManager->defGagnantStatue($_SESSION["idJoueur2"], $_SESSION["idJoueur1"]);
-            else
-                $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"], 1);
-
-            //affiche le tableau de score final
-            $scoreJoueur1 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur1']]]);
-            $scoreJoueur2 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur2']]]);
-            $myView = new View("partie/finPartie", "front");
-            $myView->assign("scoreJoueur1", $scoreJoueur1);
-            $myView->assign("scoreJoueur2", $scoreJoueur2);
-
-            //vide les variable de session concernant la partie
             unset($_SESSION['idPartie']);
-            unset($_SESSION['idJoueur1']);
-            unset($_SESSION['idJoueur2']);
+            $this->redirectTo("Partie", "scorePartie");
         }
+    }
+
+    public function scorePartieAction()
+    {
+        if (!isset($_SESSION['idJoueur1']) && !isset($_SESSION['idJoueur2']))
+            $this->redirectTo("Home","default");
+
+        $pointManager = new PointManager();
+        $joueurManager = new JoueurManager();
+        //récupere le total de points des 2 joueurs
+        $totalJoueur1 = $pointManager->totalPoint($_SESSION["idJoueur1"]);
+        $totalJoueur2 = $pointManager->totalPoint($_SESSION["idJoueur2"]);
+
+
+        // Met a jour le statue de victoire des 2 joueurs
+        if ($totalJoueur1["total"] > $totalJoueur2["total"])
+            $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"]);
+        elseif ($totalJoueur1["total"] < $totalJoueur2["total"])
+            $joueurManager->defGagnantStatue($_SESSION["idJoueur2"], $_SESSION["idJoueur1"]);
+        else
+            $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"], 1);
+
+        //affiche le tableau de score final
+        $scoreJoueur1 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur1']]]);
+        $scoreJoueur2 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur2']]]);
+        $myView = new View("partie/scoreFinalPartie", "front");
+        $myView->assign("scoreJoueur1", $scoreJoueur1);
+        $myView->assign("scoreJoueur2", $scoreJoueur2);
+
+        //vide les variable de session concernant la partie
+        unset($_SESSION['idJoueur1']);
+        unset($_SESSION['idJoueur2']);
+    }
+
+    public function getListPartieAction()
+    {
+        //redirige à l'acceuil si personne n'est connecté
+//        if (!isset($_SESSION['idUtilisateur1']))
+//            $this->redirectTo("Home","default");
+
+        $joueurManager = new JoueurManager();
+        $result = $joueurManager->getPartiePlayed();
+        echo "<pre>";
+        print_r($result);
+        echo "</pre>";
+
     }
 }

@@ -77,3 +77,11 @@
 /liste-des-parties-joue:
   controller: Partie
   action: getListPartie
+
+/historique-partie:
+  controller: Partie
+  action: historiquePartie
+
+/reprendre-partie:
+  controller: Partie
+  action: reprendrePartie

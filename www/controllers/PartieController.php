@@ -259,7 +259,6 @@ class PartieController extends Controller
             $partie = new Partie();
             $partie = $partie->hydrate($finPartie);
             $partieManager->save($partie);
-            unset($_SESSION['idPartie']);
             $this->redirectTo("Partie", "scorePartie");
         }
     }
@@ -294,19 +293,56 @@ class PartieController extends Controller
         //vide les variable de session concernant la partie
         unset($_SESSION['idJoueur1']);
         unset($_SESSION['idJoueur2']);
+        unset($_SESSION['idPartie']);
     }
 
     public function getListPartieAction()
     {
         //redirige à l'acceuil si personne n'est connecté
-//        if (!isset($_SESSION['idUtilisateur1']))
-//            $this->redirectTo("Home","default");
+        if (!isset($_SESSION['idUtilisateur1']))
+            $this->redirectTo("Home","default");
 
         $joueurManager = new JoueurManager();
         $result = $joueurManager->getPartiePlayed();
-        echo "<pre>";
-        print_r($result);
-        echo "</pre>";
 
+        $partie = array();
+        foreach ($result as $key => $value)
+        {
+            if(!isset($partie[$value["idPartie"]]))
+                $partie[$value["idPartie"]] = array();
+
+            if($value["idUtilisateur"] == $_SESSION["idUtilisateur1"])
+            {
+                $partie[$value["idPartie"]] += array_unique($value);
+                $partie[$value["idPartie"]]["dateDebut"] = date('d-m-Y', strtotime($value["dateDebut"]));
+                //array_merge($partie[$value["idPartie"]],$value);
+                unset($result[$key]);
+                //$joueur = array_search($result,$value["idPartie"] );
+                //$adversaire =
+            }
+            else
+            {
+                $joueur = [
+                    "idUtilisateur2" => $value["idUtilisateur"],
+                    "nomJoueur2" => $value["nomJoueur"],
+                    "ArmeeJoueur2" => $value["nomArmee"]
+                ];
+                $partie[$value["idPartie"]] += $joueur;
+            }
+
+        }
+
+        $myView = new View("partie/listPartie","front");
+        $myView->assign("listPartie",$partie);
+    }
+
+    public function historiquePartieAction()
+    {
+        echo "historique";
+    }
+
+    public function reprendrePartieAction()
+    {
+        echo "reprendre partie";
     }
 }

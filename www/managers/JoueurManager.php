@@ -54,14 +54,14 @@ class JoueurManager extends Manager
         $resultIn = $requeteIn->queryGet();
 
         $requete = new QueryBuilder(Joueur::class, "joueur");
-        $requete->querySelect(["nomJoueur","nomArmee" ,"gagnant", "dateDebut", DB_PREFIXE."partie.idPartie"]);
+        $requete->querySelect(["idUtilisateur","nomJoueur","nomArmee" ,"gagnant", "dateDebut", DB_PREFIXE."partie.idPartie"]);
         $requete->queryFrom();
         $requete->queryJoin("joueur","armee","idArmee","idArmee");
         $requete->queryJoin("joueur","partie","idPartie","idPartie");
         $requete->queryWhere(DB_PREFIXE."partie.idPartie", "in", $resultIn);
 
 
-        $requete->queryOrderBy("dateDebut","ASC");
+        $requete->queryOrderBy("dateDebut","DESC");
         return $requete->queryGetArray();
     }
 }

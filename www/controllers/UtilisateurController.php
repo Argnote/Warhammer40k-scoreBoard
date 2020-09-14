@@ -179,7 +179,10 @@ class UtilisateurController extends Controller
                     $this->redirectTo(  "Errors","quatreCentQuatre");
             }
             else
-                $this->redirectTo("Errors", "linkNotFound");
+            {
+                $_SESSION["messageError"] = Message::linkNoValid();
+                $this->redirectTo("Errors", "errorMessage");
+            }
         }
         else
         {
@@ -257,7 +260,8 @@ class UtilisateurController extends Controller
             }
             else
             {
-                $this->redirectTo("Errors", "linkNotFound");
+                $_SESSION["messageError"] = Message::linkNoValid();
+                $this->redirectTo("Errors", "errorMessage");
             }
         }
         elseif($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_SESSION["idUtilisateurNewPassword"]))

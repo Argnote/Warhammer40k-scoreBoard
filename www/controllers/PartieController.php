@@ -4,6 +4,7 @@
 namespace warhammerScoreBoard\controllers;
 
 use warhammerScoreBoard\core\Controller;
+use warhammerScoreBoard\core\tools\Message;
 use warhammerScoreBoard\core\Validator;
 use warhammerScoreBoard\core\View;
 use warhammerScoreBoard\forms\InitialisationPartieForm;
@@ -338,7 +339,29 @@ class PartieController extends Controller
 
     public function historiquePartieAction()
     {
-        echo "historique";
+        if(!isset($_SESSION["idUtilisateur1"]) || !isset($_GET["partie"]) || !is_numeric($_GET["partie"]))
+        {
+            $_SESSION["messageError"] = Message::erreurHistoriquePartie();
+            $this->redirectTo("Errors", "errorMessage");
+        }
+        else
+        {
+            $joueurManager = new JoueurManager();
+            $result = $joueurManager->getJoueur($_GET["partie"]);
+
+            if(empty($result) || count($result) > 2)
+            {
+                $_SESSION["messageError"] = Message::erreurHistoriquePartie();
+                $this->redirectTo("Errors", "errorMessage");
+            }
+            else
+            {
+                $_SESSION["idPartie"] = $_GET["partie"];
+                $_SESSION["idJoueur1"] = $result[0]["idJoueur"];
+                $_SESSION["idJoueur2"] = $result[1]["idJoueur"];
+                $this->redirectTo("Partie","scorePartie" );
+            }
+        }
     }
 
     public function reprendrePartieAction()

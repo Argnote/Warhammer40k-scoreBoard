@@ -62,4 +62,15 @@ class Message
             ]
         ];
     }
+
+    public static function erreurHistoriquePartie()
+    {
+        return [
+            "title" => "Historique de la partie",
+
+            "body" => [
+                "Une érreur est survenue lors du chargement de la partie"
+            ]
+        ];
+    }
 }

@@ -12,11 +12,11 @@ class ErrorsController extends Controller
     $myView = new View('404', 'front');
   }
 
-  public function linkNotFoundAction()
+  public function errorMessageAction()
   {
-      $message = Message::linkNoValid();
       $view = new View("message", "front");
-      $view->assign("message",$message);
+      $view->assign("message",$_SESSION["messageError"]);
+      unset($_SESSION["messageError"]);
   }
 }
 

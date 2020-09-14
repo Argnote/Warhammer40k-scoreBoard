@@ -14,9 +14,9 @@
   controller: Errors
   action: quatreCentQuatre
 
-/lien-non-valide:
+/erreur:
   controller: Errors
-  action: linkNotFound
+  action: errorMessage
 
 /initialisation-partie:
   controller: Partie

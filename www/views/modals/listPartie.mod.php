@@ -17,9 +17,10 @@
     </div>
 </div>
 <?php
+$i = 1;
 foreach ($data as $partie):
 ?>
-<div class="row">
+<div class="row <?php if($i % 2 != 0){echo "rowOdd";} ?>">
     <div class="col-sm-3">
         <p><?= $partie["nomArmee"]?></p>
     </div>
@@ -49,4 +50,5 @@ foreach ($data as $partie):
         <?php endif;?>
     </div>
 </div>
-<?php endforeach;?>
+<?php $i ++;
+endforeach;?>

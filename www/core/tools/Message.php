@@ -63,13 +63,35 @@ class Message
         ];
     }
 
-    public static function erreurHistoriquePartie()
+    public static function erreurChargementPartie()
     {
         return [
             "title" => "Historique de la partie",
 
             "body" => [
                 "Une érreur est survenue lors du chargement de la partie"
+            ]
+        ];
+    }
+
+    public static function erreurInviteNonConnecte()
+    {
+        return [
+            "title" => "Reprendre une partie",
+
+            "body" => [
+                "L'ami qui a joué la partie avec vous doit être connecté"
+            ]
+        ];
+    }
+
+    public static function erreurComptePrincipalNonConnecte()
+    {
+        return [
+            "title" => "Reprendre une partie",
+
+            "body" => [
+                "Vous essayé de reprendre une partie qui ne vous appartient pas!"
             ]
         ];
     }

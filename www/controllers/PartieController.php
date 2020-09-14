@@ -137,11 +137,9 @@ class PartieController extends Controller
             $tourInfo = "Round ".$tourInfo;
             $finPartie = 0;
         }
-        $joueurs = array();
         for($j=1;$j<=2;$j++)
         {
             $missionsJoueur[$j] = $missionsJoueurManager->getMissionJoueur([DB_PREFIXE."joueur.idJoueur","nomJoueur",DB_PREFIXE."mission.idMission AS idMission","nomMission","nombrePointPossiblePartie","nombrePointPossibletour","typeCategorie","marquageFinPartie"],[[DB_PREFIXE."joueur.idJoueur","=",$_SESSION["idJoueur".$j]]]);
-            $joueurs = array_merge($joueurs,[$missionsJoueur[$j][0]["nomJoueur"]]);
         }
 
         $missionsJoueur1 = ValidationTourForm::getForm($missionsJoueur["1"] ,$finPartie);
@@ -185,7 +183,6 @@ class PartieController extends Controller
 //     print_r($tourInfo);
 //     echo "</pre>";
         $myView->assign("tourInfo", $tourInfo);
-        $myView->assign("joueurs", $joueurs);
         //echo count($tourInfo);
         $myView->assign("missionsJoueur1", $missionsJoueur1);
         $myView->assign("missionsJoueur2", $missionsJoueur2);
@@ -314,7 +311,7 @@ class PartieController extends Controller
 
             if($value["idUtilisateur"] == $_SESSION["idUtilisateur1"])
             {
-                $partie[$value["idPartie"]] += array_unique($value);
+                $partie[$value["idPartie"]] += $value;
                 $partie[$value["idPartie"]]["dateDebut"] = date('d-m-Y', strtotime($value["dateDebut"]));
                 //array_merge($partie[$value["idPartie"]],$value);
                 unset($result[$key]);
@@ -332,7 +329,6 @@ class PartieController extends Controller
             }
 
         }
-
         $myView = new View("partie/listPartie","front");
         $myView->assign("listPartie",$partie);
     }
@@ -341,7 +337,7 @@ class PartieController extends Controller
     {
         if(!isset($_SESSION["idUtilisateur1"]) || !isset($_GET["partie"]) || !is_numeric($_GET["partie"]))
         {
-            $_SESSION["messageError"] = Message::erreurHistoriquePartie();
+            $_SESSION["messageError"] = Message::erreurChargementPartie();
             $this->redirectTo("Errors", "errorMessage");
         }
         else
@@ -351,7 +347,7 @@ class PartieController extends Controller
 
             if(empty($result) || count($result) > 2)
             {
-                $_SESSION["messageError"] = Message::erreurHistoriquePartie();
+                $_SESSION["messageError"] = Message::erreurChargementPartie();
                 $this->redirectTo("Errors", "errorMessage");
             }
             else
@@ -366,6 +362,60 @@ class PartieController extends Controller
 
     public function reprendrePartieAction()
     {
-        echo "reprendre partie";
+        if(!isset($_SESSION["idUtilisateur1"]) || !isset($_GET["partie"]) || !is_numeric($_GET["partie"]))
+        {
+            $_SESSION["messageError"] = Message::erreurChargementPartie();
+            $this->redirectTo("Errors", "errorMessage");
+        }
+        else
+        {
+            $joueurManager = new JoueurManager();
+            $result = $joueurManager->getJoueur($_GET["partie"],["idUtilisateur","idJoueur"]);
+
+            if(empty($result) || count($result) > 2)
+            {
+                $_SESSION["messageError"] = Message::erreurChargementPartie();
+                $this->redirectTo("Errors", "errorMessage");
+            }
+            else
+            {
+                $comptePricipaleConnecte = false;
+                foreach ($result as $joueur)
+                {
+                    if(!empty($joueur["idUtilisateur"]))
+                    {
+                        if($joueur["idUtilisateur"] == $_SESSION["idUtilisateur1"])
+                        {
+                            $_SESSION["idJoueur1"] = $joueur["idJoueur"];
+                            $comptePricipaleConnecte = true;
+                        }
+                        elseif($joueur["idUtilisateur"] == $_SESSION["idUtilisateur2"])
+                        {
+                            $_SESSION["idJoueur2"] = $joueur["idJoueur"];
+                        }
+                        else
+                        {
+                            $_SESSION["messageError"] = Message::erreurInviteNonConnecte();
+                            $this->redirectTo("Errors", "errorMessage");
+                            die("Amis non connecté");
+                        }
+                    }
+                    else
+                    {
+                        $_SESSION["idJoueur2"] = $joueur["idJoueur"];
+                    }
+                }
+                if(!$comptePricipaleConnecte)
+                {
+                    $_SESSION["messageError"] = Message::erreurComptePrincipalNonConnecte();
+                    $this->redirectTo("Errors", "errorMessage");
+                }
+                else
+                {
+                    $_SESSION["idPartie"] = $_GET["partie"];
+                    $this->redirectTo("Partie","validationTour" );
+                }
+            }
+        }
     }
 }

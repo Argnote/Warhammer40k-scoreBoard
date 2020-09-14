@@ -5,13 +5,16 @@
         $this->addModal("errors",$errors);
     endif;?>
         <div class="row">
-            <?php foreach ($joueurs as $joueur):?>
             <div class="col-sm-6">
                 <div class="col-inner joueur">
-                    <p><?=$joueur;?></p>
+                    <p><?=$_SESSION['pseudoJoueur1']??'Joueur1'?></p>
                 </div>
             </div>
-            <?php endforeach;?>
+                <div class="col-sm-6">
+                    <div class="col-inner joueur">
+                        <p><?=$_SESSION['pseudoJoueur2']??'Joueur2'?></p>
+                    </div>
+                </div>
         </div>
     <form method="<?= $missionsJoueur1["config"]["method"]?>"
           action="<?= $missionsJoueur1["config"]["action"]?>"

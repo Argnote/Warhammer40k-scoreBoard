@@ -5,6 +5,7 @@ namespace warhammerScoreBoard\controllers;
 
 use warhammerScoreBoard\core\Controller;
 use warhammerScoreBoard\core\tools\Message;
+use warhammerScoreBoard\core\tools\TransformArrayToSelected;
 use warhammerScoreBoard\core\Validator;
 use warhammerScoreBoard\core\View;
 use warhammerScoreBoard\forms\InitialisationPartieForm;
@@ -31,16 +32,6 @@ class PartieController extends Controller
         $myView = new View("partie/initialisationPartie", "front");
         $initPartie = InitialisationPartieForm::getForm();
         $myView->assign("initPartie", $initPartie);
-
-
-        $missionsPrincipal = $missions->getMission(["idMission","nomMission"],[["typeCategorie","=","1"]]);
-        $myView->assign("missionPrincipal", $missionsPrincipal);
-
-        $armee = $armees->getArmee();
-        $myView->assign("armee", $armee);
-
-        $missionsSecondaire = $missions->getMission(["idMission","nomMission","nomCategorie"],[["typeCategorie","=","2"]]);
-        $myView->assign("missionSecondaire", $missionsSecondaire);
 
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             $validator = new Validator();
@@ -96,6 +87,17 @@ class PartieController extends Controller
                 $myView->assign("errors", $errors);
             }
         }
+        $missionsPrincipal = $missions->getMission(["idMission","nomMission"],[["typeCategorie","=","1"]]);
+        $missionsPrincipal = TransformArrayToSelected::transformArrayToSelected($missionsPrincipal,"idMission", "nomMission");
+        $myView->assign("missionPrincipal", $missionsPrincipal);
+
+        $armee = $armees->getArmee();
+        $armee = TransformArrayToSelected::transformArrayToSelected($armee,"idArmee", "nomArmee", "nomFaction");
+        $myView->assign("armee", $armee);
+
+        $missionsSecondaire = $missions->getMission(["idMission","nomMission","nomCategorie"],[["typeCategorie","=","2"]]);
+        $missionsSecondaire = TransformArrayToSelected::transformArrayToSelected($missionsSecondaire,"idMission", "nomMission", "nomCategorie");
+        $myView->assign("missionSecondaire", $missionsSecondaire);
     }
 
     public function validationTourAction()
@@ -257,6 +259,21 @@ class PartieController extends Controller
             $partie = new Partie();
             $partie = $partie->hydrate($finPartie);
             $partieManager->save($partie);
+
+            $pointManager = new PointManager();
+            $joueurManager = new JoueurManager();
+            //récupere le total de points des 2 joueurs
+            $totalJoueur1 = $pointManager->totalPoint($_SESSION["idJoueur1"]);
+            $totalJoueur2 = $pointManager->totalPoint($_SESSION["idJoueur2"]);
+
+
+            // Met a jour le statue de victoire des 2 joueurs
+            if ($totalJoueur1["total"] > $totalJoueur2["total"])
+                $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"]);
+            elseif ($totalJoueur1["total"] < $totalJoueur2["total"])
+                $joueurManager->defGagnantStatue($_SESSION["idJoueur2"], $_SESSION["idJoueur1"]);
+            else
+                $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"], 1);
             $this->redirectTo("Partie", "scorePartie");
         }
     }
@@ -267,19 +284,6 @@ class PartieController extends Controller
             $this->redirectTo("Home","default");
 
         $pointManager = new PointManager();
-        $joueurManager = new JoueurManager();
-        //récupere le total de points des 2 joueurs
-        $totalJoueur1 = $pointManager->totalPoint($_SESSION["idJoueur1"]);
-        $totalJoueur2 = $pointManager->totalPoint($_SESSION["idJoueur2"]);
-
-
-        // Met a jour le statue de victoire des 2 joueurs
-        if ($totalJoueur1["total"] > $totalJoueur2["total"])
-            $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"]);
-        elseif ($totalJoueur1["total"] < $totalJoueur2["total"])
-            $joueurManager->defGagnantStatue($_SESSION["idJoueur2"], $_SESSION["idJoueur1"]);
-        else
-            $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"], 1);
 
         //affiche le tableau de score final
         $scoreJoueur1 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur1']]]);
@@ -329,6 +333,10 @@ class PartieController extends Controller
             }
 
         }
+//        echo "<pre>";
+//        print_r($partie);
+//        echo "</pre>";
+
         $myView = new View("partie/listPartie","front");
         $myView->assign("listPartie",$partie);
     }

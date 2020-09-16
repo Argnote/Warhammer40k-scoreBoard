@@ -21,7 +21,7 @@ function myAutoloader($class)
 
 spl_autoload_register("myAutoloader");
 
-new ConstantLoader("prod");
+new ConstantLoader();
 
 $uri = $_SERVER["REQUEST_URI"];
 MiddleWareManager::launch('onRequest');

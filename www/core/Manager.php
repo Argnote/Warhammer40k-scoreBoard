@@ -44,8 +44,8 @@ class Manager
             $objectArray
 
         );
-
-        if (!is_numeric($objectToSave->getId())) {
+        $getId = 'get'.ucfirst($this->id);
+        if (!is_numeric($objectToSave->$getId())) {
             //array_shift($columns);
             //array_shift($params);
             //INSERT

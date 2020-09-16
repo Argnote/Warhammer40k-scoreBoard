@@ -31,7 +31,7 @@ class Partie extends Model
         $this->format = $format;
     }
 
-    public function GetId()
+    public function GetIdPartie()
     {
         return $this->idPartie;
     }

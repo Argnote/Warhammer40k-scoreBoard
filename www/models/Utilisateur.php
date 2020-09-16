@@ -73,7 +73,7 @@ class Utilisateur extends Model
 
     /* GETTERS */
 
-    public function getId()
+    public function getIdUtilisateur()
     {
         return $this->idUtilisateur;
     }

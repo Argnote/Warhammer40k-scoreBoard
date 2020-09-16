@@ -36,7 +36,7 @@ class Tour extends Model
         $this->idPartie = $idPartie;
     }
 
-    public function getId()
+    public function getIdTour()
     {
         return $this->idTour;
     }

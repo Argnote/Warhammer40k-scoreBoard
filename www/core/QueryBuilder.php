@@ -140,6 +140,11 @@ class QueryBuilder extends Manager
         return $this->join .= " INNER JOIN ".DB_PREFIXE.$table2." ON ". DB_PREFIXE.$table1.".".$table1param." = " .DB_PREFIXE.$table2.".".$table2param;
     }
 
+    public function queryLeftJoin(string $table1, string $table2, string $table1param, string $table2param )
+    {
+        return $this->join .= " LEFT JOIN ".DB_PREFIXE.$table2." ON ". DB_PREFIXE.$table1.".".$table1param." = " .DB_PREFIXE.$table2.".".$table2param;
+    }
+
 
     public function queryGet()
     {
@@ -163,16 +168,38 @@ class QueryBuilder extends Manager
     {
         $this->queryGet();
         $result = $this->connection->query($this->query);
-        //echo $this->query;
-        return $result->getResult();
+        //echo $this->query."<br/>";
+//        echo "<pre>";
+//        print_r($result->getResult());
+//        echo "</pre>";
+        $object = new $this->class();
+        $object = $object->hydrate($result->getResult());
+//        echo "<pre>";
+//        print_r($object->getAll());
+//        echo "</pre>";
+        return $object->getAll();
     }
 
     public function queryGetArray()
     {
         $this->queryGet();
         $result = $this->connection->query($this->query);
-        //echo $this->query."<br/>";
-        return $result->getArrayResult();
+//        echo $this->query."<br/>";
+        $arrayResult = array();
+        foreach ($result->getArrayResult() as $value)
+        {
+//            echo "<pre>";
+//            print_r($value);
+//            echo "</pre>";
+            $object = new $this->class();
+            $object = $object->hydrate($value);
+//            echo "<pre>";
+//            print_r($object);
+//            echo "</pre>";
+            array_push($arrayResult,$object->getAll());
+        }
+
+        return $arrayResult;
     }
 
 

@@ -8,6 +8,7 @@ use warhammerScoreBoard\core\Manager;
 use warhammerScoreBoard\core\QueryBuilder;
 use warhammerScoreBoard\models\Joueur;
 use warhammerScoreBoard\models\mission;
+use warhammerScoreBoard\models\modelsFusion\GetPartiePlayed;
 use warhammerScoreBoard\models\Partie;
 use warhammerScoreBoard\models\Utilisateur;
 
@@ -47,16 +48,16 @@ class JoueurManager extends Manager
 
     public function getPartiePlayed()
     {
-        $requeteIn = new QueryBuilder(Joueur::class, "joueur");
+        $requeteIn = new QueryBuilder(GetPartiePlayed::class, "joueur");
         $requeteIn->querySelect(["idPartie"]);
         $requeteIn->queryFrom();
         $requeteIn->queryWhere("idUtilisateur", "=", $_SESSION["idUtilisateur1"]);
         $resultIn = $requeteIn->queryGet();
 
-        $requete = new QueryBuilder(Joueur::class, "joueur");
+        $requete = new QueryBuilder(GetPartiePlayed::class, "joueur");
         $requete->querySelect(["idUtilisateur","nomJoueur","nomArmee" ,"gagnant", "dateDebut", DB_PREFIXE."partie.idPartie"]);
         $requete->queryFrom();
-        $requete->queryJoin("joueur","armee","idArmee","idArmee");
+        $requete->queryLeftJoin("joueur","armee","idArmee","idArmee");
         $requete->queryJoin("joueur","partie","idPartie","idPartie");
         $requete->queryWhere(DB_PREFIXE."partie.idPartie", "in", $resultIn);
 

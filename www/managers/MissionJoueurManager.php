@@ -8,6 +8,7 @@ use warhammerScoreBoard\core\Manager;
 use warhammerScoreBoard\core\QueryBuilder;
 use warhammerScoreBoard\models\mission;
 use warhammerScoreBoard\models\MissionJoueur;
+use warhammerScoreBoard\models\modelsFusion\getMissionJoueur;
 
 class MissionJoueurManager extends Manager
 {
@@ -18,7 +19,7 @@ class MissionJoueurManager extends Manager
 
     public function getMissionJoueur(array $data = ["*"], array $conditions = null)
     {
-        $requete = new QueryBuilder(MissionJoueur::class, "joueur_has_mission");
+        $requete = new QueryBuilder(GetMissionJoueur::class, "joueur_has_mission");
         $requete->querySelect($data);
         $requete->queryFrom();
         $requete->queryJoin("joueur_has_mission","mission","idMission","idMission");

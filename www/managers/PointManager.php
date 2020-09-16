@@ -6,6 +6,7 @@ namespace warhammerScoreBoard\managers;
 
 use warhammerScoreBoard\core\Manager;
 use warhammerScoreBoard\core\QueryBuilder;
+use warhammerScoreBoard\models\modelsFusion\GetPoint;
 use warhammerScoreBoard\models\Point;
 
 class PointManager extends Manager
@@ -18,7 +19,7 @@ class PointManager extends Manager
     public function getPoint(array $data = ["*"], array $conditions = null)
     {
         {
-            $requete = new QueryBuilder(Point::class, "point");
+            $requete = new QueryBuilder(GetPoint::class, "point");
             $requete->querySelect($data);
             $requete->queryFrom();
             $requete->queryJoin("point","joueur","idjoueur","idjoueur");

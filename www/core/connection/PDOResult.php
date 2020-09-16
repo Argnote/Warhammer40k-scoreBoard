@@ -2,6 +2,7 @@
 
 namespace warhammerScoreBoard\core\connection;
 
+use PDO;
 use Throwable;
 
 class PDOResult implements ResultInterface
@@ -16,7 +17,7 @@ class PDOResult implements ResultInterface
 
     public function getArrayResult(): array
     {
-        return $this->statement->fetchAll();
+        return $this->statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getOneOrNullResult(): ?array
@@ -26,7 +27,7 @@ class PDOResult implements ResultInterface
 
     public function getValueResult()
     {
-        return $this->statement->fetchColumn();
+        return $this->statement->fetchColumn(PDO::FETCH_ASSOC);
     }
 
     public function getResult()

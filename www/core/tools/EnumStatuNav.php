@@ -3,7 +3,7 @@
 
 namespace warhammerScoreBoard\core\tools;
 
-class enumStatuNav
+class EnumStatuNav
 {
     public const __default = self::default;
 

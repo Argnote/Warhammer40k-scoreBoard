@@ -23,7 +23,7 @@ class Joueur extends Model
         $this->nomJoueur = $nomJoueur;
     }
 
-    public function setGagnant($gagnant)
+    public function setGagnant(int $gagnant)
     {
         $this->gagnant = $gagnant;
     }
@@ -43,7 +43,7 @@ class Joueur extends Model
         $this->idPartie = $idPartie;
     }
 
-    public function getId()
+    public function getIdJoueur()
     {
         return $this->idJoueur;
     }

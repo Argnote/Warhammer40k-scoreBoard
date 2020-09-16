@@ -31,7 +31,7 @@ class Armee extends Model
         $this->nomFaction=$nomFaction;
     }
 
-    public function getId()
+    public function getIdArmee()
     {
         return $this->idArmee;
     }

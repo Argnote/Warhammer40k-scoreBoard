@@ -1,32 +1,32 @@
 <?php
 
-use warhammerScoreBoard\core\tools\enumStatuNav;
+use warhammerScoreBoard\core\tools\EnumStatuNav;
 
 $nav = $this->getNav();?>
 <h2>Menu</h2>
 <ul>
 <?php foreach ($nav as $link):
         switch ($link["statu"]):
-            case enumStatuNav::default:?>
+            case EnumStatuNav::default:?>
 
             <li><a href="<?= $link["url"]?>"><?= $link["text"]?></a> </li>
 
             <?php break;
-            case enumStatuNav::offline:
+            case EnumStatuNav::offline:
                 if(empty($_SESSION["idUtilisateur1"])):?>
 
                     <li><a href="<?= $link["url"]?>"><?= $link["text"]?></a> </li>
 
                 <?php endif;
                 break;
-            case enumStatuNav::online:
+            case EnumStatuNav::online:
                 if(!empty($_SESSION["idUtilisateur1"])):?>
 
                     <li><a href="<?= $link["url"]?>"><?= $link["text"]?></a> </li>
 
                 <?php endif;
                 break;
-            case enumStatuNav::admin:
+            case EnumStatuNav::admin:
                 if(!empty($_SESSION["idUtilisateur1"]) && $_SESSION["idRole"] == 2):?>
 
                     <li><a href="<?= $link["url"]?>"><?= $link["text"]?></a> </li>

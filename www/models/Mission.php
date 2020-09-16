@@ -4,7 +4,7 @@
 namespace warhammerScoreBoard\models;
 
 
-class Mission
+class Mission extends Model
 {
     protected $idMission;
     protected $nomMission;
@@ -55,7 +55,7 @@ class Mission
         $this->nomCategorie = $nomCategorie;
     }
 
-    public function getId()
+    public function getIdMission()
     {
         return $this->idMission;
     }

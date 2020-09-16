@@ -36,12 +36,12 @@ class ValidationTourForm
                         "type" =>"number",
                         "value" => 0,
                         "contrainte" =>"score",
-                        "nombrePointPossibletour" => $mission["nombrePointPossibletour"],
+                        "nombrePointPossibleTour" => $mission["nombrePointPossibleTour"],
                         "id" => "mission".$mission["idMission"],
                         "class" => "valuePoint",
                         "name" => $data."[nombrePoint]",
                         "marquageFinPartie" => $mission["marquageFinPartie"],
-                        "errorMsg"=>"La mission : \"".$mission["nomMission"]."\" ne peut pas rapporter plus de ".$mission["nombrePointPossibletour"]." points par round et moins de 0."
+                        "errorMsg"=>"La mission : \"".$mission["nomMission"]."\" ne peut pas rapporter plus de ".$mission["nombrePointPossibleTour"]." points par round et moins de 0."
                     ],
                     $data."_joueurId" =>[
                         "type" => "hidden",

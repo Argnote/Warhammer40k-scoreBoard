@@ -37,21 +37,37 @@ class UtilisateurController extends Controller
         }
     }
 
-    public function updateAction()
+    public function getUtilisateurAction()
     {
-        $userManager = new UtilisateurManager();
-        $user = $userManager->find($_SESSION['id']);
-        if(isset($_POST['role'])):
-            $_POST['idHfRole'] = $_POST['role'];
-            $route = "/dashboard/permissions";
-            else:
-            $route = "/profile";
-        endif;
-        $user = $user->hydrate($_POST);
-        $userManager->save($user);
+        $utilisateurManager = new UtilisateurManager();
+        $idUtilisateur = $_SESSION["idUtilisateur1"];
 
-        header("Location: ".$route);
+        if($_SESSION["role"] == 3 && isset($_GET["idUtilisateur"]) && is_numeric($_GET["idUtilisateur"]))
+            $idUtilisateur = $_GET["idUtilisateur"];
+
+        $select = ["nomUtilisateur","prenom","dateDeNaissance", "pseudo","email","dateInscription","nomRole"];
+        $result = $utilisateurManager->getUtilisateur($select, [["idUtilisateur","=",$idUtilisateur]]);
+        if(!empty($result))
+        {
+            print_r($result->getAll());
+        }
+
     }
+//    public function updateAction()
+//    {
+//        $userManager = new UtilisateurManager();
+//        $user = $userManager->find($_SESSION['id']);
+//        if(isset($_POST['role'])):
+//            $_POST['idHfRole'] = $_POST['role'];
+//            $route = "/dashboard/permissions";
+//            else:
+//            $route = "/profile";
+//        endif;
+//        $user = $user->hydrate($_POST);
+//        $userManager->save($user);
+//
+//        header("Location: ".$route);
+//    }
 
 
     public function loginAction()
@@ -74,7 +90,7 @@ class UtilisateurController extends Controller
                         if(empty($_SESSION['idUtilisateur1']) && empty($_SESSION['token']))
                         {
                             //si un utilisateur est trouvé, sauvegarde de ses éléments de session et initialisation de son token en db
-                            $_SESSION['idUtilisateur1'] = $user[0]->getId();
+                            $_SESSION['idUtilisateur1'] = $user[0]->getIdUtilisateur();
                             $_SESSION['pseudoJoueur1'] = $user[0]->getPseudo();
                             $_SESSION['role'] = $user[0]->getIdRole();
                             $_SESSION['token'] = Token::getToken();
@@ -84,7 +100,7 @@ class UtilisateurController extends Controller
                         else {
                             if ($user[0]->getId() != $_SESSION['idUtilisateur1'])
                             {
-                                $_SESSION['idUtilisateur2'] = $user[0]->getId();
+                                $_SESSION['idUtilisateur2'] = $user[0]->getIdUtilisateur();
                                 $_SESSION['pseudoJoueur2'] = $user[0]->getPseudo();
                                 $this->redirectTo('Home', 'default');
                             }

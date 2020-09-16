@@ -20,6 +20,7 @@ class UtilisateurManager extends Manager {
         $requete = new QueryBuilder(Utilisateur::class, 'utilisateur');
         $requete->querySelect($data);
         $requete->queryFrom();
+        $requete->queryJoin("utilisateur","role","idRole","idRole");
         if(!empty($conditions))
         {
             foreach ($conditions as $condition )
@@ -27,7 +28,8 @@ class UtilisateurManager extends Manager {
                 $requete->queryWhere($condition[0], $condition[1], $condition[2]);
             }
         }
-        return $requete->queryGetValue();
+        $object = new $this->class();
+        return $object->hydrate($requete->queryGetValue());
     }
 
     public function manageUserToken($id,$token,$values = null)

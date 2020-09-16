@@ -11,7 +11,7 @@ class Message
             "title" => "Inscription",
 
             "body" => [
-                "Votre compte à bien été enregistrer.",
+                "Votre compte à bien été enregistré.",
                 "Merci de vérifier vos emails afin de valider votre compte."
             ]
         ];

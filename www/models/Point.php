@@ -11,6 +11,7 @@ class Point extends Model
     protected $idJoueur;
     protected $idMission;
     protected $idTour;
+    protected $total;
 
     public function setIdPoint(int $idPoint)
     {
@@ -37,7 +38,12 @@ class Point extends Model
         $this->idTour = $idTour;
     }
 
-    public function getId()
+    public function setTotal($total)
+    {
+        $this->total = $total;
+    }
+
+    public function getIdPoint()
     {
         return $this->idPoint;
     }
@@ -57,8 +63,9 @@ class Point extends Model
         return $this->idMission;
     }
 
-    public function getIdPoint()
+    public function getTotal()
     {
-        return $this->idPoint;
+        return $this->total;
     }
+
 }

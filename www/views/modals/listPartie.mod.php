@@ -22,10 +22,10 @@ foreach ($data as $partie):
 ?>
 <div class="row <?php if($i % 2 != 0){echo "rowOdd";} ?>">
     <div class="col-sm-3">
-        <p><?= $partie["nomArmee"]?></p>
+        <p><?= $partie["nomArmee"]??'Non sélectionné'?></p>
     </div>
     <div class="col-sm-3">
-        <p><?= $partie["nomJoueur2"]?> (<?= $partie["ArmeeJoueur2"]?>)</p>
+        <p><?= $partie["nomJoueur2"]?> (<?= $partie["ArmeeJoueur2"]??'Non sélectionné'?>)</p>
     </div>
     <div class="col-sm-2">
         <p><?= $partie["dateDebut"]?></p>

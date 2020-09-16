@@ -19,7 +19,7 @@ class MissionJoueur extends Model
         $this->idMission = $idMission;
     }
 
-    public function getId()
+    public function getIdJoueur_has_mission()
     {
         return null;
     }

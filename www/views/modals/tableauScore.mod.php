@@ -1,21 +1,12 @@
 <table>
     <tr>
         <th>Round</th>
-<!--        <pre>-->
-<!--            --><?php //print_r($data)?>
-<!--        </pre>-->
 
         <?php $nomMission = array();
         foreach ($data as $value):?>
             <?php $nomMission = array_merge($nomMission,[$value["nomMission"]]);
-            //print_r($nomMission);
-            ?>
 
-<!--            <pre>-->
-<!--            --><?php //print_r($value)?>
-<!--        </pre>-->
-
-        <?php endforeach;
+        endforeach;
         $nomMission = array_unique($nomMission);
         foreach ($nomMission as $nom):?>
              <th><?= $nom?></th>
@@ -26,12 +17,11 @@
         $points = array();
         $tour = 0;
         $max = 0;
+
         foreach ($data as $point):
         if(empty($total[$point["idMission"]]))
             $total[$point["idMission"]] = 0;
-//        echo "<pre>";
-//        print_r($point);
-//        echo "</pre>";
+
          $total[$point["idMission"]] += $point["nombrePoint"];
          $points["total{$point["idMission"]}"] = $total[$point["idMission"]]." / ".$point["nombrePointPossiblePartie"];
             if($tour != $point["numeroTour"]):?>

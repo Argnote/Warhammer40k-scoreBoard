@@ -15,15 +15,11 @@ class Validator
 protected $errosMsg;
     public function checkForm($configForm, $data)
     {
-//        echo "<pre>";
-//        print_r($configForm["fields"]);
-//       print_r($data);
-//        echo "</pre>";
-//echo count($configForm["fields"])."<br/>";
-        //echo count($data);
         if (count($configForm["fields"]) == count($data)) {
             foreach ($configForm["fields"] as $key => $config) {
+
                 $this->$key = $data[$key];
+
                 //Vérifie que l'on a bien les champs attendus
                 //Vérifier les required
                 if (!array_key_exists($key, $data) || ($config["required"] && empty($data[$key]))) {
@@ -35,7 +31,7 @@ protected $errosMsg;
                     $method = 'check' . ucfirst($key);
                 //echo $method . "<br/>";
                 if (method_exists(get_called_class(), $method)) {
-                    if (!$this->$method($data[$key], $config)) {
+                    if (!$this->$method($this->$key, $config)) {
                         $this->errosMsg[$key] = $config["errorMsg"];
                     }
                 }
@@ -164,6 +160,7 @@ protected $errosMsg;
 
     private function checkMission($mission, $config)
     {
+
         if(!$this->checkNumeric($mission))
             return false;
         $missionManager = new MissionManager();
@@ -181,10 +178,6 @@ protected $errosMsg;
             //unset($config["compare"][array_search($value,$config["compare"])]);
             array_push($categories,$missionManager->getCategorie($this->$value)["idCategorie"]);
         }
-//        echo "<pre>";
-//        print_r($missions);
-//        print_r($categories);
-//        echo "</pre>";
         if(($missions != array_unique($missions))||($categories != array_unique($categories)))
             return false;
         return true;

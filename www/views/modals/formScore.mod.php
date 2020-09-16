@@ -23,7 +23,7 @@
                                     <?php else:?>
                                         value="<?= $configField["value"]??'' ?>"
                                         min="0"
-                                        max="<?= $configField["nombrePointPossibletour"]??'' ?>"
+                                        max="<?= $configField["nombrePointPossibleTour"]??'' ?>"
                                     <?php endif;?>>
 
                             </div>

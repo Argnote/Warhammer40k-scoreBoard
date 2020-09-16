@@ -85,3 +85,7 @@
 /reprendre-partie:
   controller: Partie
   action: reprendrePartie
+
+/consultation-profil:
+  controller: Utilisateur
+  action: getUtilisateur

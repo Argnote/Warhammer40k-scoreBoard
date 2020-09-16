@@ -25,3 +25,8 @@ endif;
 ?>
 
 </select>
+<?php if (isset($data["required"]) && $data["required"] == true)
+    {
+        echo "*";
+    }
+    ?>

@@ -31,8 +31,11 @@ protected $errosMsg;
                     $method = 'check' . ucfirst($key);
                 //echo $method . "<br/>";
                 if (method_exists(get_called_class(), $method)) {
-                    if (!$this->$method($this->$key, $config)) {
-                        $this->errosMsg[$key] = $config["errorMsg"];
+                    if(!empty($this->$key) || $config["required"])
+                    {
+                        if (!$this->$method($this->$key, $config)) {
+                            $this->errosMsg[$key] = $config["errorMsg"];
+                        }
                     }
                 }
             }
@@ -111,7 +114,7 @@ protected $errosMsg;
         return strtolower($captcha) == $_SESSION["captcha"];
     }
 
-    private function checkDateDeNaissance($dateDeNaissance)
+    private function checkDateDeNaissance($dateDeNaissance,$config)
     {
         $this->checkValidateDate($dateDeNaissance,"Y-m-d");
         return true;

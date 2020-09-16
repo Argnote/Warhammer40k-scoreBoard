@@ -47,10 +47,17 @@ class UtilisateurController extends Controller
 
         $select = ["nomUtilisateur","prenom","dateDeNaissance", "pseudo","email","dateInscription","nomRole"];
         $result = $utilisateurManager->getUtilisateur($select, [["idUtilisateur","=",$idUtilisateur]]);
-        if(!empty($result))
+        if (!empty($result))
         {
-            print_r($result->getAll());
+            $profilView = new View("user/profil","front");
+            $profilView->assign("dataProfil",$result);
         }
+        else
+        {
+            $_SESSION["messageError"] = Message::erreurProfilNotFound();
+            $this->redirectTo("Errors", "errorMessage");
+        }
+
 
     }
 //    public function updateAction()

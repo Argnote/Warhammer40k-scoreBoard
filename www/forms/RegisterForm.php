@@ -22,7 +22,7 @@ class RegisterForm {
                     "class"=>"form-control form-control-user",
                     "id"=>"prenom",
                     "label"=>"Votre prenom :",
-                    "required"=>true,
+                    "required"=>false,
                     "min-length"=>1,
                     "max-length"=>50,
                     "errorMsg"=>"Votre prénom doit faire entre 1 et 50 caractères et ne doit pas contenir de caractères spéciaux ni de nombres"
@@ -33,7 +33,7 @@ class RegisterForm {
                     "class"=>"form-control form-control-user",
                     "id"=>"nomUtilisateur",
                     "label"=>"Votre nom :",
-                    "required"=>true,
+                    "required"=>false,
                     "min-length"=>1,
                     "max-length"=>100,
                     "errorMsg"=>"Votre nom doit faire entre 1 et 100 caractères et ne doit pas contenir de caractères spéciaux ni de nombres"
@@ -84,7 +84,7 @@ class RegisterForm {
                     "class"=>"form-control form-control-user",
                     "id"=>"dateDeNaissance",
                     "label"=>"Votre date de naissance :",
-                    "required"=>true,
+                    "required"=>false,
                     "errorMsg"=>"Vous devez avoir plus de 18 ans pour vous inscrire"
                 ],
                 "captcha"=>[

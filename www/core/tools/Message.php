@@ -95,4 +95,15 @@ class Message
             ]
         ];
     }
+
+    public static function erreurProfilNotFound()
+    {
+        return [
+            "title" => "Consultation du profil",
+
+            "body" => [
+                "Le profil n'a pas été trouvé"
+            ]
+        ];
+    }
 }

@@ -30,6 +30,7 @@ class="<?= $data["config"]["class"]?>">
                         class="<?= $configField["class"]??'' ?>"
                         id="<?= $configField["id"]??'' ?>"
                         <?=(!empty($configField["required"]))?"required='required'":""?> >
+                    <?php if($configField["required"]) echo"*"?>
                 </div>
 
               <?php if($configField["type"] == "captcha"): ?>

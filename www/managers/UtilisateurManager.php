@@ -28,7 +28,7 @@ class UtilisateurManager extends Manager {
                 $requete->queryWhere($condition[0], $condition[1], $condition[2]);
             }
         }
-        return $requete->queryGetValue();
+        return $requete->queryGetValueToArray();
     }
 
     public function manageUserToken($id,$token,$values = null)

@@ -34,7 +34,7 @@ class PointManager extends Manager
                 }
             }
             $requete->queryOrderBy("numeroTour,typeCategorie,nomMission","ASC");
-            return $requete->queryGetArray();
+            return $requete->queryGetArrayToArray();
         }
     }
 
@@ -46,6 +46,6 @@ class PointManager extends Manager
         $requete->queryWhere("idJoueur", "=", $idJoueur);
         if (!empty($mission))
             $requete->queryWhere("idMission", "=", $mission);
-        return $requete->queryGetValue();
+        return $requete->queryGetValueToArray();
     }
 }

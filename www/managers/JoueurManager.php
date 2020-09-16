@@ -63,7 +63,7 @@ class JoueurManager extends Manager
 
 
         $requete->queryOrderBy("dateDebut","DESC");
-        return $requete->queryGetArray();
+        return $requete->queryGetArrayToArray();
     }
 
     public function getJoueur(int $idPartie, array $data = ["idJoueur"])
@@ -72,6 +72,6 @@ class JoueurManager extends Manager
         $requete->querySelect($data);
         $requete->queryFrom();
         $requete->queryWhere("idPartie", "=", $idPartie);
-        return $requete->queryGetArray();
+        return $requete->queryGetArrayToArray();
     }
 }

@@ -40,14 +40,4 @@ class Model
             $articleObj->downInstance();
         return $articleObj;
     }
-
-    public function getAll()
-    {
-        $values = array();
-        foreach (get_object_vars($this) as $property => $value)
-        {
-            $values[$property] = $value;
-        }
-        return $values;
-    }
 }

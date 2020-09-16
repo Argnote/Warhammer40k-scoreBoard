@@ -130,7 +130,7 @@ protected $errosMsg;
         $requete->querySelect($table["column"]);
         $requete->queryFrom();
         $requete->queryWhere($table["column"], "=", $data);
-        $result = $requete->queryGetValue();
+        $result = $requete->queryGetValueToArray();
         if(!empty($result[$table["column"]]))
             $this->errosMsg[$data."Unique"] = "\"".$data."\" est déja utilisé";
     }

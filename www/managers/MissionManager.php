@@ -29,7 +29,7 @@ class MissionManager extends Manager
             }
         }
         $requete->queryOrderBy("typeCategorie,nomCategorie,nomMission","ASC");
-        return $requete->queryGetArray();
+        return $requete->queryGetArrayToArray();
     }
 
     public function getCategorie(int $idMission)
@@ -38,6 +38,6 @@ class MissionManager extends Manager
         $requete->querySelect("idCategorie");
         $requete->queryFrom();
         $requete->queryWhere("idMission", "=", $idMission);
-        return $requete->queryGetValue();
+        return $requete->queryGetValueToArray();
     }
 }

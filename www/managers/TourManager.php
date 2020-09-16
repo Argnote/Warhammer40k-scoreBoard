@@ -30,6 +30,6 @@ class TourManager extends Manager
             }
         }
         $requete->queryOrderBy("numeroTour","ASC");
-        return $requete->queryGetArray();
+        return $requete->queryGetArrayToArray();
     }
 }

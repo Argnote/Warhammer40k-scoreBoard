@@ -29,6 +29,6 @@ class ArmeeManager extends Manager
             }
         }
         $requete->queryOrderBy("idFaction,nomArmee","ASC","faction");
-        return $requete->queryGetArray();
+        return $requete->queryGetArrayToArray();
     }
 }

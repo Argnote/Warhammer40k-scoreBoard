@@ -40,7 +40,7 @@ class modelFusion extends Model
     {
         foreach ($this->extendInstances as $instance)
         {
-            $properties = $instance->getAll();
+            $properties = $instance->__toArray();
             foreach ($properties as $property => $value)
             {
                 if($value != null)

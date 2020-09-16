@@ -168,19 +168,21 @@ class QueryBuilder extends Manager
     {
         $this->queryGet();
         $result = $this->connection->query($this->query);
-//        echo $this->query."<br/>";
         $data = $result->getResult();
         if($data == null)
             return null;
 
         $object = new $this->class();
         $object = $object->hydrate($data);
-        return $object->getAll();
+        return $object;
 
-//        echo "<pre>";
-//        print_r($object->getAll());
-//        echo "</pre>";
-
+    }
+    public function queryGetValueToArray()
+    {
+        $object = $this->queryGetValue();
+        if (empty($object))
+            return null;
+        return $object->__toArray();
     }
 
     public function queryGetArray()
@@ -195,16 +197,28 @@ class QueryBuilder extends Manager
 //            print_r($value);
 //            echo "</pre>";
             $object = new $this->class();
-            $object = $object->hydrate($value);
+            if (!empty($value))
+                $object = $object->hydrate($value);
 //            echo "<pre>";
 //            print_r($object);
 //            echo "</pre>";
-            array_push($arrayResult,$object->getAll());
+            array_push($arrayResult,$object);
         }
 
         return $arrayResult;
     }
 
+    public function queryGetArrayToArray()
+    {
+        $objects = $this->queryGetArray();
+        $arrayResult = array();
+        foreach ($objects as $object)
+        {
+            if(!empty($object))
+                array_push($arrayResult,$object->__toArray());
+        }
+        return $arrayResult;
+    }
 
     public function querySave()
     {

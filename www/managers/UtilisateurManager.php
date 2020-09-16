@@ -28,8 +28,7 @@ class UtilisateurManager extends Manager {
                 $requete->queryWhere($condition[0], $condition[1], $condition[2]);
             }
         }
-        $object = new $this->class();
-        return $object->hydrate($requete->queryGetValue());
+        return $requete->queryGetValue();
     }
 
     public function manageUserToken($id,$token,$values = null)

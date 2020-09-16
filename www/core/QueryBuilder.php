@@ -159,7 +159,7 @@ class QueryBuilder extends Manager
                 . (!empty($this->order) ? " ORDER BY" . $this->order : "")
                 . (!empty($this->limit) ? " LIMIT" . $this->limit : "");
         }
-        //echo $this->query;
+//        echo $this->query;
         //return $this->connection->query($this->query);
         return $this->query;
     }
@@ -168,16 +168,19 @@ class QueryBuilder extends Manager
     {
         $this->queryGet();
         $result = $this->connection->query($this->query);
-        //echo $this->query."<br/>";
-//        echo "<pre>";
-//        print_r($result->getResult());
-//        echo "</pre>";
+//        echo $this->query."<br/>";
+        $data = $result->getResult();
+        if($data == null)
+            return null;
+
         $object = new $this->class();
-        $object = $object->hydrate($result->getResult());
+        $object = $object->hydrate($data);
+        return $object->getAll();
+
 //        echo "<pre>";
 //        print_r($object->getAll());
 //        echo "</pre>";
-        return $object->getAll();
+
     }
 
     public function queryGetArray()

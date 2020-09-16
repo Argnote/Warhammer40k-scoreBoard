@@ -17,7 +17,7 @@
                                         class="<?= $configField["class"]??'' ?>"
                                         id="<?= $configField["id"]??'' ?>"
                                     <?=(!empty($configField["required"]))?"required='required'":""?>
-                                    <?php if($data["config"]["finTour"] != $configField["marquageFinPartie"] || $configField["marquageFinPartie"] == 2):?>
+                                    <?php if($data["config"]["finTour"] != $configField["marquageFinPartie"] && $configField["marquageFinPartie"] != 2):?>
                                         placeholder="Point Bloqué"
                                         disabled="disabled"
                                     <?php else:?>

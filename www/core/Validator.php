@@ -126,8 +126,7 @@ protected $errosMsg;
 
     private function uniq($data,$table)
     {
-        $class = ucfirst($table["table"])."::class";
-        $requete = new QueryBuilder($class, $table["table"]);
+        $requete = new QueryBuilder($table["class"], $table["table"]);
         $requete->querySelect($table["column"]);
         $requete->queryFrom();
         $requete->queryWhere($table["column"], "=", $data);

@@ -2,6 +2,7 @@
 
 namespace warhammerScoreBoard\forms;
 use warhammerScoreBoard\core\Helper;
+use warhammerScoreBoard\models\Utilisateur;
 
 class RegisterForm {
     public static function getForm(){
@@ -44,7 +45,7 @@ class RegisterForm {
                     "id"=>"pseudo",
                     "label"=>"Votre pseudo :",
                     "required"=>true,
-                    "uniq"=>["table"=>"utilisateur","column"=>"pseudo"],
+                    "uniq"=>["table"=>"utilisateur","column"=>"pseudo","class"=>Utilisateur::class],
                     "min-length"=>1,
                     "max-length"=>50,
                     "errorMsg"=>"Votre pseudo doit faire entre 1 et 50 caractères et ne doit pas contenir de caractères spéciaux"
@@ -56,7 +57,7 @@ class RegisterForm {
                     "id"=>"email",
                     "label"=>"votre adresse email :",
                     "required"=>true,
-                    "uniq"=>["table"=>"utilisateur","column"=>"email"],
+                    "uniq"=>["table"=>"utilisateur","column"=>"email","class"=>Utilisateur::class],
                     "errorMsg"=>"Adresse mail invalide"
                 ],
                 "motDePasse"=>[

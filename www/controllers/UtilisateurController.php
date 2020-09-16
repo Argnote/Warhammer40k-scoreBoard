@@ -98,7 +98,7 @@ class UtilisateurController extends Controller
                             $userManager->manageUserToken($_SESSION['idUtilisateur1'],$_SESSION['token']);
                         }
                         else {
-                            if ($user[0]->getId() != $_SESSION['idUtilisateur1'])
+                            if ($user[0]->getIdUtilisateur() != $_SESSION['idUtilisateur1'])
                             {
                                 $_SESSION['idUtilisateur2'] = $user[0]->getIdUtilisateur();
                                 $_SESSION['pseudoJoueur2'] = $user[0]->getPseudo();
@@ -181,7 +181,7 @@ class UtilisateurController extends Controller
             //acces a la page avec des paramètres
             //recherche en db d'un utilisateur correspondant à la key(email) et au token
             $utilisateurManager = new UtilisateurManager();
-            $result = $utilisateurManager->getUtilisateur(["idUtilisateur","idRole"],[["email", "=", htmlspecialchars(urldecode($_GET['key']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
+            $result = $utilisateurManager->getUtilisateur(["idUtilisateur",DB_PREFIXE."utilisateur.idRole"],[["email", "=", htmlspecialchars(urldecode($_GET['key']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
                 if ($result["idRole"] == 1)
@@ -212,14 +212,14 @@ class UtilisateurController extends Controller
         //réinitialisation du token et destruction de la session
         $userManager = new UtilisateurManager();
         $userManager->manageUserToken($_SESSION['idUtilisateur1'],0);
-        $_SESSION = null;
+        unset($_SESSION);
         session_destroy();
         $this->redirectTo("Home","default");
     }
     public function logoutGuestAction()
     {
-        $_SESSION['idUtilisateur2'] = null;
-        $_SESSION['pseudoJoueur2'] = null;
+        unset($_SESSION['idUtilisateur2']);
+        unset($_SESSION['pseudoJoueur2']);
         $this->redirectTo("Home","default");
     }
 

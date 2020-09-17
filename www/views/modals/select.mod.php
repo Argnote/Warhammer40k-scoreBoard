@@ -1,6 +1,8 @@
 <select
         <?php
-        if (isset($data["required"]) && $data["required"] == true):?>
+        $required ="";
+        if (isset($data["required"]) && $data["required"] == true):
+            $required = "*"?>
         required="required"
         <?php endif;?>
         name="<?= $data["name"]??'' ?>"
@@ -25,8 +27,4 @@ endif;
 ?>
 
 </select>
-<?php if (isset($data["required"]) && $data["required"] == true)
-    {
-        echo "*";
-    }
-    ?>
+<?= $required ?>

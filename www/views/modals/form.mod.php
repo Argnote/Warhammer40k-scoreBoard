@@ -29,8 +29,13 @@ class="<?= $data["config"]["class"]?>">
                         placeholder="<?= $configField["placeholder"]??'' ?>"
                         class="<?= $configField["class"]??'' ?>"
                         id="<?= $configField["id"]??'' ?>"
-                        <?=(!empty($configField["required"]))?"required='required'":""?> >
-                    <?php if($configField["required"]) echo"*"?>
+                        <?php
+                        $required ="";
+                        if (isset($configField["required"]) && $configField["required"] == true):
+                            $required = "*"?>
+                            required="required"
+                        <?php endif;?> >
+                    <?= $required ?>
                 </div>
 
               <?php if($configField["type"] == "captcha"): ?>

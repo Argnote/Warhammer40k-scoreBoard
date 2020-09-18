@@ -20,16 +20,28 @@ class Helper
     public static function redirectTo($controller, $action)
     {
         header('Location: '.Helper::getUrl($controller,$action));
+        die("echec de la redirection");
     }
 
-    public static function checkRole($role)
+    public static function checkAdmin()
     {
-        if($_SESSION['role'] != $role)
-            header('Location: /vous-etes-perdu');
+        if(empty($_SESSION['role']) || $_SESSION['role'] != 3)
+            Helper::redirectTo("Home","default");
+    }
+
+    public static function checkConnected()
+    {
+        if(empty($_SESSION['token']))
+            Helper::redirectTo("Home","default");
     }
     public static function checkDisconnected()
     {
-        if(!empty($_SESSION['role']))
-            Helper::redirectTo("User","default");
+        if(!empty($_SESSION['token']))
+            Helper::redirectTo("Home","default");
+    }
+    public static function checkPartie()
+    {
+        if(!empty($_SESSION['idPartie']))
+            Helper::redirectTo("Home","default");
     }
 }

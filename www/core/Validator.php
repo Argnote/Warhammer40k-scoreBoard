@@ -42,6 +42,8 @@ protected $errosMsg;
         }
         else
         {
+//            echo count($configForm["fields"])."</br>".count($data);
+//            print_r($data);
             return ["Un problème est survenue dans le nombre de champs remplis"];
         }
         return $this->errosMsg;

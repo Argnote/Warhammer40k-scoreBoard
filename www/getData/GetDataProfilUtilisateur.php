@@ -3,55 +3,55 @@ namespace warhammerScoreBoard\getData;
 
 use warhammerScoreBoard\core\Helper;
 
-class getDataProfilUtilisateur
+class GetDataProfilUtilisateur
 {
-    public static function getData($data)
+    public static function getData($Utilisateur)
     {
         return [
             "id"=>[
                 "label"=>"Id de l'utilisateur : ",
-                "value"=>$data["idUtilisateur"],
+                "value"=>$Utilisateur["idUtilisateur"],
                 "type"=>"data",
                 "admin"=>true
             ],
             "nom"=>[
                 "label"=>"Nom : ",
-                "value"=>$data["nomUtilisateur"],
+                "value"=>$Utilisateur["nomUtilisateur"],
                 "type"=>"data"
             ],
             "prenom"=>[
                 "label"=>"Prenom : ",
-                "value"=>$data["prenom"],
+                "value"=>$Utilisateur["prenom"],
                 "type"=>"data"
             ],
             "pseudo"=>[
                 "label"=>"Pseudo : ",
-                "value"=>$data["pseudo"],
+                "value"=>$Utilisateur["pseudo"],
                 "type"=>"data"
             ],
             "dateDeNaissance"=>[
                 "label"=>"Date de naissance : ",
-                "value"=>$data["dateDeNaissance"],
+                "value"=>$Utilisateur["dateDeNaissance"]?date("d-m-Y",strtotime($Utilisateur["dateDeNaissance"])):null,
                 "type"=>"data"
             ],
             "email"=>[
                 "label"=>"Email : ",
-                "value"=>$data["email"],
+                "value"=>$Utilisateur["email"],
                 "type"=>"data"
             ],
             "nomRole"=>[
                 "label"=>"Role : ",
-                "value"=>$data["nomRole"],
+                "value"=>$Utilisateur["nomRole"],
                 "type"=>"data"
             ],
             "dateInscription"=>[
                 "label"=>"Date d'inscription : ",
-                "value"=>$data["dateInscription"],
+                "value"=>date('d-m-Y',strtotime($Utilisateur["dateInscription"])),
                 "type"=>"data"
             ],
             "updateMotDePasse"=>[
                 "label"=>"Modifier le mot de passe : ",
-                "valueLink"=>Helper::getUrl("Utilisateur","newPassword")."?id=".urlencode($data["idUtilisateur"])."&token=".urlencode($data["token"]),
+                "valueLink"=>Helper::getUrl("Utilisateur","newPassword"),
                 "value"=>"nouveau mot de passe",
                 "type"=>"link"
             ],

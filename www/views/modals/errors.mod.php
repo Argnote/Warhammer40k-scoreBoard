@@ -1,4 +1,4 @@
-    <div class="row">
+    <div class="row erreurs">
         <div class="col-sm-12">
             <div class="col-inner">
                 <p>les erreurs suivantes sont survenues : </p>

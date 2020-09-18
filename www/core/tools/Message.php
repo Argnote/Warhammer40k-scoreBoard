@@ -106,4 +106,39 @@ class Message
             ]
         ];
     }
+
+    public static function erreurTokenSession()
+    {
+        return [
+            "title" => "Demande reconnexion",
+
+            "body" => [
+                "Une erreur est survenue, merci de vous reconnecter"
+            ]
+        ];
+    }
+
+    public static function changementEmail()
+    {
+        return [
+            "title" => "Changement d'email",
+
+            "body" => [
+                "Un mail à été envoyer à la nouvelle adresse demandé.",
+                "L'email sera changer quand la nouvelle adresse aura été confirmée.",
+                "Attention le lien n'est valable qu'un temps limité"
+            ]
+        ];
+    }
+
+    public static function erreurChangementEmail()
+    {
+        return [
+            "title" => "Changement d'email",
+
+            "body" => [
+                "Une erreur est survenue lors du changement de l'email."
+            ]
+        ];
+    }
 }

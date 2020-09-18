@@ -4,6 +4,7 @@ namespace warhammerScoreBoard\managers;
 
 use warhammerScoreBoard\core\Manager;
 use warhammerScoreBoard\core\QueryBuilder;
+use warhammerScoreBoard\models\Role;
 use warhammerScoreBoard\models\Utilisateur;
 
 
@@ -43,5 +44,13 @@ class UtilisateurManager extends Manager {
         $user->setIdUtilisateur($id);
         $user->setToken($token);
         $this->save($user);
+    }
+
+    public function getAllRole()
+    {
+        $requete = new QueryBuilder(Role::class, 'role');
+        $requete->querySelect("*");
+        $requete->queryFrom();
+        return $requete->queryGetArrayToArray();
     }
 }

@@ -4,6 +4,7 @@
 namespace warhammerScoreBoard\controllers;
 
 use warhammerScoreBoard\core\Controller;
+use warhammerScoreBoard\core\Helper;
 use warhammerScoreBoard\core\tools\Message;
 use warhammerScoreBoard\core\tools\TransformArrayToSelected;
 use warhammerScoreBoard\core\Validator;
@@ -102,8 +103,7 @@ class PartieController extends Controller
 
     public function validationTourAction()
     {
-        if (!isset($_SESSION['idPartie']))
-            $this->redirectTo("Home","default");
+        Helper::checkPartie();
         $pointManager = new PointManager();
         $tourManager = new TourManager();
         $missionsJoueurManager = new MissionJoueurManager();
@@ -197,6 +197,7 @@ class PartieController extends Controller
 
     public function savePointAction()
     {
+        Helper::checkPartie();
         $tourManager = new TourManager();
         $pointManager = new PointManager();
         $missionManager = new MissionManager();
@@ -245,6 +246,7 @@ class PartieController extends Controller
 
     public function finPartieAction()
     {
+        Helper::checkPartie();
         //redirige à l'acceuil si aucune partie n'est en cours
         if (!isset($_SESSION['idPartie']))
             $this->redirectTo("Home","default");
@@ -280,6 +282,7 @@ class PartieController extends Controller
 
     public function scorePartieAction()
     {
+        Helper::checkPartie();
         if (!isset($_SESSION['idJoueur1']) && !isset($_SESSION['idJoueur2']))
             $this->redirectTo("Home","default");
 
@@ -300,9 +303,8 @@ class PartieController extends Controller
 
     public function getListPartieAction()
     {
+        Helper::checkConnected();
         //redirige à l'acceuil si personne n'est connecté
-        if (!isset($_SESSION['idUtilisateur1']))
-            $this->redirectTo("Home","default");
 
         $joueurManager = new JoueurManager();
         $result = $joueurManager->getPartiePlayed();
@@ -405,7 +407,6 @@ class PartieController extends Controller
                         {
                             $_SESSION["messageError"] = Message::erreurInviteNonConnecte();
                             $this->redirectTo("Errors", "errorMessage");
-                            die("Amis non connecté");
                         }
                     }
                     else

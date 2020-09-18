@@ -15,6 +15,11 @@ class ErrorsController extends Controller
   public function errorMessageAction()
   {
       $view = new View("message", "front");
+      //si il n'y a pas de message d'erreur, redirige vers 404
+      if(empty($_SESSION["messageError"]))
+          $this->redirectTo("Errors","quatreCentQuatre");
+
+      //affichage de l'erreur
       $view->assign("message",$_SESSION["messageError"]);
       unset($_SESSION["messageError"]);
   }

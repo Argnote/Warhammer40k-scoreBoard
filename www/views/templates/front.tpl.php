@@ -1,5 +1,5 @@
 <?php
-use warhammerScoreBoard\getData\getDataNavForm;
+use warhammerScoreBoard\getData\GetDataNavForm;
 
 ?>
 <!DOCTYPE html>
@@ -31,7 +31,7 @@ use warhammerScoreBoard\getData\getDataNavForm;
           <div class="col-sm-3">
               <div class="col-inner nav">
                   <nav>
-                      <?php $this->setNav(getDataNavForm::getForm());
+                      <?php $this->setNav(GetDataNavForm::getForm());
                       include "views/modals/nav.mod.php";?>
                   </nav>
               </div>

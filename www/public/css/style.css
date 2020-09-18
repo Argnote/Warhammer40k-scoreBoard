@@ -4,6 +4,10 @@ body
     background-color: #222;
     color: white;
 }
+main
+{
+    text-align: center;
+}
 a
 {
     color: #7eb3d7;
@@ -75,11 +79,11 @@ form
 {
     text-align: center;
 }
-form .col-left
+.col-left
 {
     text-align: right;
 }
-form .col-right
+.col-right
 {
     text-align: left;
 }
@@ -102,4 +106,9 @@ form .col-right
 .rowOdd
 {
     background-color: #222;
+}
+
+.erreurs
+{
+    text-align: left;
 }

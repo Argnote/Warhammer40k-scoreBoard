@@ -5,21 +5,17 @@ foreach ($data as $item):
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="col-left">
-                    <div class="col-inner">
-                        <?= $item["label"]?>
-                    </div>
+                <div class="col-inner col-left">
+                    <label><?= $item["label"]?></label>
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="col-right">
-                    <div class="col-inner">
-                            <?php if($item["type"] == "link"):?>
-                            <a href="<?=$item["valueLink"] ?>"><?= $item["value"]?></a>
-                            <?php else: ?>
-                                <?= $item["value"]??"Non renseigné"?>
-                            <?php endif;?>
-                    </div>
+                <div class="col-inner col-right">
+                    <?php if($item["type"] == "link"):?>
+                    <label><a href="<?=$item["valueLink"] ?>"><?= $item["value"]?></a></label>
+                    <?php else: ?>
+                    <label> <?= $item["value"]??"Non renseigné"?></label>
+                    <?php endif;?>
                 </div>
             </div>
         </div>

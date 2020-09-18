@@ -22,6 +22,7 @@ class="<?= $data["config"]["class"]?>">
             <?php endif;?>
             <div class="col-sm-6">
                 <div class="col-inner col-right">
+                    <?php if(!empty($configField["type"]) && $configField["type"] != "select"):?>
                     <input
                         value="<?= (isset($inputData[$name]) && $configField["type"]!="password")?$inputData[$name]:'' ?>"
                         type="<?= $configField["type"]??'' ?>"
@@ -36,8 +37,10 @@ class="<?= $data["config"]["class"]?>">
                             required="required"
                         <?php endif;?> >
                     <?= $required ?>
+                <?php elseif (!empty($configField["type"]) && $configField["type"] == "select"):
+                    $this->addModal("select",$configField["config"], $configField["value"]);
+                endif;?>
                 </div>
-
               <?php if($configField["type"] == "captcha"): ?>
                 <div class="col-inner col-right">
                   <img id="captcha" src="script/captcha.php" width="300px">

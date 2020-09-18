@@ -22,9 +22,11 @@ class Controller implements \SplSubject
 
 
     // Permet la redirection
-    public function redirectTo(string $controller, $action)
+    public function redirectTo(string $controller, $action,$param = null)
     {
-        header('Location: '.Helper::getUrl($controller,$action));
+        $param = $param??"";
+        header('Location: '.Helper::getUrl($controller,$action).$param);
+        die("redirection échoué");
 
     }
 

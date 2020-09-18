@@ -85,7 +85,7 @@ class RegisterForm {
                     "id"=>"dateDeNaissance",
                     "label"=>"Votre date de naissance :",
                     "required"=>false,
-                    "errorMsg"=>"Vous devez avoir plus de 18 ans pour vous inscrire"
+                    "errorMsg" => "Erreur dans la date de naissance"
                 ],
                 "captcha"=>[
                     "type"=>"captcha",

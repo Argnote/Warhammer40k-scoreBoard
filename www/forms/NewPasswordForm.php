@@ -19,7 +19,7 @@ class NewPasswordForm {
                 "motDePasse"=>[
                     "type"=>"password",
                     "placeholder"=>"Votre mot de passe",
-                    "label"=>"Entrez votre nouveau mot de passe : ",
+                    "label"=>"Entrez le nouveau mot de passe : ",
                     "class"=>"form-control form-control-user",
                     "id"=>"",
                     "required"=>true,
@@ -28,7 +28,7 @@ class NewPasswordForm {
                 "confirmationMotDePasse"=>[
                     "type"=>"password",
                     "placeholder"=>"Confirmation",
-                    "label"=>"Confirmez votre nouveau mot de passe : ",
+                    "label"=>"Confirmez le nouveau mot de passe : ",
                     "class"=>"form-control form-control-user",
                     "id"=>"",
                     "required"=>true,

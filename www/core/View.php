@@ -2,7 +2,7 @@
 
 namespace warhammerScoreBoard\core;
 
-use warhammerScoreBoard\forms\navForm;
+use warhammerScoreBoard\forms\getDataNavForm;
 
 class View
 {
@@ -14,7 +14,6 @@ class View
     public function __construct($view, $template)
     {
         $this->setTemplate($template);
-        $this->nav = navForm::getForm();
         $this->setView($view);
     }
     protected function getNav()

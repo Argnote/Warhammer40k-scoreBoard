@@ -89,3 +89,7 @@
 /consultation-profil:
   controller: Utilisateur
   action: getUtilisateur
+
+/modifier-profil:
+  controller: Utilisateur
+  action: updateUtilisateur

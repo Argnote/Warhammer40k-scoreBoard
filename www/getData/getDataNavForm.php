@@ -1,13 +1,13 @@
 <?php
 
 
-namespace warhammerScoreBoard\forms;
+namespace warhammerScoreBoard\getData;
 
 
 use warhammerScoreBoard\core\Helper;
 use warhammerScoreBoard\core\tools\EnumStatuNav;
 
-class navForm
+class getDataNavForm
 {
 
     public static function getForm()
@@ -41,16 +41,23 @@ class navForm
                 "id" => "",
                 "class" => "",
             ],
-            "deconnexion" => [
-                "url" => Helper::getUrl("Utilisateur","logout"),
-                "text" => "Se déconnecter",
+            "listeDesParties" => [
+                "url" => Helper::getUrl("Partie","getListPartie"),
+                "text" => "Consulter ses parties",
                 "statu" => EnumStatuNav::online,
                 "id" => "",
                 "class" => "",
             ],
-            "listeDesParties" => [
-                "url" => Helper::getUrl("Partie","getListPartie"),
-                "text" => "Consulter ses parties",
+            "profil" => [
+                "url" => Helper::getUrl("Utilisateur","getUtilisateur"),
+                "text" => "Consulter son profil",
+                "statu" => EnumStatuNav::online,
+                "id" => "",
+                "class" => "",
+            ],
+            "deconnexion" => [
+                "url" => Helper::getUrl("Utilisateur","logout"),
+                "text" => "Se déconnecter",
                 "statu" => EnumStatuNav::online,
                 "id" => "",
                 "class" => "",

@@ -11,6 +11,7 @@ use warhammerScoreBoard\forms\ForgotpasswordForm;
 use warhammerScoreBoard\forms\LoginForm;
 use warhammerScoreBoard\forms\NewPasswordForm;
 use warhammerScoreBoard\forms\RegisterForm;
+use warhammerScoreBoard\getData\getDataProfilUtilisateur;
 use warhammerScoreBoard\mails\ConfirmAccountMail;
 use warhammerScoreBoard\mails\ForgotPasswordMail;
 use warhammerScoreBoard\mails\Mail;
@@ -45,12 +46,14 @@ class UtilisateurController extends Controller
         if($_SESSION["role"] == 3 && isset($_GET["idUtilisateur"]) && is_numeric($_GET["idUtilisateur"]))
             $idUtilisateur = $_GET["idUtilisateur"];
 
-        $select = ["nomUtilisateur","prenom","dateDeNaissance", "pseudo","email","dateInscription","nomRole"];
-        $result = $utilisateurManager->getUtilisateur($select, [["idUtilisateur","=",$idUtilisateur]]);
+        $result = $utilisateurManager->getUtilisateur(["*"], [["idUtilisateur","=",$idUtilisateur]]);
         if (!empty($result))
         {
-            $profilView = new View("user/profil","front");
-            $profilView->assign("dataProfil",$result);
+            $profil = getDataProfilUtilisateur::getData($result);
+            $profilView = new View("getData","front");
+            $profilView->assign("title","Profil");
+            $profilView->assign("data",$profil);
+            $profilView->assign("updateLink",Helper::getUrl("Utilisateur","updateUtilisateur"));
         }
         else
         {
@@ -60,21 +63,11 @@ class UtilisateurController extends Controller
 
 
     }
-//    public function updateAction()
-//    {
-//        $userManager = new UtilisateurManager();
-//        $user = $userManager->find($_SESSION['id']);
-//        if(isset($_POST['role'])):
-//            $_POST['idHfRole'] = $_POST['role'];
-//            $route = "/dashboard/permissions";
-//            else:
-//            $route = "/profile";
-//        endif;
-//        $user = $user->hydrate($_POST);
-//        $userManager->save($user);
-//
-//        header("Location: ".$route);
-//    }
+
+    public function updateUtilisateurAction()
+    {
+
+    }
 
 
     public function loginAction()
@@ -159,8 +152,11 @@ class UtilisateurController extends Controller
 //                $configMail = ConfirmAccountMail::getMail($user->getEmail(), $user->getFirstname(),$url);
 //                $mail = new Mail();
 //                $mail->sendMail($configMail);
-                $this->sendMailAccountConfirmation($user->getEmail(),$user->getToken(),$user->getPseudo());
-
+                //$this->sendMailAccountConfirmation($user->getEmail(),$user->getToken(),$user->getPseudo());
+                $url = URL_HOST.Helper::getUrl("Utilisateur","registerConfirm")."?key=".urlencode($user->getEmail())."&token=".urlencode($user->getToken());
+                $configMail = ConfirmAccountMail::getMail($user->getEmail(), $user->getPseudo(),$url);
+                $mail = new Mail();
+                $mail->sendMail($configMail);
                 //en attente de validation du mail
                 $_SESSION["SuccesMessageUtilisateur"] = message::InscriptionSucess();
                 $this->redirectTo("Utilisateur","succesMessageUtilisateur");
@@ -173,13 +169,13 @@ class UtilisateurController extends Controller
         $myView->assign("configFormUser", $configFormUser);
     }
 
-    private function sendMailAccountConfirmation($key, $value, $Pseudo)
-    {
-        $url = URL_HOST.Helper::getUrl("Utilisateur","registerConfirm")."?key=".urlencode($key)."&token=".urlencode($value);
-        $configMail = ConfirmAccountMail::getMail($key, $Pseudo,$url);
-        $mail = new Mail();
-        $mail->sendMail($configMail);
-    }
+//    private function sendMailAccountConfirmation($key, $value, $Pseudo)
+//    {
+//        $url = URL_HOST.Helper::getUrl("Utilisateur","registerConfirm")."?key=".urlencode($key)."&token=".urlencode($value);
+//        $configMail = ConfirmAccountMail::getMail($key, $Pseudo,$url);
+//        $mail = new Mail();
+//        $mail->sendMail($configMail);
+//    }
 
     public function registerConfirmAction()
     {
@@ -278,7 +274,7 @@ class UtilisateurController extends Controller
             $result = $utilisateurManager->getUtilisateur(["idUtilisateur"],[["idUtilisateur", "=", htmlspecialchars(urldecode($_GET['id']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
-                $utilisateurManager->manageUserToken($result["idUtilisateur"],0);
+                $utilisateurManager->manageUserToken($result["idUtilisateur"],Token::getToken());
                 $_SESSION["idUtilisateurNewPassword"] = $result["idUtilisateur"];
             }
             else

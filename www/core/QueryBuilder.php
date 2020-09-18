@@ -168,6 +168,7 @@ class QueryBuilder extends Manager
     {
         $this->queryGet();
         $result = $this->connection->query($this->query);
+//                echo $this->query."<br/>";
         $data = $result->getResult();
         if($data == null)
             return null;

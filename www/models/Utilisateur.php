@@ -14,6 +14,7 @@ class Utilisateur extends Model
     protected $token;
     protected $equipe;
     protected $idRole;
+    protected $nomRole;
     protected $dateInscription;
 
 
@@ -56,6 +57,11 @@ class Utilisateur extends Model
     public function setIdRole($idRole)
     {
         $this->idRole = $idRole;
+    }
+
+    public function setNomRole($nomRole)
+    {
+        $this->nomRole = $nomRole;
     }
 
     public function setEquipe($equipe)
@@ -106,6 +112,11 @@ class Utilisateur extends Model
     public function getIdRole()
     {
         return $this->idRole;
+    }
+
+    public function getNomRole()
+    {
+        return $this->nomRole;
     }
 
     public function getToken()

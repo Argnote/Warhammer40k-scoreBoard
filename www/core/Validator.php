@@ -106,6 +106,11 @@ protected $errosMsg;
 
     private function checkConfirmationMotDePasse($confirmationMotDePasse)
     {
+        if(empty($this->motDePasse))
+        {
+            $this->errosMsg["motDePasseNull"] = "le mot de passe n'a pas été remplis";
+            return true;
+        }
         return $this->motDePasse == $confirmationMotDePasse;
     }
 

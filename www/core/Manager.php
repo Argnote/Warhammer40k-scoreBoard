@@ -176,9 +176,9 @@ class Manager
     {
 
 
-        $sql = "DELETE FROM $this->table where id = :id";
+        $sql = "DELETE FROM $this->table where ".$this->id."= :".$this->id;
 
-        $result = $this->connection->query($sql, [':id' => $id]);
+        $result = $this->connection->query($sql, [':'.$this->id => $id]);
 
         return true;
 

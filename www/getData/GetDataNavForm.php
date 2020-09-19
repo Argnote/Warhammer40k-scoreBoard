@@ -55,6 +55,13 @@ class GetDataNavForm
                 "id" => "",
                 "class" => "",
             ],
+            "listProfil" => [
+                "url" => Helper::getUrl("Utilisateur","getListUtilisateur"),
+                "text" => "Consulter la liste des utilisateurs",
+                "statu" => EnumStatuNav::admin,
+                "id" => "",
+                "class" => "",
+            ],
             "deconnexion" => [
                 "url" => Helper::getUrl("Utilisateur","logout"),
                 "text" => "Se déconnecter",

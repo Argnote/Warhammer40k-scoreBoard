@@ -27,7 +27,7 @@ $nav = $this->getNav();?>
                 <?php endif;
                 break;
             case EnumStatuNav::admin:
-                if(!empty($_SESSION["idUtilisateur1"]) && $_SESSION["idRole"] == 2):?>
+                if(!empty($_SESSION["idUtilisateur1"]) && !empty($_SESSION["role"]) && $_SESSION["role"] == 3):?>
 
                     <li><a href="<?= $link["url"]?>"><?= $link["text"]?></a> </li>
 

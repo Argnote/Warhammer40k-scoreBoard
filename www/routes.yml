@@ -74,7 +74,7 @@
   controller: Utilisateur
   action: succesMessageUtilisateur
 
-/liste-des-parties-joue:
+/liste-des-parties:
   controller: Partie
   action: getListPartie
 
@@ -90,6 +90,14 @@
   controller: Utilisateur
   action: getUtilisateur
 
+/consultation-liste-profils:
+  controller: Utilisateur
+  action: getListUtilisateur
+
 /modifier-profil:
   controller: Utilisateur
   action: updateUtilisateur
+
+/supprimer-le-compte:
+  controller: Utilisateur
+  action: deleteUtilisateur

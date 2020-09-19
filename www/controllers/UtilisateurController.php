@@ -40,9 +40,13 @@ class UtilisateurController extends Controller
         }
     }
 
-    public function getListUtilisateur()
+    public function getListUtilisateurAction()
     {
         Helper::checkAdmin();
+        $utilisateurManager = new UtilisateurManager();
+        $utilisateurs = $utilisateurManager->getAllUtilisateur();
+        $myView = new View("user/listUtilisateur","front");
+        $myView->assign("listUtilisateur",$utilisateurs);
     }
     public function getUtilisateurAction()
     {
@@ -65,6 +69,7 @@ class UtilisateurController extends Controller
             $profilView->assign("title","Profil");
             $profilView->assign("data",$profil);
             $profilView->assign("updateLink",Helper::getUrl("Utilisateur","updateUtilisateur").$consultationAdmin);
+            $profilView->assign("deleteLink",Helper::getUrl("Utilisateur","deleteUtilisateur").$consultationAdmin);
         }
         else
         {
@@ -432,21 +437,28 @@ class UtilisateurController extends Controller
         }
     }
 
-//    public function deleteAction()
-//    {
-//        //la supression du compte d'un utilisateur désactive le compte et le déconnecte
-//        if(!empty($_SESSION["id"]))
-//        {
-//            $userManager = new UtilisateurManager();
-//            $userManager->manageUserToken($_SESSION['id'],0,["idHfRole"=>4]);
-//            session_destroy();
-//            $this->redirectTo("Home","default");
-//        }
-//        //la suppresion de compte par un admin permet de supprimer le compte en db
-//        if(!empty($_SESSION["role"]) && !empty($_GET["idDelete"]) && $_SESSION['role'] == 3)
-//        {
-//            $userManager = new UtilisateurManager();
-//            $userManager->delete($_GET["idDelete"]);
-//        }
-//    }
+    public function deleteUtilisateurAction()
+    {
+        Helper::checkConnected();
+        $utilisateurManager = new UtilisateurManager();
+        $session = $utilisateurManager->getUtilisateur(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
+        if ($session["token"] != $_SESSION["token"])
+        {
+            $_SESSION["messageError"] = Message::erreurTokenSession();
+            $this->redirectTo("Errors", "errorMessage");
+        }
+        //la supression du compte d'un utilisateur désactive le compte et le déconnecte
+        if(!empty($_SESSION["idUtilisateur1"]))
+        {
+            $utilisateurManager->delete($_SESSION["idUtilisateur1"]);
+            unset($_SESSION);
+            session_destroy();
+            $this->redirectTo("Home","default");
+        }
+        //la suppresion de compte par un admin permet de supprimer le compte en db
+        if(!empty($_SESSION["role"]) && !empty($_GET["idUtilisateur"]) && $_SESSION['role'] == 3)
+        {
+            $utilisateurManager->delete($_GET["idUtilisateur"]);
+        }
+    }
 }

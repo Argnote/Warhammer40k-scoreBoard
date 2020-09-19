@@ -32,6 +32,14 @@ class UtilisateurManager extends Manager {
         return $requete->queryGetValueToArray();
     }
 
+    public function getAllUtilisateur()
+    {
+        $requete = new QueryBuilder(Utilisateur::class, 'utilisateur');
+        $requete->querySelect("*");
+        $requete->queryFrom();
+        $requete->queryJoin("utilisateur","role","idRole","idRole");
+        return $requete->queryGetArray();
+    }
     public function manageUserToken($id,$token,$values = null)
     {
         $user = new Utilisateur();

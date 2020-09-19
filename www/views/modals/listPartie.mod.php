@@ -1,52 +1,52 @@
 <?php use warhammerScoreBoard\core\Helper;?>
-<div class="row">
+<div class="row rowOdd">
     <div class="col-sm-3">
-        <p>Votre armee</p>
+        Votre armee
     </div>
     <div class="col-sm-3">
-        <p>Votre adversaire</p>
+        Votre adversaire
     </div>
     <div class="col-sm-2">
-        <p>Date de la partie</p>
+        Date de la partie
     </div>
     <div class="col-sm-2">
-        <p>Résultat</p>
+        Résultat
     </div>
     <div class="col-sm-2">
-        <p>Détails</p>
+        Détails
     </div>
 </div>
 <?php
-$i = 1;
+$i = 0;
 foreach ($data as $partie):
 ?>
 <div class="row <?php if($i % 2 != 0){echo "rowOdd";} ?>">
     <div class="col-sm-3">
-        <p><?= $partie["nomArmee"]??'Non sélectionné'?></p>
+        <?= $partie["nomArmee"]??'Non sélectionné'?>
     </div>
     <div class="col-sm-3">
-        <p><?= $partie["nomJoueur2"]?> (<?= $partie["ArmeeJoueur2"]??'Non sélectionné'?>)</p>
+        <?= $partie["nomJoueur2"]?> (<?= $partie["ArmeeJoueur2"]??'Non sélectionné'?>)</p>
     </div>
     <div class="col-sm-2">
-        <p><?= $partie["dateDebut"]?></p>
+        <?= $partie["dateDebut"]?>
     </div>
     <div class="col-sm-2">
         <?php switch ($partie["gagnant"]):
-            case -1:?><p>Défaite</p>
+            case -1:?>Défaite
                 <?php break;
-            case 0:?><p>En cours</p>
+            case 0:?>En cours
                 <?php break;
-            case 1:?><p>Victoire</p>
+            case 1:?>Victoire
                 <?php break;
-            case 2:?><p>Egalité</p>
+            case 2:?>Egalité
                 <?php break;
          endswitch;?>
     </div>
     <div class="col-sm-2">
         <?php if(isset($_SESSION["idUtilisateur1"]) && $partie["idUtilisateur"] == $_SESSION["idUtilisateur1"] && $partie["gagnant"] == 0):?>
-            <p><a href="<?= Helper::getUrl("Partie","reprendrePartie") ?>?partie=<?= $partie["idPartie"]?>">Reprendre la partie </a></p>
+            <a href="<?= Helper::getUrl("Partie","reprendrePartie") ?>?partie=<?= $partie["idPartie"]?>">Reprendre la partie </a>
         <?php else:?>
-            <p><a href="<?= Helper::getUrl("Partie","historiquePartie") ?>?partie=<?= $partie["idPartie"]?>">Consulter la partie </a></p>
+            <a href="<?= Helper::getUrl("Partie","historiquePartie") ?>?partie=<?= $partie["idPartie"]?>">Consulter la partie </a>
         <?php endif;?>
     </div>
 </div>

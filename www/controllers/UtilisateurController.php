@@ -265,7 +265,7 @@ class UtilisateurController extends Controller
                 $mail = new Mail();
                 $mail->sendMail($configMail);
                 //en attente de validation du mail
-                $_SESSION["SuccesMessageUtilisateur"] = message::InscriptionSucess();
+                $_SESSION["SuccesMessageUtilisateur"] = message::inscriptionSucess();
                 $this->redirectTo("Utilisateur","succesMessageUtilisateur");
             }
             else
@@ -448,17 +448,24 @@ class UtilisateurController extends Controller
             $this->redirectTo("Errors", "errorMessage");
         }
         //la supression du compte d'un utilisateur désactive le compte et le déconnecte
-        if(!empty($_SESSION["idUtilisateur1"]))
+        if(!empty($_SESSION["idUtilisateur1"]) && empty($_GET["idUtilisateur"]))
         {
             $utilisateurManager->delete($_SESSION["idUtilisateur1"]);
             unset($_SESSION);
             session_destroy();
-            $this->redirectTo("Home","default");
+            $_SESSION["messageError"] = Message::suppressionCompte();
+            $this->redirectTo("Utilisateur", "succesMessageUtilisateur");
         }
         //la suppresion de compte par un admin permet de supprimer le compte en db
-        if(!empty($_SESSION["role"]) && !empty($_GET["idUtilisateur"]) && $_SESSION['role'] == 3)
+        elseif(!empty($_SESSION["role"]) && !empty($_GET["idUtilisateur"]) && $_SESSION["role"] == 3)
         {
             $utilisateurManager->delete($_GET["idUtilisateur"]);
+            $this->redirectTo("Utilisateur","getListUtilisateur");
+        }
+        else
+        {
+            $_SESSION["messageError"] = Message::erreurSuppressionCompte();
+            $this->redirectTo("Errors", "errorMessage");
         }
     }
 }

@@ -5,7 +5,7 @@ namespace warhammerScoreBoard\core\tools;
 class Message
 {
 
-    public static function InscriptionSucess()
+    public static function inscriptionSucess()
     {
         return [
             "title" => "Inscription",
@@ -138,6 +138,28 @@ class Message
 
             "body" => [
                 "Une erreur est survenue lors du changement de l'email."
+            ]
+        ];
+    }
+
+    public static function erreurSuppressionCompte()
+    {
+        return [
+            "title" => "Suppression de compte",
+
+            "body" => [
+                "Une erreur est survenue lors de la suppression du compte."
+            ]
+        ];
+    }
+
+    public static function suppressionCompte()
+    {
+        return [
+            "title" => "Suppression de compte",
+
+            "body" => [
+                "Votre compte a été supprimé."
             ]
         ];
     }

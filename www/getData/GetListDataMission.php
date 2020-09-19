@@ -56,7 +56,7 @@ class GetListDataMission
                     "class"=>"col-sm-3",
                     "type"=>"link",
                     "label" => "Consulter la mission",
-                    "link"=>Helper::getUrl("Mission","getListMission")."?idMission=".urlencode($mission["idMission"]),
+                    "link"=>Helper::getUrl("Mission","getMission")."?idMission=".urlencode($mission["idMission"]),
                 ]
             ];
             $liste[] = $item;

@@ -7,7 +7,7 @@ namespace warhammerScoreBoard\getData;
 use warhammerScoreBoard\core\Helper;
 use warhammerScoreBoard\core\tools\EnumStatuNav;
 
-class GetDataNavForm
+class GetDataNav
 {
 
     public static function getForm()

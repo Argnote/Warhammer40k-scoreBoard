@@ -15,7 +15,7 @@ class MissionManager extends Manager
         parent::__construct(Mission::class, 'mission');
     }
 
-    public function getMission(array $data = ["*"], array $conditions = null)
+    public function getManyMission(array $data = ["*"], array $conditions = null)
     {
         $requete = new QueryBuilder(Mission::class, "mission");
         $requete->querySelect($data);
@@ -30,6 +30,16 @@ class MissionManager extends Manager
         }
         $requete->queryOrderBy("typeCategorie,nomCategorie,nomMission","ASC");
         return $requete->queryGetArrayToArray();
+    }
+
+    public function getMission(int $idMission)
+    {
+        $requete = new QueryBuilder(Mission::class, "mission");
+        $requete->querySelect(["*"]);
+        $requete->queryFrom();
+        $requete->queryJoin("mission","categorie","idCategorie","idCategorie");
+        $requete->queryWhere("idMission","=", $idMission);
+        return $requete->queryGetValue();
     }
 
     public function getCategorie(int $idMission)

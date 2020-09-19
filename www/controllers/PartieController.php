@@ -89,7 +89,7 @@ class PartieController extends Controller
                 $myView->assign("errors", $errors);
             }
         }
-        $missionsPrincipal = $missions->getMission(["idMission","nomMission"],[["typeCategorie","=","1"]]);
+        $missionsPrincipal = $missions->getManyMission(["idMission","nomMission"],[["typeCategorie","=","1"]]);
         $missionsPrincipal = TransformArrayToSelected::transformArrayToSelected($missionsPrincipal,"idMission", "nomMission");
         $myView->assign("missionPrincipal", $missionsPrincipal);
 
@@ -97,7 +97,7 @@ class PartieController extends Controller
         $armee = TransformArrayToSelected::transformArrayToSelected($armee,"idArmee", "nomArmee", "nomFaction");
         $myView->assign("armee", $armee);
 
-        $missionsSecondaire = $missions->getMission(["idMission","nomMission","nomCategorie"],[["typeCategorie","=","2"]]);
+        $missionsSecondaire = $missions->getManyMission(["idMission","nomMission","nomCategorie"],[["typeCategorie","=","2"]]);
         $missionsSecondaire = TransformArrayToSelected::transformArrayToSelected($missionsSecondaire,"idMission", "nomMission", "nomCategorie");
         $myView->assign("missionSecondaire", $missionsSecondaire);
     }
@@ -115,7 +115,7 @@ class PartieController extends Controller
             $finPartie = 1;
             $missionManager = new MissionManager();
             $missionJoueur = new MissionJoueur();
-            $missions = $missionManager->getMission(["idMission"],[["typeCategorie","=","3"]]);
+            $missions = $missionManager->getManyMission(["idMission"],[["typeCategorie","=","3"]]);
             foreach ($missions as $mission)
             {
                 for ($i = 1; $i <= 2; $i++)
@@ -224,7 +224,7 @@ class PartieController extends Controller
 //                echo "</pre>";
 
                 $totalMission = $pointManager->totalPoint($data["idJoueur"],$data["idMission"])["total"];
-                $max = $missionManager->getMission(["nombrePointPossiblePartie"],[["idMission","=",$data["idMission"]]])[0]["nombrePointPossiblePartie"];
+                $max = $missionManager->getManyMission(["nombrePointPossiblePartie"],[["idMission","=",$data["idMission"]]])[0]["nombrePointPossiblePartie"];
                 echo $totalMission."==".$max."<br/>";
                 if(($totalMission + $data["nombrePoint"]) > $max )
                     $data["nombrePoint"] = $max - $totalMission;

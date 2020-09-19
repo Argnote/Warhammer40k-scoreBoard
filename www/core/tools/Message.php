@@ -163,4 +163,15 @@ class Message
             ]
         ];
     }
+
+    public static function erreurMission()
+    {
+        return [
+            "title" => "Consultation Mission",
+
+            "body" => [
+                "La mission n'a pas été trouvée."
+            ]
+        ];
+    }
 }

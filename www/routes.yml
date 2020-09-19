@@ -107,3 +107,7 @@
 /liste-des-mission:
   controller: Mission
   action: getListMission
+
+/description-mission:
+  controller: Mission
+  action: getMission

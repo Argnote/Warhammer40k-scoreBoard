@@ -14,6 +14,7 @@ use warhammerScoreBoard\forms\NewPasswordForm;
 use warhammerScoreBoard\forms\RegisterForm;
 use warhammerScoreBoard\forms\updateUtilisateurForm;
 use warhammerScoreBoard\getData\GetDataProfilUtilisateur;
+use warhammerScoreBoard\getData\GetListDataUtilisateur;
 use warhammerScoreBoard\mails\ConfirmAccountMail;
 use warhammerScoreBoard\mails\ForgotPasswordMail;
 use warhammerScoreBoard\mails\Mail;
@@ -45,8 +46,10 @@ class UtilisateurController extends Controller
         Helper::checkAdmin();
         $utilisateurManager = new UtilisateurManager();
         $utilisateurs = $utilisateurManager->getAllUtilisateur();
-        $myView = new View("user/listUtilisateur","front");
-        $myView->assign("listUtilisateur",$utilisateurs);
+        $listUtilisateur = GetListDataUtilisateur::getData($utilisateurs);
+        $myView = new View("listData","front");
+        $myView->assign("title","Liste des utlisateurs");
+        $myView->assign("listData",$listUtilisateur);
     }
     public function getUtilisateurAction()
     {

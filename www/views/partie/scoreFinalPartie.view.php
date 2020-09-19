@@ -1,3 +1,8 @@
+<?php
+
+use warhammerScoreBoard\core\Helper;
+
+?>
 
 <h2>Score de la partie</h2>
 <div class="row">
@@ -22,3 +27,6 @@
         </div>
     </div>
 </div>
+<?php if(isset($reprisePartie)):?>
+    <a href="<?= $reprisePartie ?>">Reprendre la partie </a>
+<?php endif; ?>

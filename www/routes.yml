@@ -101,3 +101,9 @@
 /supprimer-le-compte:
   controller: Utilisateur
   action: deleteUtilisateur
+
+#route mission
+
+/liste-des-mission:
+  controller: Mission
+  action: getListMission

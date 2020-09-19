@@ -62,6 +62,13 @@ class GetDataNavForm
                 "id" => "",
                 "class" => "",
             ],
+            "listMission" => [
+                "url" => Helper::getUrl("Mission","getListMission"),
+                "text" => "Consulter la liste des missions",
+                "statu" => EnumStatuNav::admin,
+                "id" => "",
+                "class" => "",
+            ],
             "deconnexion" => [
                 "url" => Helper::getUrl("Utilisateur","logout"),
                 "text" => "Se déconnecter",

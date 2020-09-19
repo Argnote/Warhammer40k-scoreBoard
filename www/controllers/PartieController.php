@@ -11,6 +11,7 @@ use warhammerScoreBoard\core\Validator;
 use warhammerScoreBoard\core\View;
 use warhammerScoreBoard\forms\InitialisationPartieForm;
 use warhammerScoreBoard\forms\ValidationTourForm;
+use warhammerScoreBoard\getData\GetListDataPartie;
 use warhammerScoreBoard\managers\ArmeeManager;
 use warhammerScoreBoard\managers\JoueurManager;
 use warhammerScoreBoard\managers\MissionJoueurManager;
@@ -247,37 +248,34 @@ class PartieController extends Controller
     public function finPartieAction()
     {
         Helper::checkPartie();
+        $pointManager = new PointManager();
+        $joueurManager = new JoueurManager();
+
         //redirige à l'acceuil si aucune partie n'est en cours
-        if (!isset($_SESSION['idPartie']))
-            $this->redirectTo("Home","default");
-        else {
-            $partieManager = new PartieManager();
+        $partieManager = new PartieManager();
 
-            //met à jour la date de fin de la parti
-            $finPartie = [
-                "idPartie" => $_SESSION['idPartie'],
-                "dateFin" => date("Y-m-m H:i:s")
-            ];
-            $partie = new Partie();
-            $partie = $partie->hydrate($finPartie);
-            $partieManager->save($partie);
+        //met à jour la date de fin de la parti
+        $finPartie = [
+            "idPartie" => $_SESSION['idPartie'],
+            "dateFin" => date("Y-m-m H:i:s")
+        ];
+        $partie = new Partie();
+        $partie = $partie->hydrate($finPartie);
+        $partieManager->save($partie);
 
-            $pointManager = new PointManager();
-            $joueurManager = new JoueurManager();
-            //récupere le total de points des 2 joueurs
-            $totalJoueur1 = $pointManager->totalPoint($_SESSION["idJoueur1"]);
-            $totalJoueur2 = $pointManager->totalPoint($_SESSION["idJoueur2"]);
+        //récupere le total de points des 2 joueurs
+        $totalJoueur1 = $pointManager->totalPoint($_SESSION["idJoueur1"]);
+        $totalJoueur2 = $pointManager->totalPoint($_SESSION["idJoueur2"]);
 
 
-            // Met a jour le statue de victoire des 2 joueurs
-            if ($totalJoueur1["total"] > $totalJoueur2["total"])
-                $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"]);
-            elseif ($totalJoueur1["total"] < $totalJoueur2["total"])
-                $joueurManager->defGagnantStatue($_SESSION["idJoueur2"], $_SESSION["idJoueur1"]);
-            else
-                $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"], 1);
-            $this->redirectTo("Partie", "scorePartie");
-        }
+        // Met a jour le statue de victoire des 2 joueurs
+        if ($totalJoueur1["total"] > $totalJoueur2["total"])
+            $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"]);
+        elseif ($totalJoueur1["total"] < $totalJoueur2["total"])
+            $joueurManager->defGagnantStatue($_SESSION["idJoueur2"], $_SESSION["idJoueur1"]);
+        else
+            $joueurManager->defGagnantStatue($_SESSION["idJoueur1"], $_SESSION["idJoueur2"], 1);
+        $this->redirectTo("Partie", "scorePartie");
     }
 
     public function scorePartieAction()
@@ -287,7 +285,7 @@ class PartieController extends Controller
             $this->redirectTo("Home","default");
 
         $pointManager = new PointManager();
-
+        $joueurManager = new JoueurManager();
         //affiche le tableau de score final
         $scoreJoueur1 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur1']]]);
         $scoreJoueur2 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur2']]]);
@@ -295,6 +293,9 @@ class PartieController extends Controller
         $myView->assign("scoreJoueur1", $scoreJoueur1);
         $myView->assign("scoreJoueur2", $scoreJoueur2);
 
+        $redirect = $joueurManager->getJoueur($_SESSION["idJoueur1"],["gagnant"]);
+        if(empty($redirect->getGagnant()))
+            $myView->assign("reprisePartie", Helper::getUrl("Partie","reprendrePartie")."?idPartie=".$_SESSION['idPartie']);
         //vide les variable de session concernant la partie
         unset($_SESSION['idJoueur1']);
         unset($_SESSION['idJoueur2']);
@@ -338,9 +339,10 @@ class PartieController extends Controller
 //        echo "<pre>";
 //        print_r($partie);
 //        echo "</pre>";
-
-        $myView = new View("partie/listPartie","front");
-        $myView->assign("listPartie",$partie);
+        $listPartie = GetListDataPartie::getData($partie);
+        $myView = new View("listData","front");
+        $myView->assign("title","Liste des parties");
+        $myView->assign("listData",$listPartie);
     }
 
     public function historiquePartieAction()
@@ -353,7 +355,7 @@ class PartieController extends Controller
         else
         {
             $joueurManager = new JoueurManager();
-            $result = $joueurManager->getJoueur($_GET["partie"]);
+            $result = $joueurManager->getJoueurPartie($_GET["partie"]);
 
             if(empty($result) || count($result) > 2)
             {
@@ -372,7 +374,7 @@ class PartieController extends Controller
 
     public function reprendrePartieAction()
     {
-        if(!isset($_SESSION["idUtilisateur1"]) || !isset($_GET["partie"]) || !is_numeric($_GET["partie"]))
+        if(!isset($_SESSION["idUtilisateur1"]) || !isset($_GET["idPartie"]) || !is_numeric($_GET["idPartie"]))
         {
             $_SESSION["messageError"] = Message::erreurChargementPartie();
             $this->redirectTo("Errors", "errorMessage");
@@ -380,7 +382,7 @@ class PartieController extends Controller
         else
         {
             $joueurManager = new JoueurManager();
-            $result = $joueurManager->getJoueur($_GET["partie"],["idUtilisateur","idJoueur"]);
+            $result = $joueurManager->getJoueurPartie($_GET["idPartie"],["idUtilisateur","idJoueur"]);
 
             if(empty($result) || count($result) > 2)
             {
@@ -398,6 +400,9 @@ class PartieController extends Controller
                         {
                             $_SESSION["idJoueur1"] = $joueur["idJoueur"];
                             $comptePricipaleConnecte = true;
+                            $redirect = $joueurManager->getJoueur($_SESSION["idJoueur1"],["gagnant"]);
+                            if(!empty($redirect->getGagnant()))
+                                $this->redirectTo("Partie","historiquePartie");
                         }
                         elseif($joueur["idUtilisateur"] == $_SESSION["idUtilisateur2"])
                         {
@@ -421,7 +426,7 @@ class PartieController extends Controller
                 }
                 else
                 {
-                    $_SESSION["idPartie"] = $_GET["partie"];
+                    $_SESSION["idPartie"] = $_GET["idPartie"];
                     $this->redirectTo("Partie","validationTour" );
                 }
             }

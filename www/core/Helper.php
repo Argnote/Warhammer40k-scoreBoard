@@ -42,6 +42,6 @@ class Helper
     public static function checkPartie()
     {
         if(empty($_SESSION['idPartie']))
-            Helper::redirectTo("Home","default");
+            Helper::redirectTo("Partie","getListPartie");
     }
 }

@@ -5,48 +5,48 @@ use warhammerScoreBoard\core\Helper;
 
 class GetDataProfilUtilisateur
 {
-    public static function getData($Utilisateur)
+    public static function getData($utilisateur)
     {
         return [
             "id"=>[
                 "label"=>"Id de l'utilisateur : ",
-                "value"=>$Utilisateur["idUtilisateur"],
+                "value"=>$utilisateur["idUtilisateur"],
                 "type"=>"data",
                 "admin"=>true
             ],
             "nom"=>[
                 "label"=>"Nom : ",
-                "value"=>$Utilisateur["nomUtilisateur"],
+                "value"=>$utilisateur["nomUtilisateur"],
                 "type"=>"data"
             ],
             "prenom"=>[
                 "label"=>"Prenom : ",
-                "value"=>$Utilisateur["prenom"],
+                "value"=>$utilisateur["prenom"],
                 "type"=>"data"
             ],
             "pseudo"=>[
                 "label"=>"Pseudo : ",
-                "value"=>$Utilisateur["pseudo"],
+                "value"=>$utilisateur["pseudo"],
                 "type"=>"data"
             ],
             "dateDeNaissance"=>[
                 "label"=>"Date de naissance : ",
-                "value"=>$Utilisateur["dateDeNaissance"]?date("d-m-Y",strtotime($Utilisateur["dateDeNaissance"])):null,
+                "value"=>$utilisateur["dateDeNaissance"]?date("d-m-Y",strtotime($utilisateur["dateDeNaissance"])):null,
                 "type"=>"data"
             ],
             "email"=>[
                 "label"=>"Email : ",
-                "value"=>$Utilisateur["email"],
+                "value"=>$utilisateur["email"],
                 "type"=>"data"
             ],
             "nomRole"=>[
                 "label"=>"Role : ",
-                "value"=>$Utilisateur["nomRole"],
+                "value"=>$utilisateur["nomRole"],
                 "type"=>"data"
             ],
             "dateInscription"=>[
                 "label"=>"Date d'inscription : ",
-                "value"=>date('d-m-Y',strtotime($Utilisateur["dateInscription"])),
+                "value"=>date('d-m-Y',strtotime($utilisateur["dateInscription"])),
                 "type"=>"data"
             ],
             "updateMotDePasse"=>[

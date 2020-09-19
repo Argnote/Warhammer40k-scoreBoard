@@ -451,8 +451,9 @@ class UtilisateurController extends Controller
         if(!empty($_SESSION["idUtilisateur1"]) && empty($_GET["idUtilisateur"]))
         {
             $utilisateurManager->delete($_SESSION["idUtilisateur1"]);
-            unset($_SESSION);
-            session_destroy();
+            unset($_SESSION["role"]);
+            unset($_SESSION["idUtilisateur1"]);
+            unset($_SESSION["pseudoJoueur1"]);
             $_SESSION["SuccesMessageUtilisateur"] = Message::suppressionCompte();
             $this->redirectTo("Utilisateur", "succesMessageUtilisateur");
         }

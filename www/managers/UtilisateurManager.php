@@ -38,6 +38,7 @@ class UtilisateurManager extends Manager {
         $requete->querySelect("*");
         $requete->queryFrom();
         $requete->queryJoin("utilisateur","role","idRole","idRole");
+        $requete->queryOrderBy("dateInscription","DESC");
         return $requete->queryGetArray();
     }
     public function manageUserToken($id,$token,$values = null)

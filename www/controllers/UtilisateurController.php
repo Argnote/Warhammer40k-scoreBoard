@@ -453,7 +453,7 @@ class UtilisateurController extends Controller
             $utilisateurManager->delete($_SESSION["idUtilisateur1"]);
             unset($_SESSION);
             session_destroy();
-            $_SESSION["messageError"] = Message::suppressionCompte();
+            $_SESSION["SuccesMessageUtilisateur"] = Message::suppressionCompte();
             $this->redirectTo("Utilisateur", "succesMessageUtilisateur");
         }
         //la suppresion de compte par un admin permet de supprimer le compte en db

@@ -454,6 +454,7 @@ class UtilisateurController extends Controller
             unset($_SESSION["role"]);
             unset($_SESSION["idUtilisateur1"]);
             unset($_SESSION["pseudoJoueur1"]);
+            unset($_SESSION["token"]);
             $_SESSION["SuccesMessageUtilisateur"] = Message::suppressionCompte();
             $this->redirectTo("Utilisateur", "succesMessageUtilisateur");
         }

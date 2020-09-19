@@ -62,4 +62,13 @@ class UtilisateurManager extends Manager {
         $requete->queryFrom();
         return $requete->queryGetArrayToArray();
     }
+
+    public function getRole(int $idRole)
+    {
+        $requete = new QueryBuilder(Role::class, 'role');
+        $requete->querySelect("*");
+        $requete->queryFrom();
+        $requete->queryWhere("idRole","=",$idRole);
+        return $requete->queryGetValue();
+    }
 }

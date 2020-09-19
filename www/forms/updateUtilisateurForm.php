@@ -83,6 +83,8 @@ class updateUtilisateurForm
                         "type" => "select",
                         "value" => $role,
                         "label" => "Modifier le role:",
+                        "errorMsg" => "Le role n'est pas valide",
+                        "required" => false,
                         "config" =>[
                             "required" => false,
                             "form"=>$utilisateur["config"]["id"],

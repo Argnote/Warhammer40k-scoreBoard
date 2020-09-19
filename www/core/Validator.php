@@ -6,6 +6,7 @@ use DateTime;
 use warhammerScoreBoard\forms\InitialisationPartieForm;
 use warhammerScoreBoard\managers\MissionJoueurManager;
 use warhammerScoreBoard\managers\MissionManager;
+use warhammerScoreBoard\managers\UtilisateurManager;
 use warhammerScoreBoard\models\MissionJoueur;
 use warhammerScoreBoard\models\Utilisateur;
 use function Sodium\compare;
@@ -227,6 +228,18 @@ protected $errosMsg;
         if(array_key_exists("uniq",$config))
             $this->uniq($pseudo,$config["uniq"]);
         if (!preg_match("#[a-zA-Z0-9]+$#", $pseudo) || strlen($pseudo) > 50)
+            return false;
+        return true;
+    }
+
+    private function checkIdRole($role)
+    {
+        if(!$this->checkNumeric($role))
+            return false;
+
+        $utilisateurManager = new UtilisateurManager();
+        $role = $utilisateurManager->getRole($role);
+        if (empty($role))
             return false;
         return true;
     }

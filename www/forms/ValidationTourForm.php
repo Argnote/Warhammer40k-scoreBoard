@@ -8,7 +8,7 @@ use warhammerScoreBoard\core\Helper;
 
 class ValidationTourForm
 {
-    public static function getForm(array $missionJoueur, bool $finPartie)
+    public static function getForm(array $missionJoueur, int $finPartie)
     {
         $fields = 0;
         $form = ["config"=>[

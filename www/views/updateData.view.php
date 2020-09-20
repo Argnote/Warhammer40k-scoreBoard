@@ -4,4 +4,4 @@
     $this->addModal("errors",$errors);
 endif;?>
 
-<?php $this->addModal("form", $dataForm);
+<?php $this->addModal("form", $updateData);

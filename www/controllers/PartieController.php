@@ -112,7 +112,7 @@ class PartieController extends Controller
         if ($tourInfo == 6)
         {
             $tourInfo = "Points de fin de partie";
-            $finPartie = 1;
+            $finPartie = 2;
             $missionManager = new MissionManager();
             $missionJoueur = new MissionJoueur();
             $missions = $missionManager->getManyMission(["idMission"],[["typeCategorie","=","3"]]);
@@ -138,7 +138,7 @@ class PartieController extends Controller
         else
         {
             $tourInfo = "Round ".$tourInfo;
-            $finPartie = 0;
+            $finPartie = 1;
         }
         for($j=1;$j<=2;$j++)
         {

@@ -115,3 +115,7 @@
 /nouvelle-mission:
   controller: Mission
   action: createMission
+
+/modifier-mission:
+  controller: Mission
+  action: updateMission

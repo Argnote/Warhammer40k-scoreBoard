@@ -12,13 +12,13 @@ class GetDataMission
     {
         $marquage = "";
         switch ($mission->getMarquageFinPartie()):
-            case 0:
+            case 1:
                 $marquage="Progressif";
                 break;
-            case 1:
+            case 2:
                 $marquage="Fin de partie";
                 break;
-            case 2:
+            case 3:
                 $marquage="Progressif et Fin de partie";
                 break;
         endswitch;

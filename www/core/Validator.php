@@ -267,7 +267,7 @@ protected $errosMsg;
 
     private function checkMarquageFinPartie($point)
     {
-        if(!is_numeric($point) || $point > 2)
+        if(!is_numeric($point) || $point > 3 || $point < 1)
             return false;
         return true;
     }

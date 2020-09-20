@@ -96,6 +96,12 @@ class UtilisateurController extends Controller
             $role = $utilisateurManager->getAllRole();
             $role = TransformArrayToSelected::transformArrayToSelected($role,"idRole","nomRole");
             $consultationAdmin = "?idUtilisateur=".$idUtilisateur;
+            $result = $utilisateurManager->getUtilisateur(["idUtilisateur"], [["idUtilisateur","=",$idUtilisateur]]);
+            if(empty($result))
+            {
+                $_SESSION["messageError"] = Message::erreurProfilNotFound();
+                $this->redirectTo("Errors", "errorMessage");
+            }
         }
 
         $configFormUser = updateUtilisateurForm::getForm($consultationAdmin,$role);
@@ -175,7 +181,7 @@ class UtilisateurController extends Controller
             }
         }
         $myView->assign("title", "Modification du profil");
-        $myView->assign("dataForm", $configFormUser);
+        $myView->assign("updateData", $configFormUser);
     }
 
 

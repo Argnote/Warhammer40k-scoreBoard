@@ -248,6 +248,38 @@ protected $errosMsg;
     {
         if(array_key_exists("uniq",$config))
             $this->uniq($mission,$config["uniq"]);
+        return true;
+    }
+
+    private function checkNombrePointPossiblePartie($point)
+    {
+        if(!is_numeric($point) || $point > 45)
+            return false;
+        return true;
+    }
+
+    private function checkNombrePointPossibleTour($point)
+    {
+        if(!is_numeric($point) || $point > 15)
+            return false;
+        return true;
+    }
+
+    private function checkMarquageFinPartie($point)
+    {
+        if(!is_numeric($point) || $point > 2)
+            return false;
+        return true;
+    }
+    private function checkIdCategorie($id)
+    {
+        if(!is_numeric($id))
+            return false;
+        $missionManager = new MissionManager();
+        $result = $missionManager->categoriExist($id);
+        if(empty($result->getIdCategorie()))
+            return false;
+        return true;
     }
 
 }

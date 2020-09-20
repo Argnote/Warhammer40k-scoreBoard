@@ -58,4 +58,13 @@ class MissionManager extends Manager
         $requete->queryFrom();
         return $requete->queryGetArrayToArray();
     }
+
+    public function categoriExist(int $idCategorie)
+    {
+        $requete = new QueryBuilder(Mission::class, "categorie");
+        $requete->querySelect("idCategorie");
+        $requete->queryFrom();
+        $requete->queryWhere("idCategorie", "=", $idCategorie);
+        return $requete->queryGetValue();
+    }
 }

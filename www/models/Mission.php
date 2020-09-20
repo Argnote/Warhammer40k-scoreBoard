@@ -15,32 +15,32 @@ class Mission extends Model
     protected $nomCategorie;
     protected $marquageFinPartie;
 
-    public function setIdMission(int $idMission)
+    public function setIdMission($idMission)
     {
         $this->idMission = $idMission;
     }
 
-    public function setNomMission(string $nomMission)
+    public function setNomMission($nomMission)
     {
         $this->nomMission = $nomMission;
     }
 
-    public function setDescription(string $description)
+    public function setDescription($description)
     {
         $this->description = $description;
     }
 
-    public function setNombrePointPossiblePartie(int $nombrePointPossiblePartie)
+    public function setNombrePointPossiblePartie($nombrePointPossiblePartie)
     {
         $this->nombrePointPossiblePartie = $nombrePointPossiblePartie;
     }
 
-    public function setNombrePointPossibleTour(int $nombrePointPossibleTour)
+    public function setNombrePointPossibleTour($nombrePointPossibleTour)
     {
         $this->nombrePointPossibleTour = $nombrePointPossibleTour;
     }
 
-    public function setIdCategorie(int $idCategorie)
+    public function setIdCategorie($idCategorie)
     {
         $this->idCategorie = $idCategorie;
     }

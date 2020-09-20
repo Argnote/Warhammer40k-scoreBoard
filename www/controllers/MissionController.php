@@ -8,11 +8,13 @@ use warhammerScoreBoard\core\Controller;
 use warhammerScoreBoard\core\Helper;
 use warhammerScoreBoard\core\tools\Message;
 use warhammerScoreBoard\core\tools\TransformArrayToSelected;
+use warhammerScoreBoard\core\Validator;
 use warhammerScoreBoard\core\View;
 use warhammerScoreBoard\forms\MissionForm;
 use warhammerScoreBoard\getData\GetDataMission;
 use warhammerScoreBoard\getData\GetListDataMission;
 use warhammerScoreBoard\managers\MissionManager;
+use warhammerScoreBoard\models\Mission;
 
 class MissionController extends Controller
 {
@@ -58,7 +60,26 @@ class MissionController extends Controller
         $categorie = TransformArrayToSelected::transformArrayToSelected($categorie,"idCategorie","nomCategorie");
         $form = MissionForm::getForm($categorie);
         $myView = new View("createData","front");
+
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $validator = new Validator();
+            $errors = $validator->checkForm($form, $_POST);
+            if (empty($errors))
+            {
+                $mission = new Mission();
+                $mission = $mission->hydrate($_POST);
+                $missionManager->save($mission);
+                $this->redirectTo("Mission", "getListMission");
+            }
+            else
+            {
+                $errors = array_unique($errors);
+                $myView->assign("errors", $errors);
+            }
+        }
         $myView->assign("title","Nouvelle mission");
         $myView->assign("createData",$form);
+
+
     }
 }

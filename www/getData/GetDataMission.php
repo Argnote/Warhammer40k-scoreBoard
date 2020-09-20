@@ -23,6 +23,16 @@ class GetDataMission
                 break;
         endswitch;
 
+        $archived = "";
+        switch ($mission->getArchived()):
+            case 0:
+                $archived="Mission active";
+                break;
+            case 1:
+                $archived="Mission inactive";
+                break;
+        endswitch;
+
         return [
             "id"=>[
                 "label"=>"Id de la mission : ",
@@ -59,6 +69,11 @@ class GetDataMission
             "categorie"=>[
                 "label"=>"Catégorie : ",
                 "value"=>$mission->getNomCategorie(),
+                "type"=>"data"
+            ],
+            "archived"=>[
+                "label"=>"Archivé : ",
+                "value"=>$archived,
                 "type"=>"data"
             ],
         ];

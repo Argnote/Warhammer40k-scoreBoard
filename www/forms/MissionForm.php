@@ -109,8 +109,32 @@ class MissionForm
                         "defaultValue" => "Catégories",
                         "name" => "idCategorie"
                     ]
+                ],
+                "archived"=>[
+                    "type" => "select",
+                    "value" => [
+                        0=>[
+                            "value"=>"false",
+                            "label"=>"Mission Active"
+                        ],
+                        1=>[
+                            "value"=> true,
+                            "label"=>"Mission Innactive"
+                        ],
+                    ],
+                    "label" => "désactiver une mission",
+                    "errorMsg" => "Archivage incorrecte",
+                    "required" => $required,
+                    "config" =>[
+                        "required" => $required,
+                        "form"=>"formMission",
+                        "defaultValue" => "désactiver une mission",
+                        "name" => "archived"
+                    ]
                 ]
+
             ]
+
         ];
     }
 }

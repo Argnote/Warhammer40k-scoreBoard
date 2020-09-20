@@ -15,7 +15,7 @@ class MissionManager extends Manager
         parent::__construct(Mission::class, 'mission');
     }
 
-    public function getManyMission(array $data = ["*"], array $conditions = null)
+    public function getManyMission(array $data = ["*"], array $conditions = null, bool $activeOnly = null)
     {
         $requete = new QueryBuilder(Mission::class, "mission");
         $requete->querySelect($data);
@@ -28,17 +28,25 @@ class MissionManager extends Manager
                 $requete->queryWhere($condition[0], $condition[1], $condition[2]);
             }
         }
+        if($activeOnly == true)
+        {
+            $requete->queryWhere("archived","=", "0");
+        }
         $requete->queryOrderBy("typeCategorie,nomCategorie,nomMission","ASC");
         return $requete->queryGetArrayToArray();
     }
 
-    public function getMission(int $idMission)
+    public function getMission(int $idMission, bool $activeOnly = null)
     {
         $requete = new QueryBuilder(Mission::class, "mission");
         $requete->querySelect(["*"]);
         $requete->queryFrom();
         $requete->queryJoin("mission","categorie","idCategorie","idCategorie");
         $requete->queryWhere("idMission","=", $idMission);
+        if($activeOnly == true)
+        {
+            $requete->queryWhere("archived","=", "0");
+        }
         return $requete->queryGetValue();
     }
 

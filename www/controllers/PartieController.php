@@ -89,7 +89,7 @@ class PartieController extends Controller
                 $myView->assign("errors", $errors);
             }
         }
-        $missionsPrincipal = $missions->getManyMission(["idMission","nomMission"],[["typeCategorie","=","1"]]);
+        $missionsPrincipal = $missions->getManyMission(["idMission","nomMission"],[["typeCategorie","=","1"]],true);
         $missionsPrincipal = TransformArrayToSelected::transformArrayToSelected($missionsPrincipal,"idMission", "nomMission");
         $myView->assign("missionPrincipal", $missionsPrincipal);
 
@@ -97,7 +97,7 @@ class PartieController extends Controller
         $armee = TransformArrayToSelected::transformArrayToSelected($armee,"idArmee", "nomArmee", "nomFaction");
         $myView->assign("armee", $armee);
 
-        $missionsSecondaire = $missions->getManyMission(["idMission","nomMission","nomCategorie"],[["typeCategorie","=","2"]]);
+        $missionsSecondaire = $missions->getManyMission(["idMission","nomMission","nomCategorie"],[["typeCategorie","=","2"]],true);
         $missionsSecondaire = TransformArrayToSelected::transformArrayToSelected($missionsSecondaire,"idMission", "nomMission", "nomCategorie");
         $myView->assign("missionSecondaire", $missionsSecondaire);
     }
@@ -115,7 +115,7 @@ class PartieController extends Controller
             $finPartie = 2;
             $missionManager = new MissionManager();
             $missionJoueur = new MissionJoueur();
-            $missions = $missionManager->getManyMission(["idMission"],[["typeCategorie","=","3"]]);
+            $missions = $missionManager->getManyMission(["idMission"],[["typeCategorie","=","3"]],true);
             foreach ($missions as $mission)
             {
                 for ($i = 1; $i <= 2; $i++)

@@ -35,7 +35,12 @@ class Manager
         {
             return null !== $objectToSave;
         });
-        //print_r($objectArray);
+        foreach ($objectArray as $key=>$value)
+        {
+            if($value == "false" || "0")
+                $objectArray[$key] = 0;
+        }
+//        print_r($objectArray);
         $columns = array_keys($objectArray);
         // On met 2 points devant chaque clé du tableau
         $params = array_combine

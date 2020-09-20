@@ -14,6 +14,7 @@ class Mission extends Model
     protected $idCategorie;
     protected $nomCategorie;
     protected $marquageFinPartie;
+    protected $archived;
 
     public function setIdMission($idMission)
     {
@@ -55,6 +56,11 @@ class Mission extends Model
         $this->nomCategorie = $nomCategorie;
     }
 
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+    }
+
     public function getIdMission()
     {
         return $this->idMission;
@@ -93,5 +99,10 @@ class Mission extends Model
     public function getNomCategorie()
     {
         return $this->nomCategorie;
+    }
+
+    public function getArchived()
+    {
+        return $this->archived;
     }
 }

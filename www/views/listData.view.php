@@ -12,5 +12,5 @@
 <?php endif;?>
 
 <div class="col-sm-12">
-    <?php $this->addModal("ListData", $listData);?>
+    <?php $this->addModal("listData", $listData);?>
 </div>

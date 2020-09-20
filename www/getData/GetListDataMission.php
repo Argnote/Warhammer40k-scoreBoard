@@ -15,7 +15,7 @@ class GetListDataMission
                 "idMission"=>[
                     "class"=>"col-sm-3",
                     "type"=>"label",
-                    "label"=>"idMission"
+                    "label"=>"id de l'armée"
                 ],
                 "nomMission"=>[
                     "class"=>"col-sm-3",

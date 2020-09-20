@@ -28,8 +28,8 @@ class MissionController extends Controller
 //        print_r($listMission);
 //        echo "</pre>";
         $myView = new View("listData","front");
-        $myView->assign("title", "Liste des missions");
-        $myView->assign("createLink",Helper::getUrl("Mission","createMission"));
+        $myView->assignTitle("Liste des missions");
+        $myView->assignLink("create",Helper::getUrl("Mission","createMission"),"Ajouter une mission");
         $myView->assign("listData", $listMission);
     }
 
@@ -48,9 +48,9 @@ class MissionController extends Controller
         }
         $mission = GetDataMission::getData($result);
         $myView = new View("getData","front");
-        $myView->assign("title","Mission");
+        $myView->assignTitle("Consultation mission");
         $myView->assign("data",$mission);
-        $myView->assign("updateLink",Helper::getUrl("Mission","updateMission")."?idMission=".$_GET["idMission"]);
+        $myView->assignLink("update",Helper::getUrl("Mission","updateMission")."?idMission=".$_GET["idMission"],"Modifier la mission");
     }
 
     public function createMissionAction()
@@ -78,7 +78,7 @@ class MissionController extends Controller
                 $myView->assign("errors", $errors);
             }
         }
-        $myView->assign("title","Nouvelle mission");
+        $myView->assignTitle("Nouvelle mission");
         $myView->assign("createData",$form);
 
 
@@ -121,7 +121,7 @@ class MissionController extends Controller
                 $myView->assign("errors", $errors);
             }
         }
-        $myView->assign("title","Modification mission");
+        $myView->assignTitle("Modification de la mission");
         $myView->assign("updateData",$form);
     }
 }

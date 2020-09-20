@@ -48,7 +48,7 @@ class UtilisateurController extends Controller
         $utilisateurs = $utilisateurManager->getAllUtilisateur();
         $listUtilisateur = GetListDataUtilisateur::getData($utilisateurs);
         $myView = new View("listData","front");
-        $myView->assign("title","Liste des utlisateurs");
+        $myView->assignTitle("Liste des utlisateurs");
         $myView->assign("listData",$listUtilisateur);
     }
     public function getUtilisateurAction()
@@ -69,10 +69,10 @@ class UtilisateurController extends Controller
         {
             $profil = GetDataProfilUtilisateur::getData($result);
             $profilView = new View("getData","front");
-            $profilView->assign("title","Profil");
+            $profilView->assignTitle("Consultation du profil");
             $profilView->assign("data",$profil);
-            $profilView->assign("updateLink",Helper::getUrl("Utilisateur","updateUtilisateur").$consultationAdmin);
-            $profilView->assign("deleteLink",Helper::getUrl("Utilisateur","deleteUtilisateur").$consultationAdmin);
+            $profilView->assignLink("update",Helper::getUrl("Utilisateur","updateUtilisateur").$consultationAdmin,"Modifier le profil");
+            $profilView->assignLink("delete",Helper::getUrl("Utilisateur","deleteUtilisateur").$consultationAdmin,"Supprimer le profil");
         }
         else
         {

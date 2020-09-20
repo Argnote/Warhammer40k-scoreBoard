@@ -9,7 +9,7 @@ use warhammerScoreBoard\models\Mission;
 
 class MissionForm
 {
-    public static function getForm(array $listFaction,int $idMission = null){
+    public static function getForm(array $listCategorie, int $idMission = null){
         $link = Helper::getUrl("Mission", "createMission");
         $required = true;
         if(is_numeric($idMission))
@@ -65,7 +65,7 @@ class MissionForm
                             "label"=>"Progressif et Fin de partie"
                         ],
                     ],
-                    "label" => "Modifier le type de marquage:",
+                    "label" => "Modifier le type de marquage :",
                     "errorMsg" => "marquage incorrecte",
                     "required" => $required,
                     "config" =>[
@@ -99,8 +99,8 @@ class MissionForm
                 ],
                 "idCategorie"=>                    [
                     "type" => "select",
-                    "value" => $listFaction,
-                    "label" => "Modifier la catégorie:",
+                    "value" => $listCategorie,
+                    "label" => "Modifier la catégorie :",
                     "errorMsg" => "Le role n'est pas valide",
                     "required" => $required,
                     "config" =>[
@@ -122,13 +122,13 @@ class MissionForm
                             "label"=>"Mission Innactive"
                         ],
                     ],
-                    "label" => "désactiver une mission",
+                    "label" => "statut de la mission :",
                     "errorMsg" => "Archivage incorrecte",
                     "required" => $required,
                     "config" =>[
                         "required" => $required,
                         "form"=>"formMission",
-                        "defaultValue" => "désactiver une mission",
+                        "defaultValue" => "statut de la mission",
                         "name" => "archived"
                     ]
                 ]

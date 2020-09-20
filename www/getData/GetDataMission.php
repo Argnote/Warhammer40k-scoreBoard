@@ -49,32 +49,38 @@ class GetDataMission
             "description"=>[
                 "label"=>"Description : ",
                 "value"=>$mission->getDescription(),
-                "type"=>"data"
+                "type"=>"data",
+                "admin"=>true
             ],
             "marquage"=>[
                 "label"=>"Type de marquage : ",
                 "value"=>$marquage,
-                "type"=>"data"
+                "type"=>"data",
+                "admin"=>true
             ],
             "nombrePointPossiblePartie"=>[
                 "label"=>"Nombre de points par partie : ",
                 "value"=>$mission->getNombrePointPossiblePartie(),
-                "type"=>"data"
+                "type"=>"data",
+                "admin"=>true
             ],
             "nombrePointPossibleTour"=>[
                 "label"=>"Nombre de points par tour : ",
                 "value"=>$mission->getNombrePointPossibleTour(),
-                "type"=>"data"
+                "type"=>"data",
+                "admin"=>true
             ],
             "categorie"=>[
                 "label"=>"Catégorie : ",
                 "value"=>$mission->getNomCategorie(),
-                "type"=>"data"
+                "type"=>"data",
+                "admin"=>true
             ],
             "archived"=>[
                 "label"=>"Archivé : ",
                 "value"=>$archived,
-                "type"=>"data"
+                "type"=>"data",
+                "admin"=>true
             ],
         ];
     }

@@ -93,7 +93,7 @@ class PartieController extends Controller
         $missionsPrincipal = TransformArrayToSelected::transformArrayToSelected($missionsPrincipal,"idMission", "nomMission");
         $myView->assign("missionPrincipal", $missionsPrincipal);
 
-        $armee = $armees->getArmee();
+        $armee = $armees->getManyArmee(null,true);
         $armee = TransformArrayToSelected::transformArrayToSelected($armee,"idArmee", "nomArmee", "nomFaction");
         $myView->assign("armee", $armee);
 

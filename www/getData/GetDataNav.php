@@ -69,6 +69,13 @@ class GetDataNav
                 "id" => "",
                 "class" => "",
             ],
+            "listArmee" => [
+                "url" => Helper::getUrl("Armee","getListArmee"),
+                "text" => "Consulter la liste des armées",
+                "statu" => EnumStatuNav::admin,
+                "id" => "",
+                "class" => "",
+            ],
             "deconnexion" => [
                 "url" => Helper::getUrl("Utilisateur","logout"),
                 "text" => "Se déconnecter",

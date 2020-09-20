@@ -3,27 +3,39 @@
 
 <?php $this->addModal("getData", $data);
 
-if(isset($updateLink)):?>
+if(isset($updateLink) && isset($updateLinkLabel)):?>
 <div class="row">
     <div class="col-sm-12">
         <div class="col-inner">
-            <p><a href="<?= $updateLink ?>">Modifier <?= $title?></a></p>
+            <p><a href="<?= $updateLink ?>"><?= $updateLinkLabel?></a></p>
         </div>
     </div>
 </div>
 <br/>
-<?php endif;
+<?php endif;?>
 
-if(isset($deleteLink)):?>
+<?php if(isset($deleteLink)&& isset($deleteLinkLabel)):?>
 <div class="row">
     <div class="col-sm-12">
         <div class="col-inner">
             <p>Attention la suppresion du compte est immédiate et irréversible !!!</p>
-            <p><a href="<?= $deleteLink ?>">Supprimer <?= $title?></a></p>
+            <p><a href="<?= $deleteLink ?>"><?= $deleteLinkLabel?></a></p>
         </div>
     </div>
 </div>
-
 <?php endif;?>
+
+<?php if(isset($archivedLink)&& isset($archivedLinkLabel)):?>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-inner">
+                <p>Attention la suppresion du compte est immédiate et irréversible !!!</p>
+                <p><a href="<?= $archivedLink ?>"><?= $archivedLinkLabel?></a></p>
+            </div>
+        </div>
+    </div>
+<?php endif;?>
+
+
 
 

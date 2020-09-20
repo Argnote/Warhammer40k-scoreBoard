@@ -10,6 +10,7 @@ class Armee extends Model
     protected $nomArmee;
     protected $idFaction;
     protected $nomFaction;
+    protected $archived;
 
     public function setIdArmee($idArmee)
     {
@@ -31,6 +32,11 @@ class Armee extends Model
         $this->nomFaction=$nomFaction;
     }
 
+    public function setArchived($archived)
+    {
+        $this->archived=$archived;
+    }
+
     public function getIdArmee()
     {
         return $this->idArmee;
@@ -49,5 +55,10 @@ class Armee extends Model
     public function getNomFaction()
     {
         return $this->nomFaction;
+    }
+
+    public function getArchived()
+    {
+        return $this->archived;
     }
 }

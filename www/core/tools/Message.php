@@ -174,4 +174,15 @@ class Message
             ]
         ];
     }
+
+    public static function erreurArmee()
+    {
+        return [
+            "title" => "Consultation Armée",
+
+            "body" => [
+                "L'armée n'a pas été trouvée."
+            ]
+        ];
+    }
 }

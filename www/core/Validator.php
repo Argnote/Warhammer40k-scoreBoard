@@ -4,6 +4,7 @@ namespace warhammerScoreBoard\core;
 
 use DateTime;
 use warhammerScoreBoard\forms\InitialisationPartieForm;
+use warhammerScoreBoard\managers\ArmeeManager;
 use warhammerScoreBoard\managers\MissionJoueurManager;
 use warhammerScoreBoard\managers\MissionManager;
 use warhammerScoreBoard\managers\UtilisateurManager;
@@ -282,4 +283,21 @@ protected $errosMsg;
         return true;
     }
 
+    private function checkNomArmee($armee,$config)
+    {
+        if(array_key_exists("uniq",$config))
+            $this->uniq($armee,$config["uniq"]);
+        return true;
+    }
+
+    private function checkIdFaction($id)
+    {
+        if(!is_numeric($id))
+            return false;
+        $armeeManager = new ArmeeManager();
+        $result = $armeeManager->factionExist($id);
+        if(empty($result->getIdFaction()))
+            return false;
+        return true;
+    }
 }

@@ -2,8 +2,6 @@
 
 namespace warhammerScoreBoard\core;
 
-use warhammerScoreBoard\forms\getDataNavForm;
-
 class View
 {
     private $template;
@@ -46,6 +44,17 @@ class View
     public function assign($key, $value)
     {
         $this->data[$key] = $value;
+    }
+
+    public function assignTitle($title)
+    {
+        $this->data["title"] = $title;
+    }
+
+    public function assignLink($name, $link, $label)
+    {
+        $this->data[$name."Link"] = $link;
+        $this->data[$name."LinkLabel"] = $label;
     }
 
     // $this->addModal("carousel", $data);

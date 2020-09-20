@@ -178,7 +178,7 @@ protected $errosMsg;
         $categories = array();
         foreach ($config["compare"] as $value)
         {
-            if(empty($missionManager->getCategorie($this->$value)["idCategorie"]))
+            if(empty($missionManager->getCategorieMission($this->$value)["idCategorie"]))
             {
                 $this->errosMsg["missioninconnue"] = "mission inconnue";
                 return false;
@@ -186,7 +186,7 @@ protected $errosMsg;
 
             array_push($missions,$this->$value);
             //unset($config["compare"][array_search($value,$config["compare"])]);
-            array_push($categories,$missionManager->getCategorie($this->$value)["idCategorie"]);
+            array_push($categories,$missionManager->getCategorieMission($this->$value)["idCategorie"]);
         }
         if(($missions != array_unique($missions))||($categories != array_unique($categories)))
             return false;
@@ -242,6 +242,12 @@ protected $errosMsg;
         if (empty($role))
             return false;
         return true;
+    }
+
+    private function checkNomMission($mission,$config)
+    {
+        if(array_key_exists("uniq",$config))
+            $this->uniq($mission,$config["uniq"]);
     }
 
 }

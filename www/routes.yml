@@ -111,3 +111,7 @@
 /description-mission:
   controller: Mission
   action: getMission
+
+/nouvelle-mission:
+  controller: Mission
+  action: createMission

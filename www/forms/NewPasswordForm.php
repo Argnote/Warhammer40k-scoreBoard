@@ -32,7 +32,6 @@ class NewPasswordForm {
                     "class"=>"form-control form-control-user",
                     "id"=>"",
                     "required"=>true,
-                    "confirmWith"=>"pwd",
                     "errorMsg"=>"Votre mot de passe de confirmation ne correspond pas"
                 ],
             ]

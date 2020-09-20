@@ -42,12 +42,20 @@ class MissionManager extends Manager
         return $requete->queryGetValue();
     }
 
-    public function getCategorie(int $idMission)
+    public function getCategorieMission(int $idMission)
     {
         $requete = new QueryBuilder(Mission::class, "mission");
         $requete->querySelect("idCategorie");
         $requete->queryFrom();
         $requete->queryWhere("idMission", "=", $idMission);
         return $requete->queryGetValueToArray();
+    }
+
+    public function getAllCategorie()
+    {
+        $requete = new QueryBuilder(Mission::class, "categorie");
+        $requete->querySelect("*");
+        $requete->queryFrom();
+        return $requete->queryGetArrayToArray();
     }
 }

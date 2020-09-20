@@ -4,6 +4,10 @@ body
     background-color: #222;
     color: white;
 }
+textarea
+{
+    text-align: left;
+}
 main
 {
     text-align: center;

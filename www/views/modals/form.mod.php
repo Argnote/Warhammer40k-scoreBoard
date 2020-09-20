@@ -23,8 +23,17 @@ class="<?= $data["config"]["class"]?>">
             <div class="col-sm-6">
                 <div class="col-inner col-right">
                     <?php if(!empty($configField["type"]) && $configField["type"] != "select"):?>
+                        <?php if($configField["type"] == "textarea"):?>
+                    <textarea
+                        <?php else:?>
                     <input
-                        value="<?= (isset($inputData[$name]) && $configField["type"]!="password")?$inputData[$name]:'' ?>"
+                        <?php endif;?>
+                        value="<?= $configField["value"]??'' ?>"
+                        <?php if($configField["type"] == "number"):?>
+                        min="<?= $configField["min"]??'' ?>"
+                        max="<?= $configField["max"]??'' ?>"
+                        <?php endif;?>
+                        value="<?= $configField["value"]??'' ?>"
                         type="<?= $configField["type"]??'' ?>"
                         name="<?= $name??'' ?>"
                         placeholder="<?= $configField["placeholder"]??'' ?>"
@@ -35,7 +44,15 @@ class="<?= $data["config"]["class"]?>">
                         if (isset($configField["required"]) && $configField["required"] == true):
                             $required = "*"?>
                             required="required"
-                        <?php endif;?> >
+                        <?php endif;?>
+
+                        <?php if($configField["type"] == "textarea"):?>
+                            rows="<?= $configField["rows"]??'' ?>"
+                            cols="<?= $configField["cols"]??'' ?>"
+                            ></textarea>
+                        <?php else:?>
+                        >
+                        <?php endif;?>
                     <?= $required ?>
                 <?php elseif (!empty($configField["type"]) && $configField["type"] == "select"):
                     $this->addModal("select",$configField["config"], $configField["value"]);

@@ -22,7 +22,8 @@ class InitialisationPartieForm
                     "placeholder" => "Nombre de point de la partie",
                     "name" => "format",
                     "required" => false,
-                    "errorMsg" => "Une partie à plus de 100 000 points? Mais vous êtes fou!!"
+                    "errorMsg" => "Une partie à plus de 100 000 points? Mais vous êtes fou!!",
+                    "id"=>"format"
                 ],
                 "missionPrincipal" => [
                     "name" => "missionPrincipal",

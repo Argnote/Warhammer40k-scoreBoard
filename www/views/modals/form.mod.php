@@ -49,7 +49,7 @@ class="<?= $data["config"]["class"]?>">
                         <?php if($configField["type"] == "textarea"):?>
                             rows="<?= $configField["rows"]??'' ?>"
                             cols="<?= $configField["cols"]??'' ?>"
-                            ></textarea>
+                            ><?= $configField["value"]??'Non renseigné' ?></textarea>
                         <?php else:?>
                         >
                         <?php endif;?>

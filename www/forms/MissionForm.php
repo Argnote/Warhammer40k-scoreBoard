@@ -9,7 +9,7 @@ use warhammerScoreBoard\models\Mission;
 
 class MissionForm
 {
-    public static function getForm(array $listCategorie, int $idMission = null){
+    public static function getForm(array $listCategorie, int $idMission = null, Mission $actuallyValue = null){
         $link = Helper::getUrl("Mission", "createMission");
         $required = true;
         if(is_numeric($idMission))
@@ -17,7 +17,8 @@ class MissionForm
             $required = false;
             $link = Helper::getUrl("Mission", "updateMission")."?idMission=".$idMission;
         }
-
+        if(empty($actuallyValue))
+            $actuallyValue = new Mission();
         return [
             "config"=>[
                 "method"=>"POST",
@@ -30,7 +31,7 @@ class MissionForm
             "fields"=>[
                 "nomMission"=>[
                     "type"=>"text",
-                    "placeholder"=>"nom de la mission",
+                    "placeholder"=>$actuallyValue->getNomMission(),
                     "label"=>"Entrez le nom de la mission : ",
                     "class"=>"",
                     "id"=>"nomMission",
@@ -40,12 +41,13 @@ class MissionForm
                 ],
                 "description"=>[
                     "type"=>"textarea",
+                    "value"=>strip_tags($actuallyValue->getDescription()),
                     "placeholder"=>"Description",
                     "label"=>"Entrez la description de la mission : ",
                     "class"=>"",
                     "id"=>"description",
-                    "rows"=>5,
-                    "cols"=>30,
+                    "rows"=>10,
+                    "cols"=>40,
                     "required"=>false,
                     "errorMsg"=>"Votre mot de passe de confirmation ne correspond pas"
                 ],
@@ -77,7 +79,7 @@ class MissionForm
                 ],
                 "nombrePointPossiblePartie"=>[
                     "type"=>"number",
-                    "value"=>15,
+                    "value"=>$actuallyValue->getNombrePointPossiblePartie()??15,
                     "label"=>"Entrez le nombre de point possible par partie : ",
                     "class"=>"",
                     "id"=>"",
@@ -88,7 +90,7 @@ class MissionForm
                 ],
                 "nombrePointPossibleTour"=>[
                     "type"=>"number",
-                    "value"=>15,
+                    "value"=>$actuallyValue->getNombrePointPossibleTour()??15,
                     "min" => 1,
                     "max" => 45,
                     "label"=>"Entrez le nombre de point possible par tour : ",

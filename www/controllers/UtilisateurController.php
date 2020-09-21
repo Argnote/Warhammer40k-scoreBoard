@@ -64,7 +64,7 @@ class UtilisateurController extends Controller
         }
 
 
-        $result = $utilisateurManager->getUtilisateur(["*"], [["idUtilisateur","=",$idUtilisateur]]);
+        $result = $utilisateurManager->getUtilisateurToArray(["*"], [["idUtilisateur","=",$idUtilisateur]]);
         if (!empty($result))
         {
             $profil = GetDataProfilUtilisateur::getData($result);
@@ -96,15 +96,16 @@ class UtilisateurController extends Controller
             $role = $utilisateurManager->getAllRole();
             $role = TransformArrayToSelected::transformArrayToSelected($role,"idRole","nomRole");
             $consultationAdmin = "?idUtilisateur=".$idUtilisateur;
-            $result = $utilisateurManager->getUtilisateur(["idUtilisateur"], [["idUtilisateur","=",$idUtilisateur]]);
-            if(empty($result))
-            {
-                $_SESSION["messageError"] = Message::erreurProfilNotFound();
-                $this->redirectTo("Errors", "errorMessage");
-            }
         }
 
-        $configFormUser = updateUtilisateurForm::getForm($consultationAdmin,$role);
+        $result = $utilisateurManager->getUtilisateurToObject(["*"], [["idUtilisateur","=",$idUtilisateur]]);
+        if(empty($result))
+        {
+            $_SESSION["messageError"] = Message::erreurProfilNotFound();
+            $this->redirectTo("Errors", "errorMessage");
+        }
+
+        $configFormUser = updateUtilisateurForm::getForm($consultationAdmin,$role,$result);
         $myView = new View("updateData", "front");
         if($_SERVER["REQUEST_METHOD"] == "POST")
         {
@@ -112,8 +113,8 @@ class UtilisateurController extends Controller
             $errors = $validator->checkForm($configFormUser ,$_POST);
             if(empty($errors))
             {
-                $session = $utilisateurManager->getUtilisateur(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
-                if ($session["token"] == $_SESSION["token"]) {
+                $session = $utilisateurManager->getUtilisateurToObject(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
+                if ($session->getToken() == $_SESSION["token"]) {
                     //enregistrement du nouvel utilisateur
                     if (isset($_POST["email"])) {
                         $email = $_POST["email"];
@@ -126,7 +127,7 @@ class UtilisateurController extends Controller
 
                     if (!empty($email)) {
                         $_SESSION["newEmail"] = $email;
-                        $url = URL_HOST . Helper::getUrl("Utilisateur", "updateUtilisateur") . "?key=" . urlencode($idUtilisateur) . "&token=" . urlencode($session["token"]);
+                        $url = URL_HOST . Helper::getUrl("Utilisateur", "updateUtilisateur") . "?key=" . urlencode($idUtilisateur) . "&token=" . urlencode($session->getToken());
                         $configMail = ConfirmAccountMail::getMail($email, $user->getPseudo()??$_SESSION['pseudoJoueur1'], $url);
                         $mail = new Mail();
                         $mail->sendMail($configMail);
@@ -150,7 +151,7 @@ class UtilisateurController extends Controller
 
         if(!empty($_GET['key']) && !empty($_GET['token']))
         {
-            $result = $utilisateurManager->getUtilisateur(["idUtilisateur"],[["idUtilisateur", "=", htmlspecialchars(urldecode($_GET['key']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
+            $result = $utilisateurManager->getUtilisateurToArray(["idUtilisateur"],[["idUtilisateur", "=", htmlspecialchars(urldecode($_GET['key']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
                 if(isset($_SESSION["newEmail"]))
@@ -159,7 +160,7 @@ class UtilisateurController extends Controller
                     $user->setEmail($_SESSION["newEmail"]);
                     $user->setIdUtilisateur($idUtilisateur);
                     $utilisateurManager->save($user);
-                    $this->redirectTo("Utilisateur", "getUtilisateur","idUtilisateur=".urldecode($idUtilisateur));
+                    $this->redirectTo("Utilisateur", "getUtilisateur","?idUtilisateur=".urldecode($idUtilisateur));
 
                 }
                 else
@@ -282,7 +283,7 @@ class UtilisateurController extends Controller
             //acces a la page avec des paramètres
             //recherche en db d'un utilisateur correspondant à la key(email) et au token
             $utilisateurManager = new UtilisateurManager();
-            $result = $utilisateurManager->getUtilisateur(["idUtilisateur",DB_PREFIXE."utilisateur.idRole"],[["email", "=", htmlspecialchars(urldecode($_GET['key']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
+            $result = $utilisateurManager->getUtilisateurToArray(["idUtilisateur",DB_PREFIXE."utilisateur.idRole"],[["email", "=", htmlspecialchars(urldecode($_GET['key']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
                 if ($result["idRole"] == 1)
@@ -340,7 +341,7 @@ class UtilisateurController extends Controller
             if (empty($errors))
             {
                 $utilisateurManager = new UtilisateurManager();
-                $result = $utilisateurManager->getUtilisateur(["idUtilisateur"],[["email", "=", $_POST['email']]]);
+                $result = $utilisateurManager->getUtilisateurToArray(["idUtilisateur"],[["email", "=", $_POST['email']]]);
                 if (!empty($result))
                 {
                     $token = Token::getToken();
@@ -372,7 +373,7 @@ class UtilisateurController extends Controller
 
         if(!empty($_GET['id']) && !empty($_GET['token']))
         {
-            $result = $utilisateurManager->getUtilisateur(["idUtilisateur"],[["idUtilisateur", "=", htmlspecialchars(urldecode($_GET['id']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
+            $result = $utilisateurManager->getUtilisateurToArray(["idUtilisateur"],[["idUtilisateur", "=", htmlspecialchars(urldecode($_GET['id']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
                 $utilisateurManager->manageUserToken($result["idUtilisateur"],Token::getToken());
@@ -386,7 +387,7 @@ class UtilisateurController extends Controller
         }
         elseif(!empty($_SESSION['idUtilisateur1']) && !empty($_SESSION['token']))
         {
-            $session = $utilisateurManager->getUtilisateur(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
+            $session = $utilisateurManager->getUtilisateurToArray(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
             if ($session["token"] == $_SESSION["token"]) {
                 $idUtilisateur = $_SESSION['idUtilisateur1'];
                 if ($_SESSION["role"] == 3 && isset($_GET["idUtilisateur"]) && is_numeric($_GET["idUtilisateur"]))
@@ -431,7 +432,7 @@ class UtilisateurController extends Controller
     {
         Helper::checkConnected();
         $utilisateurManager = new UtilisateurManager();
-        $session = $utilisateurManager->getUtilisateur(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
+        $session = $utilisateurManager->getUtilisateurToArray(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
         if ($session["token"] != $_SESSION["token"])
         {
             $_SESSION["messageError"] = Message::erreurTokenSession();

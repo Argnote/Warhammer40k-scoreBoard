@@ -16,7 +16,7 @@ class UtilisateurManager extends Manager {
         parent::__construct(Utilisateur::class, 'utilisateur');
     }
 
-    public function getUtilisateur(array $data = ["*"], array $conditions = null)
+    public function getUilisateur(array $data = ["*"], array $conditions = null)
     {
         $requete = new QueryBuilder(Utilisateur::class, 'utilisateur');
         $requete->querySelect($data);
@@ -29,6 +29,18 @@ class UtilisateurManager extends Manager {
                 $requete->queryWhere($condition[0], $condition[1], $condition[2]);
             }
         }
+        return $requete;
+    }
+
+    public function getUtilisateurToObject(array $data = ["*"], array $conditions = null)
+    {
+        $requete = $this->getUilisateur($data,$conditions);
+        return $requete->queryGetValue();
+    }
+
+    public function getUtilisateurToArray(array $data = ["*"], array $conditions = null)
+    {
+        $requete = $this->getUilisateur($data,$conditions);
         return $requete->queryGetValueToArray();
     }
 

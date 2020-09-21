@@ -106,7 +106,7 @@ class Utilisateur extends Model
 
     public function getDateDeNaissance()
     {
-        return $this->dateDeNaissance;
+        return date("d-m-Y",strtotime($this->dateDeNaissance));
     }
 
     public function getIdRole()
@@ -135,7 +135,7 @@ class Utilisateur extends Model
     }
     public function getDateInscription()
     {
-        return $this->dateInscription;
+        return date("d-m-Y",strtotime($this->dateInscription));
     }
 }
 

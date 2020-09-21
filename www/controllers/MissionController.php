@@ -101,7 +101,7 @@ class MissionController extends Controller
 
         $categorie = $missionManager->getAllCategorie();
         $categorie = TransformArrayToSelected::transformArrayToSelected($categorie,"idCategorie","nomCategorie");
-        $form = MissionForm::getForm($categorie,$_GET["idMission"]);
+        $form = MissionForm::getForm($categorie,$_GET["idMission"],$result);
         $myView = new View("updateData","front");
 
         if($_SERVER["REQUEST_METHOD"] == "POST") {

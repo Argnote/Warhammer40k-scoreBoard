@@ -73,7 +73,7 @@ class Mission extends Model
 
     public function getDescription()
     {
-        return $this->description;
+        return nl2br($this->description);
     }
 
     public function getNombrePointPossiblePartie()

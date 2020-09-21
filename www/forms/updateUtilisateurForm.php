@@ -9,8 +9,10 @@ use warhammerScoreBoard\models\Utilisateur;
 
 class updateUtilisateurForm
 {
-    public static function getForm(string $admin = null, array $role = null)
+    public static function getForm(string $admin = null, array $role = null, Utilisateur $utilisateur = null)
     {
+        if(empty($utilisateur))
+            $utilisateur = new Utilisateur();
         $utilisateur = [
             "config" => [
                 "method" => "POST",
@@ -23,7 +25,7 @@ class updateUtilisateurForm
             "fields" => [
                 "nomUtilisateur" => [
                     "type" => "text",
-                    "placeholder" => "Modifier le nom",
+                    "placeholder" => $utilisateur->getNomUtilisateur(),
                     "class" => "form-control form-control-user",
                     "id" => "nomUtilisateur",
                     "label" => "Modifier le nom :",
@@ -34,7 +36,7 @@ class updateUtilisateurForm
                 ],
                 "prenom" => [
                     "type" => "text",
-                    "placeholder" => "Modifier le prénom",
+                    "placeholder" => $utilisateur->getPrenom(),
                     "class" => "form-control form-control-user",
                     "id" => "prenom",
                     "label" => "Modifier le prenom :",
@@ -45,7 +47,7 @@ class updateUtilisateurForm
                 ],
                 "pseudo" => [
                     "type" => "text",
-                    "placeholder" => "Modifier le pseudo",
+                    "placeholder" => $utilisateur->getPseudo(),
                     "class" => "form-control form-control-user",
                     "id" => "pseudo",
                     "label" => "Modifier le pseudo :",
@@ -57,7 +59,7 @@ class updateUtilisateurForm
                 ],
                 "email" => [
                     "type" => "email",
-                    "placeholder" => "Modifier l'email",
+                    "placeholder" => $utilisateur->getEmail(),
                     "class" => "form-control form-control-user",
                     "id" => "email",
                     "label" => "Modifier l'adresse email :",
@@ -68,7 +70,7 @@ class updateUtilisateurForm
                 "dateDeNaissance" => [
                     "type" => "date",
                     "class" => "form-control form-control-user",
-                    "id" => "dateDeNaissance",
+                    "id" => $utilisateur->getDateDeNaissance(),
                     "label" => "Modifier la date de naissance :",
                     "required" => false,
                     "errorMsg" => "Erreur dans la date de naissance"

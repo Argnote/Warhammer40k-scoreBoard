@@ -32,7 +32,7 @@ class ArmeeForm
                     "type"=>"text",
                     "placeholder"=>"nom de l'armée",
                     "label"=>"Entrez le nom de l'armée : ",
-                    "class"=>"",
+                    "classGrill"=>"col-sm-6",
                     "id"=>"nomArmee",
                     "required"=>$required,
                     "uniq" => ["table" => "armee", "column" => "nomArmee", "class" => Armee::class],
@@ -40,6 +40,7 @@ class ArmeeForm
                 ],
                 "idFaction"=>[
                     "type" => "select",
+                    "classGrill"=>"col-sm-6",
                     "value" => $listFaction,
                     "label" => "Modifier la faction :",
                     "errorMsg" => "Le la faction n'est pas valide",
@@ -53,6 +54,7 @@ class ArmeeForm
                 ],
                 "archived"=>[
                     "type" => "select",
+                    "classGrill"=>"col-sm-6",
                     "value" => [
                         0=>[
                             "value"=>"false",

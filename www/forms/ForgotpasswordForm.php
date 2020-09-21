@@ -21,6 +21,7 @@ class ForgotpasswordForm {
                     "label"=>"Entrez votre l'adresse email du compte : ",
                     "placeholder"=>"Votre email",
                     "class"=>"form-control form-control-user",
+                    "classGrill"=>"col-sm-6",
                     "id"=>"email",
                     "required"=>true,
                     "errorMsg"=>"Adresse mail invalide"

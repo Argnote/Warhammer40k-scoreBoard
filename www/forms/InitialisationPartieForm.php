@@ -19,6 +19,7 @@ class InitialisationPartieForm
             "fields" => [
                 "format" => [
                     "type" => "number",
+                    "classGrill"=>"col-sm-6",
                     "placeholder" => "Nombre de point de la partie",
                     "name" => "format",
                     "required" => false,
@@ -28,6 +29,7 @@ class InitialisationPartieForm
                 "missionPrincipal" => [
                     "name" => "missionPrincipal",
                     "class" => "select",
+                    "classGrill"=>"col-sm-6",
                     "defaultValue" => "Objectif Pricipal",
                     "form" => "formInitPartie",
                     "required" => true,
@@ -52,6 +54,7 @@ class InitialisationPartieForm
                 "class" => "select",
                 "form" => "formInitPartie",
                 "contrainte" => "armee",
+                "classGrill"=>"col-sm-6",
                 "errorMsg" => "Vous devez selectionner une armée valide"
             ]
             ];
@@ -72,6 +75,7 @@ class InitialisationPartieForm
                     "required" => true,
                     "name" => "missionSecondaire{$i}_Joueur{$j}",
                     "class" => "select",
+                    "classGrill"=>"col-sm-6",
                     "defaultValue" => "Objectif secondaire $i",
                     "form" => "formInitPartie",
                     "contrainte" => "mission",

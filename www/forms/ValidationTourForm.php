@@ -29,11 +29,13 @@ class ValidationTourForm
                 $configMission = [
                     $data."_label" =>[
                         "type" => "label",
+                        "classGrill"=>"col-sm-6",
                         "for" => "mission".$mission["idMission"]."[value]",
                         "text" => $mission["nomMission"],
                     ],
                     $data =>[
                         "type" =>"number",
+                        "classGrill"=>"col-sm-6",
                         "value" => 0,
                         "contrainte" =>"score",
                         "nombrePointPossibleTour" => $mission["nombrePointPossibleTour"],

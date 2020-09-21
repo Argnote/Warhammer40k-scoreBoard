@@ -25,6 +25,7 @@ class updateUtilisateurForm
             "fields" => [
                 "nomUtilisateur" => [
                     "type" => "text",
+                    "classGrill"=>"col-sm-6",
                     "placeholder" => $utilisateur->getNomUtilisateur(),
                     "class" => "form-control form-control-user",
                     "id" => "nomUtilisateur",
@@ -36,6 +37,7 @@ class updateUtilisateurForm
                 ],
                 "prenom" => [
                     "type" => "text",
+                    "classGrill"=>"col-sm-6",
                     "placeholder" => $utilisateur->getPrenom(),
                     "class" => "form-control form-control-user",
                     "id" => "prenom",
@@ -47,6 +49,7 @@ class updateUtilisateurForm
                 ],
                 "pseudo" => [
                     "type" => "text",
+                    "classGrill"=>"col-sm-6",
                     "placeholder" => $utilisateur->getPseudo(),
                     "class" => "form-control form-control-user",
                     "id" => "pseudo",
@@ -59,6 +62,7 @@ class updateUtilisateurForm
                 ],
                 "email" => [
                     "type" => "email",
+                    "classGrill"=>"col-sm-6",
                     "placeholder" => $utilisateur->getEmail(),
                     "class" => "form-control form-control-user",
                     "id" => "email",
@@ -69,6 +73,7 @@ class updateUtilisateurForm
                 ],
                 "dateDeNaissance" => [
                     "type" => "date",
+                    "classGrill"=>"col-sm-6",
                     "class" => "form-control form-control-user",
                     "id" => $utilisateur->getDateDeNaissance(),
                     "label" => "Modifier la date de naissance :",
@@ -83,6 +88,7 @@ class updateUtilisateurForm
                 "idRole" =>
                     [
                         "type" => "select",
+                        "classGrill"=>"col-sm-6",
                         "value" => $role,
                         "label" => "Modifier le role:",
                         "errorMsg" => "Le role n'est pas valide",

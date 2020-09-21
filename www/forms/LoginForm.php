@@ -18,6 +18,7 @@ class LoginForm {
             "fields"=>[
                 "email"=>[
                     "type"=>"email",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Votre email",
                     "class"=>"form-control form-control-user",
                     "label"=>"Entrez votre adresse email : ",
@@ -27,6 +28,7 @@ class LoginForm {
                 ],
                 "motDePasse"=>[
                     "type"=>"password",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Votre mot de passe",
                     "class"=>"form-control form-control-user",
                     "label"=>"Entrez votre mot de passe : ",

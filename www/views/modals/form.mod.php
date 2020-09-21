@@ -8,11 +8,10 @@ $inputData = $GLOBALS["_".strtoupper($data["config"]["method"])];
 action="<?= $data["config"]["action"]?>"
 id="<?= $data["config"]["id"]?>"
 class="<?= $data["config"]["class"]?>">
-
-<?php foreach ($data["fields"] as $name => $configField):?>
     <div class="row">
+<?php foreach ($data["fields"] as $name => $configField):?>
             <?php if(!empty($configField["label"])):?>
-            <div class="col-sm-6">
+            <div class="<?= $configField["classGrill"]??'' ?>">
                 <div class="col-inner  col-left">
                     <label for="<?= $configField["id"]??'' ?>">
                         <?= $configField["label"] ?>
@@ -20,7 +19,7 @@ class="<?= $data["config"]["class"]?>">
                 </div>
             </div>
             <?php endif;?>
-            <div class="col-sm-6">
+            <div class="<?= $configField["classGrill"]??'' ?>">
                 <div class="col-inner col-right">
                     <?php if(!empty($configField["type"]) && $configField["type"] != "select"):?>
                         <?php if($configField["type"] == "textarea"):?>
@@ -64,9 +63,9 @@ class="<?= $data["config"]["class"]?>">
                 </div>
               <?php endif;?>
             </div>
-      </div>
-      <?php endforeach;?>
 
+      <?php endforeach;?>
+    </div>
 
 
   <button class="btn btn-primary buttonDisabled"><?= $data["config"]["submit"];?></button>

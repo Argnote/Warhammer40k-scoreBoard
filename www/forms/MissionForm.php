@@ -33,7 +33,7 @@ class MissionForm
                     "type"=>"text",
                     "placeholder"=>$actuallyValue->getNomMission(),
                     "label"=>"Entrez le nom de la mission : ",
-                    "class"=>"",
+                    "classGrill"=>"col-sm-6",
                     "id"=>"nomMission",
                     "required"=>$required,
                     "uniq" => ["table" => "mission", "column" => "nomMission", "class" => Mission::class],
@@ -44,7 +44,7 @@ class MissionForm
                     "value"=>strip_tags($actuallyValue->getDescription()),
                     "placeholder"=>"Description",
                     "label"=>"Entrez la description de la mission : ",
-                    "class"=>"",
+                    "classGrill"=>"col-sm-6",
                     "id"=>"description",
                     "rows"=>10,
                     "cols"=>40,
@@ -52,6 +52,7 @@ class MissionForm
                     "errorMsg"=>"Votre mot de passe de confirmation ne correspond pas"
                 ],
                 "marquageFinPartie"=>[
+                    "classGrill"=>"col-sm-6",
                     "type" => "select",
                     "value" => [
                         0=>[
@@ -81,7 +82,7 @@ class MissionForm
                     "type"=>"number",
                     "value"=>$actuallyValue->getNombrePointPossiblePartie()??15,
                     "label"=>"Entrez le nombre de point possible par partie : ",
-                    "class"=>"",
+                    "classGrill"=>"col-sm-6",
                     "id"=>"",
                     "min" => 1,
                     "max" => 45,
@@ -94,13 +95,14 @@ class MissionForm
                     "min" => 1,
                     "max" => 45,
                     "label"=>"Entrez le nombre de point possible par tour : ",
-                    "class"=>"",
+                    "classGrill"=>"col-sm-6",
                     "id"=>"",
                     "required"=>$required,
                     "errorMsg"=>"Une mission ne peut pas rapporter plus de 15 points par tour"
                 ],
                 "idCategorie"=>                    [
                     "type" => "select",
+                    "classGrill"=>"col-sm-6",
                     "value" => $listCategorie,
                     "label" => "Modifier la catégorie :",
                     "errorMsg" => "Le role n'est pas valide",
@@ -114,6 +116,7 @@ class MissionForm
                 ],
                 "archived"=>[
                     "type" => "select",
+                    "classGrill"=>"col-sm-6",
                     "value" => [
                         0=>[
                             "value"=>"false",

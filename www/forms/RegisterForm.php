@@ -18,6 +18,7 @@ class RegisterForm {
             "fields"=>[
                 "prenom"=>[
                     "type"=>"text",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Votre prénom",
                     "class"=>"form-control form-control-user",
                     "id"=>"prenom",
@@ -29,6 +30,7 @@ class RegisterForm {
                 ],
                 "nomUtilisateur"=>[
                     "type"=>"text",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Votre nom",
                     "class"=>"form-control form-control-user",
                     "id"=>"nomUtilisateur",
@@ -40,6 +42,7 @@ class RegisterForm {
                 ],
                 "pseudo"=>[
                     "type"=>"text",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Votre pseudo",
                     "class"=>"form-control form-control-user",
                     "id"=>"pseudo",
@@ -52,6 +55,7 @@ class RegisterForm {
                 ],
                 "email"=>[
                     "type"=>"email",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Votre email",
                     "class"=>"form-control form-control-user",
                     "id"=>"email",
@@ -62,6 +66,7 @@ class RegisterForm {
                 ],
                 "motDePasse"=>[
                     "type"=>"password",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Votre mot de passe",
                     "class"=>"form-control form-control-user",
                     "id"=>"password",
@@ -71,6 +76,7 @@ class RegisterForm {
                 ],
                 "confirmationMotDePasse"=>[
                     "type"=>"password",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Confirmation",
                     "class"=>"form-control form-control-user",
                     "id"=>"passwordConfirm",
@@ -81,6 +87,7 @@ class RegisterForm {
                 ],
                 "dateDeNaissance"=>[
                     "type"=>"date",
+                    "classGrill"=>"col-sm-6",
                     "class"=>"form-control form-control-user",
                     "id"=>"dateDeNaissance",
                     "label"=>"Votre date de naissance :",
@@ -89,6 +96,7 @@ class RegisterForm {
                 ],
                 "captcha"=>[
                     "type"=>"captcha",
+                    "classGrill"=>"col-sm-6",
                     "class"=>"form-control form-control-user",
                     "id"=>"captcha",
                     "label"=>"Merci de recopier le texte de l'image :",

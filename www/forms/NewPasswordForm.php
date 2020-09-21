@@ -18,6 +18,7 @@ class NewPasswordForm {
             "fields"=>[
                 "motDePasse"=>[
                     "type"=>"password",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Votre mot de passe",
                     "label"=>"Entrez le nouveau mot de passe : ",
                     "class"=>"form-control form-control-user",
@@ -27,6 +28,7 @@ class NewPasswordForm {
                 ],
                 "confirmationMotDePasse"=>[
                     "type"=>"password",
+                    "classGrill"=>"col-sm-6",
                     "placeholder"=>"Confirmation",
                     "label"=>"Confirmez le nouveau mot de passe : ",
                     "class"=>"form-control form-control-user",

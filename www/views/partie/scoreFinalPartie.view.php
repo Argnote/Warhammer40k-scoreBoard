@@ -30,3 +30,13 @@ use warhammerScoreBoard\core\Helper;
 <?php if(isset($reprisePartie)):?>
     <a href="<?= $reprisePartie ?>">Reprendre la partie </a>
 <?php endif; ?>
+
+<?php if(isset($archivedLink)&& isset($archivedLinkLabel)):?>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-inner">
+                <p><a href="<?= $archivedLink ?>"><?= $archivedLinkLabel?></a></p>
+            </div>
+        </div>
+    </div>
+<?php endif;?>

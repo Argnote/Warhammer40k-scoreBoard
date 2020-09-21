@@ -293,9 +293,12 @@ class PartieController extends Controller
         $myView->assign("scoreJoueur1", $scoreJoueur1);
         $myView->assign("scoreJoueur2", $scoreJoueur2);
 
-        $redirect = $joueurManager->getJoueur($_SESSION["idJoueur1"],["gagnant"]);
-        if(empty($redirect->getGagnant()))
-            $myView->assign("reprisePartie", Helper::getUrl("Partie","reprendrePartie")."?idPartie=".$_SESSION['idPartie']);
+        if(isset($_SESSION["idUtilisateur1"])) {
+            $redirect = $joueurManager->getJoueur($_SESSION["idJoueur1"], ["gagnant"]);
+            if (empty($redirect->getGagnant()))
+                $myView->assign("reprisePartie", Helper::getUrl("Partie", "reprendrePartie") . "?idPartie=" . $_SESSION['idPartie']);
+            $myView->assignLink("archived", Helper::getUrl("Partie", "archivedPartie")."?idPartieUtilisateur=" . $_SESSION['idJoueur1'], "Archiver la partie");
+        }
         //vide les variable de session concernant la partie
         unset($_SESSION['idJoueur1']);
         unset($_SESSION['idJoueur2']);
@@ -308,7 +311,7 @@ class PartieController extends Controller
         //redirige à l'acceuil si personne n'est connecté
 
         $joueurManager = new JoueurManager();
-        $result = $joueurManager->getPartiePlayed();
+        $result = $joueurManager->getPartiePlayed(true);
 
         $partie = array();
         foreach ($result as $key => $value)
@@ -347,6 +350,7 @@ class PartieController extends Controller
 
     public function historiquePartieAction()
     {
+        Helper::checkConnected();
         if(!isset($_SESSION["idUtilisateur1"]) || !isset($_GET["partie"]) || !is_numeric($_GET["partie"]))
         {
             $_SESSION["messageError"] = Message::erreurChargementPartie();
@@ -374,6 +378,7 @@ class PartieController extends Controller
 
     public function reprendrePartieAction()
     {
+        Helper::checkConnected();
         if(!isset($_SESSION["idUtilisateur1"]) || !isset($_GET["idPartie"]) || !is_numeric($_GET["idPartie"]))
         {
             $_SESSION["messageError"] = Message::erreurChargementPartie();
@@ -431,5 +436,27 @@ class PartieController extends Controller
                 }
             }
         }
+    }
+
+    public function archivedPartieAction()
+    {
+        Helper::checkConnected();
+        if(!isset($_SESSION["idUtilisateur1"]) || !isset($_GET["idPartieUtilisateur"]) || !is_numeric($_GET["idPartieUtilisateur"]))
+        {
+            $_SESSION["messageError"] = Message::erreurChargementPartie();
+            $this->redirectTo("Errors", "errorMessage");
+        }
+        $joueurManager = new JoueurManager();
+        $result = $joueurManager->getJoueur($_GET["idPartieUtilisateur"],["*"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
+        if(empty($result))
+        {
+            $_SESSION["messageError"] = Message::erreurChargementPartie();
+            $this->redirectTo("Errors", "errorMessage");
+        }
+        $joueur = new Joueur();
+        $joueur->setIdJoueur($_GET["idPartieUtilisateur"]);
+        $joueur->setArchived(1);
+        $joueurManager->save($joueur);
+        $this->redirectTo("Partie","getListPartie");
     }
 }

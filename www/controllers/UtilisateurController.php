@@ -124,12 +124,6 @@ class UtilisateurController extends Controller
                     $user->setIdUtilisateur($idUtilisateur);
                     $utilisateurManager->save($user);
 
-                    //préparation et envoie du mail de confirmation
-//                $url = URL_HOST.Helper::getUrl("User","registerConfirm")."?key=".urlencode($user->getEmail())."&token=".urlencode($user->getToken());
-//                $configMail = ConfirmAccountMail::getMail($user->getEmail(), $user->getFirstname(),$url);
-//                $mail = new Mail();
-//                $mail->sendMail($configMail);
-                    //$this->sendMailAccountConfirmation($user->getEmail(),$user->getToken(),$user->getPseudo());
                     if (!empty($email)) {
                         $_SESSION["newEmail"] = $email;
                         $url = URL_HOST . Helper::getUrl("Utilisateur", "updateUtilisateur") . "?key=" . urlencode($idUtilisateur) . "&token=" . urlencode($session["token"]);
@@ -263,12 +257,6 @@ class UtilisateurController extends Controller
                 $userManager = new UtilisateurManager();
                 $userManager->save($user);
 
-                //préparation et envoie du mail de confirmation
-//                $url = URL_HOST.Helper::getUrl("User","registerConfirm")."?key=".urlencode($user->getEmail())."&token=".urlencode($user->getToken());
-//                $configMail = ConfirmAccountMail::getMail($user->getEmail(), $user->getFirstname(),$url);
-//                $mail = new Mail();
-//                $mail->sendMail($configMail);
-                //$this->sendMailAccountConfirmation($user->getEmail(),$user->getToken(),$user->getPseudo());
                 $url = URL_HOST.Helper::getUrl("Utilisateur","registerConfirm")."?key=".urlencode($user->getEmail())."&token=".urlencode($user->getToken());
                 $configMail = ConfirmAccountMail::getMail($user->getEmail(), $user->getPseudo(),$url);
                 $mail = new Mail();
@@ -285,13 +273,6 @@ class UtilisateurController extends Controller
         $myView->assign("configFormUser", $configFormUser);
     }
 
-//    private function sendMailAccountConfirmation($key, $value, $Pseudo)
-//    {
-//        $url = URL_HOST.Helper::getUrl("Utilisateur","registerConfirm")."?key=".urlencode($key)."&token=".urlencode($value);
-//        $configMail = ConfirmAccountMail::getMail($key, $Pseudo,$url);
-//        $mail = new Mail();
-//        $mail->sendMail($configMail);
-//    }
 
     public function registerConfirmAction()
     {

@@ -12,6 +12,7 @@ class Joueur extends Model
     protected $idUtilisateur;
     protected $idArmee;
     protected $idPartie;
+    protected $archived;
 
     public function setIdJoueur(int $idJoueur)
     {
@@ -43,6 +44,11 @@ class Joueur extends Model
         $this->idPartie = $idPartie;
     }
 
+    public function setArchived(int $archived)
+    {
+        $this->archived = $archived;
+    }
+
     public function getIdJoueur()
     {
         return $this->idJoueur;
@@ -71,5 +77,10 @@ class Joueur extends Model
     public function getIdPartie()
     {
         return $this->idPartie;
+    }
+
+    public function getArchived()
+    {
+        return $this->archived;
     }
 }

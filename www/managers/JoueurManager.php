@@ -46,12 +46,16 @@ class JoueurManager extends Manager
 
     }
 
-    public function getPartiePlayed()
+    public function getPartiePlayed(bool $activeOnly = null)
     {
         $requeteIn = new QueryBuilder(GetPartiePlayed::class, "joueur");
         $requeteIn->querySelect(["idPartie"]);
         $requeteIn->queryFrom();
         $requeteIn->queryWhere("idUtilisateur", "=", $_SESSION["idUtilisateur1"]);
+        if($activeOnly == true)
+        {
+            $requeteIn->queryWhere("archived","=", "0");
+        }
         $resultIn = $requeteIn->queryGet();
 
         $requete = new QueryBuilder(GetPartiePlayed::class, "joueur");
@@ -75,11 +79,18 @@ class JoueurManager extends Manager
         return $requete->queryGetArrayToArray();
     }
 
-    public function getJoueur(int $idJoueur,array $data = ["*"])
+    public function getJoueur(int $idJoueur,array $data = ["*"],array $conditions = null)
     {
         $requete = new QueryBuilder(Joueur::class, "joueur");
         $requete->querySelect($data);
         $requete->queryFrom();
+        if(!empty($conditions))
+        {
+            foreach ($conditions as $condition )
+            {
+                $requete->queryWhere($condition[0], $condition[1], $condition[2]);
+            }
+        }
         $requete->queryWhere("idJoueur", "=", $idJoueur);
         return $requete->queryGetValue();
     }

@@ -21,8 +21,11 @@ function myAutoloader($class)
 
 spl_autoload_register("myAutoloader");
 
-new ConstantLoader("prod");
+$environnement = "prod";
+new ConstantLoader($environnement);
 
 $uri = $_SERVER["REQUEST_URI"];
+if(!isset($_SERVER["HTTPS"]) && $environnement == "prod")
+    header("Location: https://www.whscoreboard.com");
 MiddleWareManager::launch('onRequest');
 new Router();

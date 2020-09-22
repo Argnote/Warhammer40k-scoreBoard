@@ -369,7 +369,7 @@ class PartieController extends Controller
             else
             {
                 $_SESSION["idPartie"] = $_GET["partie"];
-                if($_SESSION["idJoueur1"] == $result[0]["idJoueur"])
+                if($_SESSION["idUtilisateur1"] == $result[0]["idUtilisateur"])
                 {
                     $_SESSION["idJoueur1"] = $result[0]["idJoueur"];
                     $_SESSION["idJoueur2"] = $result[1]["idJoueur"];

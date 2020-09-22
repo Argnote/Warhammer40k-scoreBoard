@@ -41,6 +41,13 @@ class GetDataNav
                 "id" => "",
                 "class" => "",
             ],
+            "profil" => [
+                "url" => Helper::getUrl("Utilisateur","getUtilisateur"),
+                "text" => "Consulter son profil",
+                "statu" => EnumStatuNav::online,
+                "id" => "",
+                "class" => "",
+            ],
             "listeDesParties" => [
                 "url" => Helper::getUrl("Partie","getListPartie"),
                 "text" => "Consulter ses parties",
@@ -48,9 +55,9 @@ class GetDataNav
                 "id" => "",
                 "class" => "",
             ],
-            "profil" => [
-                "url" => Helper::getUrl("Utilisateur","getUtilisateur"),
-                "text" => "Consulter son profil",
+            "statistiquesUtilisateur" => [
+                "url" => Helper::getUrl("Statistique","getStatistiqueUtilisateur"),
+                "text" => "Consulter ses statistiques",
                 "statu" => EnumStatuNav::online,
                 "id" => "",
                 "class" => "",

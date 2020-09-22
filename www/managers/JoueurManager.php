@@ -46,7 +46,7 @@ class JoueurManager extends Manager
 
     }
 
-    public function getPartiePlayed(bool $activeOnly = null)
+    public function getPartiePlayedWithAdversaire(bool $activeOnly = null)
     {
         $requeteIn = new QueryBuilder(GetPartiePlayed::class, "joueur");
         $requeteIn->querySelect(["idPartie"]);
@@ -68,6 +68,19 @@ class JoueurManager extends Manager
 
         $requete->queryOrderBy("dateDebut","DESC");
         return $requete->queryGetArrayToArray();
+    }
+
+    public function getPartiePlayed(bool $activeOnly = null)
+    {
+        $requete = new QueryBuilder(Joueur::class, "joueur");
+        $requete->querySelect(["*"]);
+        $requete->queryFrom();
+        $requete->queryWhere("idUtilisateur", "=", $_SESSION["idUtilisateur1"]);
+        if($activeOnly == true)
+        {
+            $requete->queryWhere("archived","=", "0");
+        }
+        return $requete->queryGetArray();
     }
 
     public function getJoueurPartie(int $idPartie, array $data = ["idJoueur"])

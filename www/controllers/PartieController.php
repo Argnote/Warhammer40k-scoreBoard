@@ -311,7 +311,7 @@ class PartieController extends Controller
         //redirige à l'acceuil si personne n'est connecté
 
         $joueurManager = new JoueurManager();
-        $result = $joueurManager->getPartiePlayed(true);
+        $result = $joueurManager->getPartiePlayedWithAdversaire(true);
 
         $partie = array();
         foreach ($result as $key => $value)

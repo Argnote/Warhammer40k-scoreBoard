@@ -144,3 +144,9 @@
 /modifier-armee:
   controller: Armee
   action: updateArmee
+
+#routes statistiques
+
+/statistiques-utilisateurs:
+  controller: Statistique
+  action: getStatistiqueUtilisateur

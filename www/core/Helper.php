@@ -31,12 +31,12 @@ class Helper
 
     public static function checkConnected()
     {
-        if(empty($_SESSION['token']))
+        if(empty($_SESSION['idUtilisateur1']))
             Helper::redirectTo("Home","default");
     }
     public static function checkDisconnected()
     {
-        if(!empty($_SESSION['token']))
+        if(!empty($_SESSION['idUtilisateur1']))
             Helper::redirectTo("Home","default");
     }
     public static function checkPartie()

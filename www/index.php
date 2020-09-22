@@ -26,6 +26,6 @@ new ConstantLoader($environnement);
 
 $uri = $_SERVER["REQUEST_URI"];
 if(!isset($_SERVER["HTTPS"]) && $environnement == "prod")
-    header("Location: https://www.whscoreboard.com");
+    header("Location:".URL_HOST);
 MiddleWareManager::launch('onRequest');
 new Router();

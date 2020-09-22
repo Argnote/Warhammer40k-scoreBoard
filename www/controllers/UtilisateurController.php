@@ -385,7 +385,7 @@ class UtilisateurController extends Controller
                 $this->redirectTo("Errors", "errorMessage");
             }
         }
-        elseif(!empty($_SESSION['idUtilisateur1']) && !empty($_SESSION['token']))
+        elseif(!empty($_SESSION['idUtilisateur1']) && !empty($_SESSION['token']) && empty($_SESSION["idUtilisateurNewPassword"]))
         {
             $session = $utilisateurManager->getUtilisateurToArray(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
             if ($session["token"] == $_SESSION["token"]) {
@@ -402,12 +402,7 @@ class UtilisateurController extends Controller
             }
 
         }
-        else
-        {
-            $this->redirectTo(  "Errors","quatreCentQuatre");
-        }
-
-        if($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_SESSION["idUtilisateurNewPassword"]))
+        elseif($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_SESSION["idUtilisateurNewPassword"]))
         {
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser, $_POST);
@@ -425,6 +420,10 @@ class UtilisateurController extends Controller
             {
                 $myView->assign("errors", $errors);
             }
+        }
+        else
+        {
+            $this->redirectTo(  "Errors","quatreCentQuatre");
         }
     }
 

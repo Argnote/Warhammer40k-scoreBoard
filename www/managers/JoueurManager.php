@@ -83,7 +83,7 @@ class JoueurManager extends Manager
         return $requete->queryGetArray();
     }
 
-    public function getJoueurPartie(int $idPartie, array $data = ["idJoueur"])
+    public function getJoueurPartie(int $idPartie, array $data = ["idJoueur","idUtilisateur"])
     {
         $requete = new QueryBuilder(Joueur::class, "joueur");
         $requete->querySelect($data);

@@ -361,7 +361,7 @@ class PartieController extends Controller
             $joueurManager = new JoueurManager();
             $result = $joueurManager->getJoueurPartie($_GET["partie"]);
 
-            if(empty($result) || count($result) > 2)
+            if(empty($result) || count($result) > 2 || ($result[0]["idUtilisateur"] != $_SESSION["idUtilisateur1"] && $result[1]["idUtilisateur"] != $_SESSION["idUtilisateur1"]))
             {
                 $_SESSION["messageError"] = Message::erreurChargementPartie();
                 $this->redirectTo("Errors", "errorMessage");
@@ -369,8 +369,16 @@ class PartieController extends Controller
             else
             {
                 $_SESSION["idPartie"] = $_GET["partie"];
-                $_SESSION["idJoueur1"] = $result[0]["idJoueur"];
-                $_SESSION["idJoueur2"] = $result[1]["idJoueur"];
+                if($_SESSION["idJoueur1"] == $result[0]["idJoueur"])
+                {
+                    $_SESSION["idJoueur1"] = $result[0]["idJoueur"];
+                    $_SESSION["idJoueur2"] = $result[1]["idJoueur"];
+                }
+                else
+                {
+                    $_SESSION["idJoueur1"] = $result[1]["idJoueur"];
+                    $_SESSION["idJoueur2"] = $result[0]["idJoueur"];
+                }
                 $this->redirectTo("Partie","scorePartie" );
             }
         }

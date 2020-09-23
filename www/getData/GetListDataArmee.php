@@ -6,7 +6,7 @@ namespace warhammerScoreBoard\getData;
 
 use warhammerScoreBoard\core\Helper;
 
-class getListDataArmee
+class GetListDataArmee
 {
     public static function getData($listArmee)
     {

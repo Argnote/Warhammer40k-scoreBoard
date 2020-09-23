@@ -11,7 +11,7 @@ use warhammerScoreBoard\core\Validator;
 use warhammerScoreBoard\core\View;
 use warhammerScoreBoard\forms\ArmeeForm;
 use warhammerScoreBoard\getData\GetDataArmee;
-use warhammerScoreBoard\getData\getListDataArmee;
+use warhammerScoreBoard\getData\GetListDataArmee;
 use warhammerScoreBoard\managers\ArmeeManager;
 use warhammerScoreBoard\models\Armee;
 
@@ -27,7 +27,7 @@ class ArmeeController extends \warhammerScoreBoard\core\Controller
         $armee = $armeeManager->getManyArmee();
 
         //Formatage des données avant affichage
-        $listArmee = getListDataArmee::getData($armee);
+        $listArmee = GetListDataArmee::getData($armee);
         $myView = new View("listData","front");
         $myView->assignTitle("Liste des armées");
         $myView->assignLink("create",Helper::getUrl("Armee","createArmee"),"Ajouter une armée");

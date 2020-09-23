@@ -9,6 +9,14 @@
   controller: Home
   action: default
 
+/mentions-legales:
+  controller: Home
+  action: getMentionLegal
+
+/charte:
+  controller: Home
+  action: getCharte
+
 #routes erreur
 /vous-etes-perdu:
   controller: Errors
@@ -153,8 +161,8 @@
 
 /statistiques-personnels:
   controller: Statistique
-  action: getStatisqueGenerale
+  action: getStatistiqueUtilisateur
 
 /statistiques-generales:
   controller: Statistique
-  action: getStatistiqueUtilisateur
+  action: getStatisqueGenerale

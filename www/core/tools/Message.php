@@ -185,4 +185,15 @@ class Message
             ]
         ];
     }
+
+    public static function mentionsLegal()
+    {
+        return [
+            "title" => "Mentions légales",
+
+            "body" => [
+                "Ce site à été réalisé et appartient a Ewan LEMEE (Argnote)."
+            ]
+        ];
+    }
 }

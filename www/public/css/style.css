@@ -3,6 +3,8 @@ body
     margin: 0;
     background-color: #222;
     color: white;
+    position: relative;
+    min-height: 100vh;
 }
 textarea
 {
@@ -25,6 +27,7 @@ header
     /*height: 200px;*/
     /*overflow: hidden;*/
     background-color: #4c4C4C;
+    margin-bottom: 1em;
 }
 .logo
 {
@@ -61,13 +64,19 @@ nav ul{
 }
 .main
 {
-    /*box-shadow: 0 0 8px black;*/
+    margin-bottom: 3.5rem;
 }
 .container
 {
     width: 1170px;
     padding: 0 15px;
-    margin: 0 auto 1em;
+    margin: 0 auto;
+    position: relative;
+}
+.footer
+{
+    text-align: center;
+    padding: 0 15px;
     position: relative;
 }
 th,td
@@ -115,4 +124,14 @@ form
 .erreurs
 {
     text-align: left;
+}
+
+footer
+{
+    position: absolute;
+    bottom: 0;
+    height: 2.5rem;
+    background-color: #4c4C4C;
+    width: 100%;
+    margin-top: 20px;
 }

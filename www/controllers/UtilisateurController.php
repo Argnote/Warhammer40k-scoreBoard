@@ -12,7 +12,7 @@ use warhammerScoreBoard\forms\ForgotpasswordForm;
 use warhammerScoreBoard\forms\LoginForm;
 use warhammerScoreBoard\forms\NewPasswordForm;
 use warhammerScoreBoard\forms\RegisterForm;
-use warhammerScoreBoard\forms\updateUtilisateurForm;
+use warhammerScoreBoard\forms\UpdateUtilisateurForm;
 use warhammerScoreBoard\getData\GetDataProfilUtilisateur;
 use warhammerScoreBoard\getData\GetListDataUtilisateur;
 use warhammerScoreBoard\mails\ConfirmAccountMail;
@@ -121,7 +121,7 @@ class UtilisateurController extends Controller
         }
 
         //Créer le formulaire
-        $configFormUser = updateUtilisateurForm::getForm($consultationAdmin,$role,$result);
+        $configFormUser = UpdateUtilisateurForm::getForm($consultationAdmin,$role,$result);
         $myView = new View("updateData", "front");
 
 

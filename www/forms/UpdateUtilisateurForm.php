@@ -7,7 +7,7 @@ namespace warhammerScoreBoard\forms;
 use warhammerScoreBoard\core\Helper;
 use warhammerScoreBoard\models\Utilisateur;
 
-class updateUtilisateurForm
+class UpdateUtilisateurForm
 {
     public static function getForm(string $admin = null, array $role = null, Utilisateur $utilisateur = null)
     {

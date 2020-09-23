@@ -14,6 +14,8 @@ class HomeController extends Controller
     public function defaultAction()
     {
         $myView = new View("home", "front");
+
+        //Affichage du formulaire de connexion dans la card de connexion d'un ami
         if(!empty($_SESSION["idUtilisateur1"]) && empty($_SESSION["idUtilisateur2"]))
         {
             $configFormUser = LoginForm::getForm();

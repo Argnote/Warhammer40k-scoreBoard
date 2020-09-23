@@ -8,6 +8,7 @@ use warhammerScoreBoard\core\View;
 
 class ErrorsController extends Controller
 {
+  //page d'erreur par default
   public function quatreCentQuatreAction(){
     $myView = new View('404', 'front');
   }

@@ -26,7 +26,7 @@ use warhammerScoreBoard\core\View;
 
 class UtilisateurController extends Controller
 {
-    
+    //Affiche un message de succes pour l'utilisateur
     public function succesMessageUtilisateurAction()
     {
         if(isset($_SESSION["SuccesMessageUtilisateur"]))
@@ -41,32 +41,43 @@ class UtilisateurController extends Controller
         }
     }
 
+    //Affiche la liste des utilisateurs pour l'admin
     public function getListUtilisateurAction()
     {
         Helper::checkAdmin();
+
+        //Récupère la liste des utilisateurs
         $utilisateurManager = new UtilisateurManager();
         $utilisateurs = $utilisateurManager->getAllUtilisateur();
+
+        //formate les données
         $listUtilisateur = GetListDataUtilisateur::getData($utilisateurs);
         $myView = new View("listData","front");
         $myView->assignTitle("Liste des utlisateurs");
         $myView->assign("listData",$listUtilisateur);
     }
+
+    //Affiche un utilisateur
     public function getUtilisateurAction()
     {
         Helper::checkConnected();
         $utilisateurManager = new UtilisateurManager();
         $idUtilisateur = $_SESSION["idUtilisateur1"];
         $consultationAdmin = "";
+
+        //Remplace l'id utilisateur par un paramètre si il existe et si l'auteur de l'action est admin
         if($_SESSION["role"] == 3 && isset($_GET["idUtilisateur"]) && is_numeric($_GET["idUtilisateur"]))
         {
             $idUtilisateur = $_GET["idUtilisateur"];
             $consultationAdmin = "?idUtilisateur=".$idUtilisateur;
         }
 
-
+        //récupère l'utilisateur
         $result = $utilisateurManager->getUtilisateurToArray(["*"], [["idUtilisateur","=",$idUtilisateur]]);
         if (!empty($result))
         {
+
+            //formate les données
             $profil = GetDataProfilUtilisateur::getData($result);
             $profilView = new View("getData","front");
             $profilView->assignTitle("Consultation du profil");
@@ -83,6 +94,7 @@ class UtilisateurController extends Controller
 
     }
 
+    //Modifier les profil d'un utilisateur
     public function updateUtilisateurAction()
     {
         Helper::checkConnected();
@@ -90,6 +102,8 @@ class UtilisateurController extends Controller
         $idUtilisateur = $_SESSION["idUtilisateur1"];
         $role = null;
         $consultationAdmin = "";
+
+        //Remplace l'id utilisateur par un paramètre si il existe et si l'auteur de l'action est admin
         if($_SESSION["role"] == 3 && isset($_GET["idUtilisateur"]) && is_numeric($_GET["idUtilisateur"]))
         {
             $idUtilisateur = $_GET["idUtilisateur"];
@@ -98,6 +112,7 @@ class UtilisateurController extends Controller
             $consultationAdmin = "?idUtilisateur=".$idUtilisateur;
         }
 
+        //Récupère le profil
         $result = $utilisateurManager->getUtilisateurToObject(["*"], [["idUtilisateur","=",$idUtilisateur]]);
         if(empty($result))
         {
@@ -105,26 +120,35 @@ class UtilisateurController extends Controller
             $this->redirectTo("Errors", "errorMessage");
         }
 
+        //Créer le formulaire
         $configFormUser = updateUtilisateurForm::getForm($consultationAdmin,$role,$result);
         $myView = new View("updateData", "front");
+
+
         if($_SERVER["REQUEST_METHOD"] == "POST")
         {
+            //vérifi les nouvelles données
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser ,$_POST);
             if(empty($errors))
             {
+                //Vérifie que le token de l'utilisateur correspond a la base
                 $session = $utilisateurManager->getUtilisateurToObject(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
-                if ($session->getToken() == $_SESSION["token"]) {
-                    //enregistrement du nouvel utilisateur
+                if ($session->getToken() == $_SESSION["token"]) 
+                {
+                    //retire l'email des données à sauvegarder
                     if (isset($_POST["email"])) {
                         $email = $_POST["email"];
                         unset($_POST["email"]);
                     }
+
+                    //Enregistre les données
                     $user = new Utilisateur();
                     $user = $user->hydrate($_POST);
                     $user->setIdUtilisateur($idUtilisateur);
                     $utilisateurManager->save($user);
 
+                    //envoie un mail au nouvel email si il y en a un 
                     if (!empty($email)) {
                         $_SESSION["newEmail"] = $email;
                         $url = URL_HOST . Helper::getUrl("Utilisateur", "updateUtilisateur") . "?key=" . urlencode($idUtilisateur) . "&token=" . urlencode($session->getToken());
@@ -149,11 +173,14 @@ class UtilisateurController extends Controller
             }
         }
 
+        //Pour le nouvel email
         if(!empty($_GET['key']) && !empty($_GET['token']))
         {
+            //Vérifie que le lien est bon
             $result = $utilisateurManager->getUtilisateurToArray(["idUtilisateur"],[["idUtilisateur", "=", htmlspecialchars(urldecode($_GET['key']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
+                //Enregistre le nouvel email
                 if(isset($_SESSION["newEmail"]))
                 {
                     $user = new Utilisateur();
@@ -185,6 +212,8 @@ class UtilisateurController extends Controller
         $configFormUser = LoginForm::getForm();
         $myView = new View("user/login", "front");
         $myView->assign("configFormUser", $configFormUser);
+
+        //vérifie la validité des données
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser, $_POST);
@@ -192,11 +221,14 @@ class UtilisateurController extends Controller
                 //cryptage du mot de passe pour qu'il corresponde à la db puis recherche de celui ci
                 $_POST['motDePasse'] = sha1($_POST['motDePasse']);
                 $userManager = new UtilisateurManager();
+
+                //récupération de l'utilisateur
                 $user = $userManager->findBy($_POST);
                 if (count($user) == 1)
                 {
                     if($user[0]->getIdRole() != 1)
                     {
+                        //Si aucun compte n'est pas connecté
                         if(empty($_SESSION['idUtilisateur1']) && empty($_SESSION['token']))
                         {
                             //si un utilisateur est trouvé, sauvegarde de ses éléments de session et initialisation de son token en db
@@ -207,7 +239,9 @@ class UtilisateurController extends Controller
                             $userManager = new UtilisateurManager();
                             $userManager->manageUserToken($_SESSION['idUtilisateur1'],$_SESSION['token']);
                         }
-                        else {
+                        else 
+                        {
+                            //si un compte est connecté et qu'il ne correspond pas au compte principal conecté
                             if ($user[0]->getIdUtilisateur() != $_SESSION['idUtilisateur1'])
                             {
                                 $_SESSION['idUtilisateur2'] = $user[0]->getIdUtilisateur();
@@ -218,7 +252,6 @@ class UtilisateurController extends Controller
                             {
                                 $errors["connecte"] = "Vous êtes déja connecté avec ce compte!";
                                 $myView->assign("errors", $errors);
-                                //$this->redirectTo('Utilisateur', 'login');
                             }
                         }
                         $this->redirectTo('Home', 'default');
@@ -240,6 +273,7 @@ class UtilisateurController extends Controller
         }
     }
 
+    //creer un compte
     public function registerAction()
     {
         Helper::checkDisconnected();
@@ -247,17 +281,19 @@ class UtilisateurController extends Controller
         $myView = new View("user/register", "front");
         if($_SERVER["REQUEST_METHOD"] == "POST")
         {
+            //Vérifie les données
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser ,$_POST);
             if(empty($errors))
             {
-                //enregistrement du nouvel utilisateur
+                //Enregistrement du nouvel utilisateur
                 $userArray = array_merge($_POST,array("token"=> Token::getToken()));
                 $user = new Utilisateur();
                 $user = $user->hydrate($userArray);
                 $userManager = new UtilisateurManager();
                 $userManager->save($user);
 
+                //Envoie d'un mail pour valider le compte
                 $url = URL_HOST.Helper::getUrl("Utilisateur","registerConfirm")."?key=".urlencode($user->getEmail())."&token=".urlencode($user->getToken());
                 $configMail = ConfirmAccountMail::getMail($user->getEmail(), $user->getPseudo(),$url);
                 $mail = new Mail();
@@ -275,6 +311,7 @@ class UtilisateurController extends Controller
     }
 
 
+    //Valide la création du compte
     public function registerConfirmAction()
     {
         Helper::checkDisconnected();
@@ -288,7 +325,7 @@ class UtilisateurController extends Controller
             {
                 if ($result["idRole"] == 1)
                 {
-                    //si un utilisateur est trouvé et que son role est 4, passe le role a 2 en même temps que la réinitialisation de son token
+                    //si un utilisateur est trouvé et que son role est 1, passe le role a 2 en même temps que la réinitialisation de son token
                     $utilisateurManager->manageUserToken($result["idUtilisateur"],0,["idRole"=>2]);
                     $_SESSION["SuccesMessageUtilisateur"] = message::mailInscriptionSucess();
                     $this->redirectTo("Utilisateur","succesMessageUtilisateur");
@@ -309,6 +346,7 @@ class UtilisateurController extends Controller
 
     }
 
+    //Déconnecte tous le comptes connectés
     public function logoutAction()
     {
         Helper::checkConnected();
@@ -319,6 +357,8 @@ class UtilisateurController extends Controller
         session_destroy();
         $this->redirectTo("Home","default");
     }
+
+    //Déconnecte le compte amis
     public function logoutGuestAction()
     {
         Helper::checkConnected();
@@ -327,6 +367,7 @@ class UtilisateurController extends Controller
         $this->redirectTo("Home","default");
     }
 
+    //Mot de passe oublié 
     public function forgotPasswordAction()
     {
         Helper::checkDisconnected();
@@ -336,14 +377,17 @@ class UtilisateurController extends Controller
 
         if($_SERVER["REQUEST_METHOD"] == "POST")
         {
+            //vérifie le mail
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser, $_POST);
             if (empty($errors))
             {
+                //Recherche si le mail existe
                 $utilisateurManager = new UtilisateurManager();
                 $result = $utilisateurManager->getUtilisateurToArray(["idUtilisateur"],[["email", "=", $_POST['email']]]);
                 if (!empty($result))
                 {
+                    //Envoie d'un mail avec un lien
                     $token = Token::getToken();
                     $utilisateurManager->manageUserToken($result["idUtilisateur"],$token);
                     $url = URL_HOST.Helper::getUrl("Utilisateur","newPassword")."?id=".urlencode($result["idUtilisateur"])."&token=".urlencode($token);
@@ -364,6 +408,8 @@ class UtilisateurController extends Controller
                 $myView->assign("errors", $errors);
         }
     }
+
+    //Changer le mot de passe
     public function newPasswordAction()
     {
         $utilisateurManager = new UtilisateurManager();
@@ -373,9 +419,11 @@ class UtilisateurController extends Controller
 
         if(!empty($_GET['id']) && !empty($_GET['token']))
         {
+            //Si la demande viens d'un lien de changement recherche l'utilisateur qui correspond
             $result = $utilisateurManager->getUtilisateurToArray(["idUtilisateur"],[["idUtilisateur", "=", htmlspecialchars(urldecode($_GET['id']))],["token", "=", htmlspecialchars(urldecode($_GET['token']))]]);
             if (!empty($result))
             {
+                //Initialise le changement de mot de passe
                 $utilisateurManager->manageUserToken($result["idUtilisateur"],Token::getToken());
                 $_SESSION["idUtilisateurNewPassword"] = $result["idUtilisateur"];
             }
@@ -387,12 +435,16 @@ class UtilisateurController extends Controller
         }
         elseif(!empty($_SESSION['idUtilisateur1']) && !empty($_SESSION['token']) && empty($_SESSION["idUtilisateurNewPassword"]))
         {
+            //Si la demande viens d'un compte connecté vérifi son token
             $session = $utilisateurManager->getUtilisateurToArray(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
             if ($session["token"] == $_SESSION["token"]) {
                 $idUtilisateur = $_SESSION['idUtilisateur1'];
+
+                //Si la demande viens d'un admin change l'idUtilisateur avec le parametre
                 if ($_SESSION["role"] == 3 && isset($_GET["idUtilisateur"]) && is_numeric($_GET["idUtilisateur"]))
                     $idUtilisateur = $_GET["idUtilisateur"];
 
+                //Initialise le changement de mot de passe
                 $_SESSION["idUtilisateurNewPassword"] = $idUtilisateur;
             }
             else
@@ -404,20 +456,26 @@ class UtilisateurController extends Controller
         }
         elseif($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_SESSION["idUtilisateurNewPassword"]))
         {
+            //Si le changement est initialisé vérifie les données
             $validator = new Validator();
             $errors = $validator->checkForm($configFormUser, $_POST);
             if (empty($errors))
             {
+                //Change le mot de passe
                 $user = new Utilisateur();
                 $user->setMotDePasse($_POST["motDePasse"]);
                 $user->setIdUtilisateur($_SESSION["idUtilisateurNewPassword"]);
                 $utilisateurManager->save($user);
+
+                //Déinitialise le changement
                 unset($_SESSION["idUtilisateurNewPassword"]);
                 $_SESSION["SuccesMessageUtilisateur"] = message::newPasswordSucess();
                 $this->redirectTo("Utilisateur","succesMessageUtilisateur");
             }
             else
             {
+                //déinitialise le changement
+                unset($_SESSION["idUtilisateurNewPassword"]);
                 $myView->assign("errors", $errors);
             }
         }
@@ -431,13 +489,15 @@ class UtilisateurController extends Controller
     {
         Helper::checkConnected();
         $utilisateurManager = new UtilisateurManager();
+
+        //vérifie le token de l'utilisateur
         $session = $utilisateurManager->getUtilisateurToArray(["token"],[["idUtilisateur","=",$_SESSION["idUtilisateur1"]]]);
         if ($session["token"] != $_SESSION["token"])
         {
             $_SESSION["messageError"] = Message::erreurTokenSession();
             $this->redirectTo("Errors", "errorMessage");
         }
-        //la supression du compte d'un utilisateur désactive le compte et le déconnecte
+        //la supression du compte d'un utilisateur supprime le compte et le déconnecte
         if(!empty($_SESSION["idUtilisateur1"]) && empty($_GET["idUtilisateur"]))
         {
             $utilisateurManager->delete($_SESSION["idUtilisateur1"]);
@@ -448,7 +508,7 @@ class UtilisateurController extends Controller
             $_SESSION["SuccesMessageUtilisateur"] = Message::suppressionCompte();
             $this->redirectTo("Utilisateur", "succesMessageUtilisateur");
         }
-        //la suppresion de compte par un admin permet de supprimer le compte en db
+        //la suppresion de compte par un admin permet de supprimer le compte avec le parmetre
         elseif(!empty($_SESSION["role"]) && !empty($_GET["idUtilisateur"]) && $_SESSION["role"] == 3)
         {
             $utilisateurManager->delete($_GET["idUtilisateur"]);

@@ -35,7 +35,8 @@ use warhammerScoreBoard\core\Helper;
     <div class="row">
         <div class="col-sm-12">
             <div class="col-inner">
-                <p><a href="<?= $archivedLink ?>"><?= $archivedLinkLabel?></a></p>
+            <p>Archiver une partie permet de ne plus la voir dans sa liste de partie et de ne plus la comptabiliser dans ses statistiques.<br/> 
+                <a href="<?= $archivedLink ?>"><?= $archivedLinkLabel?></a></p>
             </div>
         </div>
     </div>

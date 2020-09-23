@@ -57,7 +57,6 @@ class View
         $this->data[$name."LinkLabel"] = $label;
     }
 
-    // $this->addModal("carousel", $data);
     public function addModal($modal, $data, array $value = null)
     {
         if (!file_exists("views/modals/".$modal.".mod.php")) {

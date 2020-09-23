@@ -8,6 +8,7 @@ use warhammerScoreBoard\core\Helper;
 use warhammerScoreBoard\core\View;
 use warhammerScoreBoard\managers\JoueurManager;
 use warhammerScoreBoard\managers\MissionManager;
+use warhammerScoreBoard\managers\PointManager;
 use warhammerScoreBoard\models\Joueur;
 
 class StatistiqueController extends \warhammerScoreBoard\core\Controller
@@ -32,6 +33,17 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
             $myView->assign("statMissionClassementData", $statMissionClassement["data"]);
         }
 
+        //Récupère les points des missions des joueurs non archivé et rattaché à un compte
+        $condition = [
+            [DB_PREFIXE."joueur.idUtilisateur","IS NOT"," NULL"],
+            [DB_PREFIXE."joueur.archived","=",0]
+            ];
+        $statMissionParPointClassement = $this->statMissionPoints($condition);
+        if(!empty($statMissionClassement))
+        {
+            $myView->assign("statMissionClassementParPointLabel", $statMissionParPointClassement["label"]);
+            $myView->assign("statMissionClassementParPointData", $statMissionParPointClassement["data"]);
+        }
         //Message d'avertissement
         $avertissement = "Attention, les statistiques générales sont effectués grace aux données fournies par la communauté.<br/>
  Par conséquent ces statistiques peuvent manquer d'exactitude.<br/>
@@ -88,6 +100,18 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
             $myView->assign("statMissionClassementLabel", $statMissionClassement["label"]);
             $myView->assign("statMissionClassementData", $statMissionClassement["data"]);
         }
+
+        //Récupère les points des missions des joueurs non archivé et rattaché au compte utilisateur connecté
+        $condition = [
+            [DB_PREFIXE."joueur.idUtilisateur","=",$_SESSION["idUtilisateur1"]],
+            [DB_PREFIXE."joueur.archived","=",0],
+        ];
+        $statMissionParPointClassement = $this->statMissionPoints($condition);
+        if(!empty($statMissionClassement))
+        {
+            $myView->assign("statMissionClassementParPointLabel", $statMissionParPointClassement["label"]);
+            $myView->assign("statMissionClassementParPointData", $statMissionParPointClassement["data"]);
+        }
     }
 
     private function statMissionSelected(bool $activeOnly = true, int $idUtilisateur = null, array $conditions = null,bool $onlyMember = true)
@@ -113,6 +137,51 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
             foreach ($missionClassement as $mission)
             {
                 $statMissionClassement[$mission->getNomMission()] ++;
+            }
+
+            //trie de tableau en décroissant
+            arsort($statMissionClassement);
+            $statMissionClassementLabel = array();
+            $statMissionClassementData = array();
+
+            //sépare les clefs des valeurs
+            foreach ($statMissionClassement as $key=>$value)
+            {
+                $statMissionClassementLabel[] = $key;
+                $statMissionClassementData[] = $value;
+            }
+            $statMissionClassement = array();
+            $statMissionClassement["label"] = htmlspecialchars(json_encode($statMissionClassementLabel));
+            $statMissionClassement["data"] = json_encode($statMissionClassementData);
+            return $statMissionClassement;
+        }
+        return null;
+    }
+
+    private function statMissionPoints(array $conditions = null,bool $activeOnly = true)
+    {
+        $missionManager = new MissionManager();
+        $pointManager = new PointManager();
+
+        //Récupère les points des missions
+        $missionClassementPoints= $pointManager->getPoint(["nomMission","nombrePoint"],$conditions);
+
+        //Récupère toutes les missions
+        $allMission = $missionManager->getManyMission(["nomMission"],null,$activeOnly);
+
+        if(!empty($missionClassementPoints) && !empty($allMission))
+        {
+            //Créer un tableau avec le nom des missions comme identifiants
+            $statMissionClassement = array();
+            foreach ($allMission as $mission)
+            {
+                $statMissionClassement[$mission["nomMission"]] = 0;
+            }
+
+            //Ajoute 1 à l'index correspondant au nom de la mission
+            foreach ($missionClassementPoints as $points)
+            {
+                $statMissionClassement[$points["nomMission"]] += $points["nombrePoint"];
             }
 
             //trie de tableau en décroissant

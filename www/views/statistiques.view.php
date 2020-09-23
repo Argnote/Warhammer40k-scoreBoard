@@ -16,9 +16,9 @@
                 </div>
             </div>
             <br/>
-            <?php endif;?>
+        <?php endif;?>
 
-            <?php if(isset($statMissionClassementLabel) && isset($statMissionClassementData)): ?>
+        <?php if(isset($statMissionClassementLabel) && isset($statMissionClassementData)): ?>
             <div class="col-inner graph">
                 <input type="hidden" value="<?= $statMissionClassementLabel ?>" id="statMissionClassementLabel">
                 <input type="hidden" value="<?= $statMissionClassementData ?>" id="statMissionClassementData">
@@ -26,10 +26,22 @@
                     <canvas id="statClassementMission" height="300"></canvas>
                 </div>
             </div>
-            <?php endif;?>
+            <br/>
+        <?php endif;?>
+        <?php if(isset($statMissionClassementParPointLabel) && isset($statMissionClassementParPointData)): ?>
+            <div class="col-inner graph">
+                <input type="hidden" value="<?= $statMissionClassementParPointLabel ?>" id="statMissionClassementParPointLabel">
+                <input type="hidden" value="<?= $statMissionClassementParPointData ?>" id="statMissionClassementParPointData">
+                <div>
+                    <canvas id="statClassementMissionParPoint" height="300"></canvas>
+                </div>
+            </div>
+            <br/>
+        <?php endif;?>
     </div>
 </div>
 <script src="../public/lib/Chart.bundle.js"></script>
 <script src="../public/script/configGraph.js"></script>
 <script src="../public/script/statVictoire.js"></script>
 <script src="../public/script/statClassementMission.js"></script>
+<script src="../public/script/statClassementMissionParPoint.js"></script>

@@ -101,6 +101,8 @@ class QueryBuilder extends Manager
 
         if($operator == "in")
             $value = " (".$value.")";
+        elseif ($operator == "IS NOT")
+            $value = " NULL";
         else
             $value = " '".$value."'";
         if (!isset($value)) {

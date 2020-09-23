@@ -41,7 +41,7 @@ class MissionController extends Controller
         Helper::checkAdmin();
 
         //Récupération d'une mission grace au parametre d'url idMission
-        if(empty($_GET["idMission"] || !is_numeric($_GET["idMission"]))
+        if(empty($_GET["idMission"]) || !is_numeric($_GET["idMission"]))
             $this->redirectTo("Mission","getListMission");
         $missionManager = new MissionManager();
 

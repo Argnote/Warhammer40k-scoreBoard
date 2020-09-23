@@ -466,7 +466,6 @@ class UtilisateurController extends Controller
                 $user->setMotDePasse($_POST["motDePasse"]);
                 $user->setIdUtilisateur($_SESSION["idUtilisateurNewPassword"]);
                 $utilisateurManager->save($user);
-
                 //Déinitialise le changement
                 unset($_SESSION["idUtilisateurNewPassword"]);
                 $_SESSION["SuccesMessageUtilisateur"] = message::newPasswordSucess();
@@ -474,8 +473,6 @@ class UtilisateurController extends Controller
             }
             else
             {
-                //déinitialise le changement
-                unset($_SESSION["idUtilisateurNewPassword"]);
                 $myView->assign("errors", $errors);
             }
         }

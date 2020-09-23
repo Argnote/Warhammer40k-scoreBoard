@@ -56,9 +56,9 @@ class GetDataNav
                 "class" => "",
             ],
             "statistiquesUtilisateur" => [
-                "url" => Helper::getUrl("Statistique","getStatistiqueUtilisateur"),
-                "text" => "Consulter ses statistiques",
-                "statu" => EnumStatuNav::online,
+                "url" => Helper::getUrl("Statistique","chooseStatistique"),
+                "text" => "Consulter les statistiques",
+                "statu" => EnumStatuNav::default,
                 "id" => "",
                 "class" => "",
             ],

@@ -6,7 +6,9 @@ namespace warhammerScoreBoard\managers;
 
 use warhammerScoreBoard\core\Manager;
 use warhammerScoreBoard\core\QueryBuilder;
+use warhammerScoreBoard\models\Joueur;
 use warhammerScoreBoard\models\Mission;
+use warhammerScoreBoard\models\modelsFusion\GetPartiePlayed;
 
 class MissionManager extends Manager
 {
@@ -74,5 +76,34 @@ class MissionManager extends Manager
         $requete->queryFrom();
         $requete->queryWhere("idCategorie", "=", $idCategorie);
         return $requete->queryGetValue();
+    }
+
+    public function getMissionChooseByJoueur(bool $activeOnly = true, int $idUtilisateur = null, array $conditions = null)
+    {
+        $requete = new QueryBuilder(Mission::class, "mission");
+        $requete->querySelect(["nomMission"]);
+        $requete->queryFrom();
+        $requete->queryJoin("mission","joueur_has_mission","idMission","idMission");
+        $requete->queryJoin("mission","categorie","idCategorie","idCategorie");
+
+        $requeteIn = new QueryBuilder(Joueur::class, "joueur");
+        $requeteIn->querySelect(["idJoueur"]);
+        $requeteIn->queryFrom();
+        if(!empty($idUtilisateur))
+            $requeteIn->queryWhere("idUtilisateur", "=", $idUtilisateur);
+
+        if($activeOnly == true)
+            $requeteIn->queryWhere("archived","=", "0");
+        $resultIn = $requeteIn->queryGet();
+        $requete->queryWhere("idJoueur", "in", $resultIn);
+        if(!empty($conditions))
+        {
+            foreach ($conditions as $condition )
+            {
+                $requete->queryWhere($condition[0], $condition[1], $condition[2]);
+            }
+        }
+        return $requete->queryGetArray();
+
     }
 }

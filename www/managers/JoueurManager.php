@@ -7,10 +7,7 @@ namespace warhammerScoreBoard\managers;
 use warhammerScoreBoard\core\Manager;
 use warhammerScoreBoard\core\QueryBuilder;
 use warhammerScoreBoard\models\Joueur;
-use warhammerScoreBoard\models\mission;
 use warhammerScoreBoard\models\modelsFusion\GetPartiePlayed;
-use warhammerScoreBoard\models\Partie;
-use warhammerScoreBoard\models\Utilisateur;
 
 class JoueurManager extends Manager
 {

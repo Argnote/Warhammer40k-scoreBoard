@@ -147,6 +147,14 @@
 
 #routes statistiques
 
-/statistiques-utilisateurs:
+/consulter-les-statistiques:
+  controller: Statistique
+  action: chooseStatistique
+
+/statistiques-personnels:
+  controller: Statistique
+  action: getStatisqueGenerale
+
+/statistiques-generales:
   controller: Statistique
   action: getStatistiqueUtilisateur

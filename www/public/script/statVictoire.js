@@ -1,6 +1,5 @@
 var ctx = document.getElementById('statVictoire').getContext('2d');
 var statVictoireData =JSON.parse(document.getElementById('statVictoireData').value);
-console.log(statVictoireData);
 var statVictoire = new Chart(ctx, {
     type: 'pie',
     data: {
@@ -35,4 +34,4 @@ var statVictoire = new Chart(ctx, {
             fontColor: "white"
         }
     }
-});console.log(ctx);
+});

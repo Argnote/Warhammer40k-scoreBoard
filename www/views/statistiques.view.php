@@ -1,7 +1,13 @@
-
-<h2>Statistiques</h2>
+<?php $title = $title??"Statistique"  ?>
+<h2><?= $title ?> </h2>
 <div class="row">
     <div class="col-sm-12">
+        <?php if(isset($avertissement)): ?>
+            <div class="col-sm-inner graph">
+                <p><?=$avertissement?></p>
+            </div>
+            <br/>
+        <?php endif;?>
         <?php if(isset($statVictoireData)): ?>
             <div class="col-sm-inner graph">
                 <input type="hidden" value="<?= $statVictoireData ?>" id="statVictoireData">

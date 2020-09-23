@@ -20,20 +20,26 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
     public function getStatisqueGeneraleAction()
     {
         $myView = new View("statistiques", "front");
-        $myView->assignTitle("Statistiques utilisateurs");
-        $statMissionClassement = $this->statMissionSelected(true,null,[["typeCategorie","=",2]]);
+        $myView->assignTitle("Statistiques générales");
+        $statMissionClassement = $this->statMissionSelected(true,null,[["typeCategorie","=",2]],true);
         if(!empty($statMissionClassement))
         {
             $myView->assign("statMissionClassementLabel", $statMissionClassement["label"]);
             $myView->assign("statMissionClassementData", $statMissionClassement["data"]);
         }
+        $avertissement = "Attention, les statistiques générales sont effectués grace aux données fournies par la communauté.<br/>
+ Par conséquent ces statistiques peuvent manquer d'exactitude.<br/>
+ Afin de limiter cela et fournir des statistiques les plus précises possibles, seules les données fournies par les membres inscrits sont utilisées.<br/>
+ Merci de votre compréhension";
+
+        $myView->assign("avertissement",$avertissement);
     }
 
     public function getStatistiqueUtilisateurAction()
     {
         Helper::checkConnected();
         $myView = new View("statistiques", "front");
-        $myView->assignTitle("Statistiques générales");
+        $myView->assignTitle("Statistiques utilisateurs");
         $joueurManager = new JoueurManager();
         $joueurs = $joueurManager->getPartiePlayed(true);
         if (!empty($joueurs)) {
@@ -63,7 +69,7 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
             $statVictoireData = json_encode($statVictoireData);
             $myView->assign("statVictoireData", $statVictoireData);
         }
-        $statMissionClassement = $this->statMissionSelected(true,$_SESSION["idUtilisateur1"],[["typeCategorie","=",2]]);
+        $statMissionClassement = $this->statMissionSelected(true,$_SESSION["idUtilisateur1"],[["typeCategorie","=",2]],true);
         if(!empty($statMissionClassement))
         {
             $myView->assign("statMissionClassementLabel", $statMissionClassement["label"]);
@@ -71,11 +77,12 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
         }
     }
 
-    private function statMissionSelected(bool $activeOnly = true, int $idUtilisateur = null, array $conditions = null)
+    private function statMissionSelected(bool $activeOnly = true, int $idUtilisateur = null, array $conditions = null,bool $onlyMember = true)
     {
         $missionManager = new MissionManager();
-        $missionClassement= $missionManager->getMissionChooseByJoueur($activeOnly,$idUtilisateur,$conditions);
+        $missionClassement= $missionManager->getMissionChooseByJoueur($activeOnly,$idUtilisateur,$conditions,$onlyMember);
         $allMission = $missionManager->getManyMission(["nomMission"],$conditions,$activeOnly);
+
         if(!empty($missionClassement) && !empty($allMission))
         {
             //print_r($missionUtilisateur);

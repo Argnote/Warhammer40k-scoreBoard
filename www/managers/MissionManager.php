@@ -78,7 +78,7 @@ class MissionManager extends Manager
         return $requete->queryGetValue();
     }
 
-    public function getMissionChooseByJoueur(bool $activeOnly = true, int $idUtilisateur = null, array $conditions = null)
+    public function getMissionChooseByJoueur(bool $activeOnly = true, int $idUtilisateur = null, array $conditions = null, bool $onlyMember = true)
     {
         $requete = new QueryBuilder(Mission::class, "mission");
         $requete->querySelect(["nomMission"]);
@@ -94,6 +94,10 @@ class MissionManager extends Manager
 
         if($activeOnly == true)
             $requeteIn->queryWhere("archived","=", "0");
+
+        if($onlyMember == true)
+            $requeteIn->queryIsNotNULL("idUtilisateur");
+
         $resultIn = $requeteIn->queryGet();
         $requete->queryWhere("idJoueur", "in", $resultIn);
         if(!empty($conditions))

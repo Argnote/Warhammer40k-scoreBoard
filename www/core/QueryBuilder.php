@@ -85,6 +85,15 @@ class QueryBuilder extends Manager
         return $this;
     }
 
+    public function queryIsNotNULL($column)
+    {
+        if(!empty($this->where))
+        {
+            $this->where.= " AND ";
+        }
+        $this->where .= " ".$column . " IS NOT NULL";
+        return $this;
+    }
     public function queryWhere($column, $operator, $value = null, $table = null)
     {
         if (!empty($table))

@@ -297,6 +297,8 @@ class PartieController extends Controller
         $scoreJoueur2 = $pointManager->getPoint(["*"], [[DB_PREFIXE . "tour.idPartie", "=", $_SESSION['idPartie']], [DB_PREFIXE . "point.idJoueur", "=", $_SESSION['idJoueur2']]]);
         $myView = new View("partie/scoreFinalPartie", "front");
         $myView->assign("scoreJoueur1", $scoreJoueur1);
+        $pseudoJoueur2 = $_SESSION['pseudoJoueur2']??'Joueur 2';
+        $myView->assign("pseudoJoueur2", $pseudoJoueur2);
         $myView->assign("scoreJoueur2", $scoreJoueur2);
 
         //récupère le statut gagnant du joueur relié au compte principale
@@ -311,6 +313,8 @@ class PartieController extends Controller
             $myView->assignLink("archived", Helper::getUrl("Partie", "archivedPartie")."?idPartieUtilisateur=" . $_SESSION['idJoueur1'], "Archiver la partie");
         }
         //vide les variable de session concernant la partie
+        if(empty($_SESSION['idUtilisateur2']))
+            unset($_SESSION['pseudoJoueur2']);
         unset($_SESSION['idJoueur1']);
         unset($_SESSION['idJoueur2']);
         unset($_SESSION['idPartie']);
@@ -384,11 +388,15 @@ class PartieController extends Controller
                 {
                     $_SESSION["idJoueur1"] = $result[0]["idJoueur"];
                     $_SESSION["idJoueur2"] = $result[1]["idJoueur"];
+                    if (empty($_SESSION["idUtilisateur2"]))
+                        $_SESSION["pseudoJoueur2"] = $result[1]["nomJoueur"];
                 }
                 else
                 {
                     $_SESSION["idJoueur1"] = $result[1]["idJoueur"];
                     $_SESSION["idJoueur2"] = $result[0]["idJoueur"];
+                    if (empty($_SESSION["idUtilisateur2"]))
+                        $_SESSION["pseudoJoueur2"] = $result[0]["nomJoueur"];
                 }
                 $this->redirectTo("Partie","scorePartie" );
             }

@@ -18,7 +18,7 @@ use warhammerScoreBoard\core\Helper;
     </div>
     <div class="col-sm-12">
         <div class="col-inner joueur">
-            <p><?=$_SESSION['pseudoJoueur2']??'Joueur2'?></p>
+            <p><?=$pseudoJoueur2??'Joueur2'?></p>
         </div>
     </div>
     <div class="col-sm-12">

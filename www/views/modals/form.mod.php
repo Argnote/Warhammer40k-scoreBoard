@@ -27,6 +27,10 @@ class="<?= $data["config"]["class"]?>">
                         <?php else:?>
                     <input
                         <?php endif;?>
+                        <?php if($configField["type"] != "password" && isset($inputData[$name])):
+                        $configField["value"] = htmlspecialchars($inputData[$name]);
+                        endif;
+                        ?>
                         value="<?= $configField["value"]??'' ?>"
                         <?php if($configField["type"] == "number"):?>
                         min="<?= $configField["min"]??'' ?>"

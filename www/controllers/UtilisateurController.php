@@ -238,6 +238,7 @@ class UtilisateurController extends Controller
                             $_SESSION['token'] = Token::getToken();
                             $userManager = new UtilisateurManager();
                             $userManager->manageUserToken($_SESSION['idUtilisateur1'],$_SESSION['token']);
+                            $this->redirectTo('Home', 'default');
                         }
                         else 
                         {
@@ -254,7 +255,6 @@ class UtilisateurController extends Controller
                                 $myView->assign("errors", $errors);
                             }
                         }
-                        $this->redirectTo('Home', 'default');
                     }
                     else
                     {

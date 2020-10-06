@@ -8,16 +8,6 @@
             </div>
             <br/>
         <?php endif;?>
-        <?php if(isset($statMissionClassement) || isset($statMissionClassementParPoint)): ?>
-        <div class="row">
-            <div class="col-sm-12">
-                <?php foreach ($livres as $livre): ?>
-                    <input type="checkbox" id="<?= $livre->getCodeLivre()?>" name="<?= $livre->getCodeLivre()?>" class="checkBoxLivre" checked="true">
-                    <label for="<?= $livre->getCodeLivre()?>"><?= $livre->getNomLivre()." ". $livre->getCodeLivre()?></label>
-                <?php endforeach;?>
-            </div>
-        </div>
-        <?php endif;?>
         <?php if(isset($statVictoireData)): ?>
             <div class="col-sm-inner graph">
                 <input type="hidden" value="<?= $statVictoireData ?>" id="statVictoireData">
@@ -51,6 +41,5 @@
 <script src="../public/lib/Chart.bundle.js"></script>
 <script src="../public/script/configGraph.js"></script>
 <script src="../public/script/statVictoire.js"></script>
-<script src="../public/script/graphColonnes.js"></script>
 <script src="../public/script/statClassementMission.js"></script>
 <script src="../public/script/statClassementMissionParPoint.js"></script>

@@ -24,11 +24,11 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
     //Affiche les Statistiques généraux
     public function getStatisqueGeneraleAction()
     {
-        $livreManager = new LivreManager();
+//        $livreManager = new LivreManager();
         $myView = new View("statistiques", "front");
         $myView->assignTitle("Statistiques générales");
-        $livre = $livreManager->getAllLivre();
-        $myView->assign("livres", $livre);
+//        $livre = $livreManager->getAllLivre();
+//        $myView->assign("livres", $livre);
 
         //récupère les missions des joueurs non archivé et rattaché à un compte
         $statMissionClassement = $this->statMissionSelected(true,null,[["typeCategorie","=",2]],true);
@@ -60,11 +60,11 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
     public function getStatistiqueUtilisateurAction()
     {
         Helper::checkConnected();
-        $livreManager = new LivreManager();
+//        $livreManager = new LivreManager();
         $myView = new View("statistiques", "front");
         $myView->assignTitle("Statistiques utilisateurs");
-        $livre = $livreManager->getAllLivre();
-        $myView->assign("livres", $livre);
+//        $livre = $livreManager->getAllLivre();
+//        $myView->assign("livres", $livre);
         $joueurManager = new JoueurManager();
 
         //Récupère les joueurs non archivé rattaché à l'utilisateur connecté

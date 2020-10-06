@@ -1,31 +1,31 @@
-$(function()
-{
-    $('.checkBoxLivre').change(function() {
-        ctx = document.getElementById('statMissionClassementCanvas').getContext('2d');
-
-        // label = ["toto", "titi"];
-        for (var i = 0; i < label.length; i++)
-        {
-            var element = label[i].indexOf(this.id)
-            if(this.checked)
-            {
-                if (element !== -1) {
-                    // mission[m].options[i].hidden = false;
-                }
-            }
-            else {
-                if (this.checked === false) {
-                    if (element !== -1) {
-                        delete label[i];
-                        delete data[i];
-                    }
-                }
-            }
-        }
-        console.log(label);
-        statClassementMissiontt.data(data)
-    });
-});
+// $(function()
+// {
+//     $('.checkBoxLivre').change(function() {
+//         ctx = document.getElementById('statMissionClassementCanvas').getContext('2d');
+//
+//         // label = ["toto", "titi"];
+//         for (var i = 0; i < label.length; i++)
+//         {
+//             var element = label[i].indexOf(this.id)
+//             if(this.checked)
+//             {
+//                 if (element !== -1) {
+//                     // mission[m].options[i].hidden = false;
+//                 }
+//             }
+//             else {
+//                 if (this.checked === false) {
+//                     if (element !== -1) {
+//                         delete label[i];
+//                         delete data[i];
+//                     }
+//                 }
+//             }
+//         }
+//         console.log(label);
+//         statClassementMissiontt.data(data)
+//     });
+// });
 
 function getGraphe(ctx,label,data) {
     var statClassementMissiontt = new Chart(ctx, {

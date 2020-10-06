@@ -21,7 +21,7 @@ function myAutoloader($class)
 
 spl_autoload_register("myAutoloader");
 
-$environnement = "prod";
+$environnement = "dev";
 new ConstantLoader($environnement);
 
 $uri = $_SERVER["REQUEST_URI"];

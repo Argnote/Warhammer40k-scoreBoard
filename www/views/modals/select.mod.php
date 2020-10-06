@@ -8,7 +8,10 @@
         name="<?= $data["name"]??'' ?>"
         form="<?= $data["form"]??'' ?>"
         class="<?= $data["class"]??'' ?>"
-        id="<?= $data["id"]??'' ?>">
+
+        <?php if(!empty($data["id"])):?>
+            id="<?= $data["id"]??'' ?>"
+        <?php endif;?>>
 <?php
 if(!empty($value)):
     if(isset($data["defaultValue"])):?>

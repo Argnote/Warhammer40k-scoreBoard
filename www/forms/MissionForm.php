@@ -9,7 +9,7 @@ use warhammerScoreBoard\models\Mission;
 
 class MissionForm
 {
-    public static function getForm(array $listCategorie, int $idMission = null, Mission $actuallyValue = null){
+    public static function getForm(array $listCategorie,array $listLivre, int $idMission = null, Mission $actuallyValue = null){
         $link = Helper::getUrl("Mission", "createMission");
         $required = true;
         if(is_numeric($idMission))
@@ -31,13 +31,13 @@ class MissionForm
             "fields"=>[
                 "nomMission"=>[
                     "type"=>"text",
-                    "placeholder"=>$actuallyValue->getNomMission(),
+                    "value"=>$actuallyValue->getNomMission(),
                     "label"=>"Entrez le nom de la mission : ",
                     "classGrill"=>"col-sm-6",
                     "id"=>"nomMission",
                     "required"=>$required,
                     "uniq" => ["table" => "mission", "column" => "nomMission", "class" => Mission::class],
-                    "errorMsg"=>"Ce nom de mission est déja utlisé"
+                    "errorMsg"=>"Ce nom de mission est déja utlisé sur ce livre"
                 ],
                 "description"=>[
                     "type"=>"textarea",
@@ -100,7 +100,7 @@ class MissionForm
                     "required"=>$required,
                     "errorMsg"=>"Une mission ne peut pas rapporter plus de 15 points par tour"
                 ],
-                "idCategorie"=>                    [
+                "idCategorie"=>[
                     "type" => "select",
                     "classGrill"=>"col-sm-6",
                     "value" => $listCategorie,
@@ -112,6 +112,20 @@ class MissionForm
                         "form"=>"formMission",
                         "defaultValue" => "Catégories",
                         "name" => "idCategorie"
+                    ]
+                ],
+                "idLivre"=>[
+                    "type" => "select",
+                    "classGrill"=>"col-sm-6",
+                    "value" => $listLivre,
+                    "label" => "Modifier le livre :",
+                    "errorMsg" => "Le livre n'est pas valide",
+                    "required" => $required,
+                    "config" =>[
+                        "required" => $required,
+                        "form"=>"formMission",
+                        "defaultValue" => "Livre",
+                        "name" => "idLivre"
                     ]
                 ],
                 "archived"=>[

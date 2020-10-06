@@ -28,7 +28,7 @@ class InitialisationPartieForm
                 ],
                 "missionPrincipal" => [
                     "name" => "missionPrincipal",
-                    "class" => "select",
+                    "class" => "select missions",
                     "classGrill"=>"col-sm-6",
                     "defaultValue" => "Objectif Pricipal",
                     "form" => "formInitPartie",
@@ -74,7 +74,7 @@ class InitialisationPartieForm
                 $result += ["missionSecondaire{$i}_Joueur{$j}" => [
                     "required" => true,
                     "name" => "missionSecondaire{$i}_Joueur{$j}",
-                    "class" => "select",
+                    "class" => "select missions",
                     "classGrill"=>"col-sm-6",
                     "defaultValue" => "Objectif secondaire $i",
                     "form" => "formInitPartie",

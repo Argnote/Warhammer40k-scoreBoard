@@ -13,6 +13,7 @@ use warhammerScoreBoard\core\View;
 use warhammerScoreBoard\forms\MissionForm;
 use warhammerScoreBoard\getData\GetDataMission;
 use warhammerScoreBoard\getData\GetListDataMission;
+use warhammerScoreBoard\managers\LivreManager;
 use warhammerScoreBoard\managers\MissionManager;
 use warhammerScoreBoard\models\Mission;
 
@@ -66,9 +67,12 @@ class MissionController extends Controller
 
         //Création du formulaire
         $missionManager = new MissionManager();
+        $livreManager = new LivreManager();
         $categorie = $missionManager->getAllCategorie();
         $categorie = TransformArrayToSelected::transformArrayToSelected($categorie,"idCategorie","nomCategorie");
-        $form = MissionForm::getForm($categorie);
+        $livres = $livreManager->getAllLivreToArray();
+        $livres = TransformArrayToSelected::transformArrayToSelected($livres,"idLivre","nomLivre");
+        $form = MissionForm::getForm($categorie,$livres);
         $myView = new View("createData","front");
 
         //Vérification des données avant enregistrement 
@@ -79,8 +83,9 @@ class MissionController extends Controller
             {
                 $mission = new Mission();
                 $mission = $mission->hydrate($_POST);
-                $missionManager->save($mission);
-                $this->redirectTo("Mission", "getListMission");
+                print_r($mission);
+                $idMission = $missionManager->save($mission);
+                //$this->redirectTo("Mission", "getMission","?idMission=".$idMission);
             }
             else
             {
@@ -102,6 +107,7 @@ class MissionController extends Controller
             $this->redirectTo("Mission", "getListMission");
 
         $missionManager = new MissionManager();
+        $livreManager = new LivreManager();
         $result = $missionManager->getMission($_GET["idMission"]);
 
         //Erreur si il n'y a pas de mission trouvée
@@ -114,7 +120,10 @@ class MissionController extends Controller
         //Formatage du formulaire avant affichage
         $categorie = $missionManager->getAllCategorie();
         $categorie = TransformArrayToSelected::transformArrayToSelected($categorie,"idCategorie","nomCategorie");
-        $form = MissionForm::getForm($categorie,$_GET["idMission"],$result);
+        $livres = $livreManager->getAllLivreToArray();
+        $livres = TransformArrayToSelected::transformArrayToSelected($livres,"idLivre","nomLivre");
+
+        $form = MissionForm::getForm($categorie,$livres,$_GET["idMission"],$result);
         $myView = new View("updateData","front");
 
         //vérification des données avant remplacement dans la db 

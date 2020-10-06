@@ -8,6 +8,14 @@ use warhammerScoreBoard\core\Helper;
     <?php if(isset($errors)):
         $this->addModal("errors",$errors);
     endif;?>
+    <div class="row">
+        <div class="col-sm-12">
+            <?php foreach ($livres as $livre): ?>
+                <input type="checkbox" id="<?= $livre->getCodeLivre()?>" name="<?= $livre->getCodeLivre()?>" class="checkBoxLivre" checked="true">
+                <label for="<?= $livre->getCodeLivre()?>"><?= $livre->getNomLivre()." ". $livre->getCodeLivre()?></label>
+            <?php endforeach;?>
+        </div>
+    </div>
     <form method=<?=$initPartie["config"]["method"]?> action="<?=$initPartie["config"]["action"]?>" id="<?=$initPartie["config"]["id"]?>" class="<?=$initPartie["config"]["class"]?>">
         <div class="row">
             <div class="col-sm-6">

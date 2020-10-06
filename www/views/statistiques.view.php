@@ -8,6 +8,16 @@
             </div>
             <br/>
         <?php endif;?>
+        <?php if(isset($statMissionClassement) || isset($statMissionClassementParPoint)): ?>
+        <div class="row">
+            <div class="col-sm-12">
+                <?php foreach ($livres as $livre): ?>
+                    <input type="checkbox" id="<?= $livre->getCodeLivre()?>" name="<?= $livre->getCodeLivre()?>" class="checkBoxLivre" checked="true">
+                    <label for="<?= $livre->getCodeLivre()?>"><?= $livre->getNomLivre()." ". $livre->getCodeLivre()?></label>
+                <?php endforeach;?>
+            </div>
+        </div>
+        <?php endif;?>
         <?php if(isset($statVictoireData)): ?>
             <div class="col-sm-inner graph">
                 <input type="hidden" value="<?= $statVictoireData ?>" id="statVictoireData">
@@ -18,22 +28,20 @@
             <br/>
         <?php endif;?>
 
-        <?php if(isset($statMissionClassementLabel) && isset($statMissionClassementData)): ?>
+        <?php if(isset($statMissionClassement)): ?>
             <div class="col-inner graph">
-                <input type="hidden" value="<?= $statMissionClassementLabel ?>" id="statMissionClassementLabel">
-                <input type="hidden" value="<?= $statMissionClassementData ?>" id="statMissionClassementData">
+                <input type="hidden" value="<?= $statMissionClassement ?>" id="statMissionClassement">
                 <div>
-                    <canvas id="statClassementMission" height="300"></canvas>
+                    <canvas id="statMissionClassementCanvas" height="300"></canvas>
                 </div>
             </div>
             <br/>
         <?php endif;?>
-        <?php if(isset($statMissionClassementParPointLabel) && isset($statMissionClassementParPointData)): ?>
+        <?php if(isset($statMissionClassementParPoint)): ?>
             <div class="col-inner graph">
-                <input type="hidden" value="<?= $statMissionClassementParPointLabel ?>" id="statMissionClassementParPointLabel">
-                <input type="hidden" value="<?= $statMissionClassementParPointData ?>" id="statMissionClassementParPointData">
+                <input type="hidden" value="<?= $statMissionClassementParPoint ?>" id="statMissionClassementParPoint">
                 <div>
-                    <canvas id="statClassementMissionParPoint" height="300"></canvas>
+                    <canvas id="statClassementMissionParPointCanvas" height="300"></canvas>
                 </div>
             </div>
             <br/>
@@ -43,5 +51,6 @@
 <script src="../public/lib/Chart.bundle.js"></script>
 <script src="../public/script/configGraph.js"></script>
 <script src="../public/script/statVictoire.js"></script>
+<script src="../public/script/graphColonnes.js"></script>
 <script src="../public/script/statClassementMission.js"></script>
 <script src="../public/script/statClassementMissionParPoint.js"></script>

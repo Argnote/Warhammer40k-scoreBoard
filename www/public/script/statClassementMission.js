@@ -1,5 +1,34 @@
-function getGraph(ctx,label,data) {
-    var statClassementMission = new Chart(ctx, {
+$(function()
+{
+    $('.checkBoxLivre').change(function() {
+        ctx = document.getElementById('statMissionClassementCanvas').getContext('2d');
+
+        // label = ["toto", "titi"];
+        for (var i = 0; i < label.length; i++)
+        {
+            var element = label[i].indexOf(this.id)
+            if(this.checked)
+            {
+                if (element !== -1) {
+                    // mission[m].options[i].hidden = false;
+                }
+            }
+            else {
+                if (this.checked === false) {
+                    if (element !== -1) {
+                        delete label[i];
+                        delete data[i];
+                    }
+                }
+            }
+        }
+        console.log(label);
+        statClassementMissiontt.data(data)
+    });
+});
+
+function getGraphe(ctx,label,data) {
+    var statClassementMissiontt = new Chart(ctx, {
         type: 'horizontalBar',
         data: {
             labels: label,
@@ -44,8 +73,10 @@ function getGraph(ctx,label,data) {
         }
     })
 }
-var ctx = document.getElementById('statClassementMission').getContext('2d');
-var statMissionClassementLabel = JSON.parse( document.getElementById('statMissionClassementLabel').value);
-var statMissionClassementData = JSON.parse(document.getElementById('statMissionClassementData').value);
-getGraph(ctx,statMissionClassementLabel,statMissionClassementData);
+var ctx = document.getElementById('statMissionClassementCanvas').getContext('2d');
+var statMissionClassement = JSON.parse( document.getElementById('statMissionClassement').value);
 
+var label = statMissionClassement["label"]
+var data = statMissionClassement["data"]
+getGraphe(ctx,label,data);
+// getGraph(ctx,label,data,"Classement des missions par nombre de sélections","Nombre de fois ou la mission à été selectionnée");

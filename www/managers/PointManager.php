@@ -25,6 +25,7 @@ class PointManager extends Manager
             $requete->queryJoin("point","joueur","idjoueur","idjoueur");
             $requete->queryJoin("point","tour","idTour","idTour");
             $requete->queryJoin("point","mission","idMission","idMission");
+            $requete->queryJoin("mission", "livre", "idLivre", "idLivre");
             $requete->queryJoin("mission","categorie","idCategorie","idCategorie");
             if(!empty($conditions))
             {

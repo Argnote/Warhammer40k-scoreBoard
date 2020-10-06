@@ -5,9 +5,11 @@ namespace warhammerScoreBoard\core;
 use DateTime;
 use warhammerScoreBoard\forms\InitialisationPartieForm;
 use warhammerScoreBoard\managers\ArmeeManager;
+use warhammerScoreBoard\managers\LivreManager;
 use warhammerScoreBoard\managers\MissionJoueurManager;
 use warhammerScoreBoard\managers\MissionManager;
 use warhammerScoreBoard\managers\UtilisateurManager;
+use warhammerScoreBoard\models\Mission;
 use warhammerScoreBoard\models\MissionJoueur;
 use warhammerScoreBoard\models\Utilisateur;
 use function Sodium\compare;
@@ -18,10 +20,11 @@ protected $errosMsg;
     public function checkForm($configForm, $data)
     {
         if (count($configForm["fields"]) == count($data)) {
-            foreach ($configForm["fields"] as $key => $config) {
-
+            foreach ($configForm["fields"] as $key => $config)
+            {
                 $this->$key = $data[$key];
-
+            }
+            foreach ($configForm["fields"] as $key => $config) {
                 //Vérifie que l'on a bien les champs attendus
                 //Vérifier les required
                 if (!array_key_exists($key, $data) || ($config["required"] && empty($data[$key]))) {
@@ -247,8 +250,23 @@ protected $errosMsg;
 
     private function checkNomMission($mission,$config)
     {
-        if(array_key_exists("uniq",$config))
-            $this->uniq($mission,$config["uniq"]);
+       $requete = new QueryBuilder(Mission::class,"mission");
+       $requete->querySelect(["nomMission","nomLivre"]);
+       $requete->queryFrom();
+       $requete->queryJoin("mission", "livre", "idLivre", "idLivre");
+       $requete->queryWhere(DB_PREFIXE."mission.idLivre", "=",$this->idLivre);
+       $requete->queryWhere("nomMission", "=",$mission);
+       $result = $requete->queryGetValue();
+       if(!empty($result))
+           return false;
+        return true;
+    }
+
+    private function checkIdLivre($livre,$config)
+    {
+        $livreManager = new LivreManager();
+        if(empty($livreManager->getLivre($livre)))
+            return false;
         return true;
     }
 

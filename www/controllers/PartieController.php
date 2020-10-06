@@ -14,6 +14,7 @@ use warhammerScoreBoard\forms\ValidationTourForm;
 use warhammerScoreBoard\getData\GetListDataPartie;
 use warhammerScoreBoard\managers\ArmeeManager;
 use warhammerScoreBoard\managers\JoueurManager;
+use warhammerScoreBoard\managers\LivreManager;
 use warhammerScoreBoard\managers\MissionJoueurManager;
 use warhammerScoreBoard\managers\MissionManager;
 use warhammerScoreBoard\managers\PartieManager;
@@ -33,6 +34,7 @@ class PartieController extends Controller
         //Création du formulaire 
         $missions = new MissionManager();
         $armees = new ArmeeManager();
+        $livreManager = new LivreManager();
         $myView = new View("partie/initialisationPartie", "front");
         $initPartie = InitialisationPartieForm::getForm();
         $myView->assign("initPartie", $initPartie);
@@ -92,8 +94,17 @@ class PartieController extends Controller
                 $myView->assign("errors", $errors);
             }
         }
+        //filtre sur les les livres de missions
+        $livre = $livreManager->getAllLivre();
+        $myView->assign("livres", $livre);
+
         //récupération des missions principales et formatage pour select
-        $missionsPrincipal = $missions->getManyMission(["idMission","nomMission"],[["typeCategorie","=","1"]],true);
+        $missionsPrincipal = $missions->getManyMission(["idMission","nomMission","codeLivre"],[["typeCategorie","=","1"]],true);
+        foreach ($missionsPrincipal as $key => $value)
+        {
+            $mission = $value["nomMission"]." ".$value["codeLivre"];
+            $missionsPrincipal[$key]["nomMission"] = $mission;
+        }
         $missionsPrincipal = TransformArrayToSelected::transformArrayToSelected($missionsPrincipal,"idMission", "nomMission");
         $myView->assign("missionPrincipal", $missionsPrincipal);
 
@@ -103,7 +114,12 @@ class PartieController extends Controller
         $myView->assign("armee", $armee);
 
         //récupération des missions secondaires et formatage pour select
-        $missionsSecondaire = $missions->getManyMission(["idMission","nomMission","nomCategorie"],[["typeCategorie","=","2"]],true);
+        $missionsSecondaire = $missions->getManyMission(["idMission","nomMission","nomCategorie","codeLivre"],[["typeCategorie","=","2"]],true);
+        foreach ($missionsSecondaire as $key => $value)
+        {
+            $mission = $value["nomMission"]." ".$value["codeLivre"];
+            $missionsSecondaire[$key]["nomMission"] = $mission;
+        }
         $missionsSecondaire = TransformArrayToSelected::transformArrayToSelected($missionsSecondaire,"idMission", "nomMission", "nomCategorie");
         $myView->assign("missionSecondaire", $missionsSecondaire);
     }

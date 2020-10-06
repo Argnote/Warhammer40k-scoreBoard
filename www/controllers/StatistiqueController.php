@@ -5,8 +5,10 @@ namespace warhammerScoreBoard\controllers;
 
 
 use warhammerScoreBoard\core\Helper;
+use warhammerScoreBoard\core\Manager;
 use warhammerScoreBoard\core\View;
 use warhammerScoreBoard\managers\JoueurManager;
+use warhammerScoreBoard\managers\LivreManager;
 use warhammerScoreBoard\managers\MissionManager;
 use warhammerScoreBoard\managers\PointManager;
 use warhammerScoreBoard\models\Joueur;
@@ -22,15 +24,17 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
     //Affiche les Statistiques généraux
     public function getStatisqueGeneraleAction()
     {
+        $livreManager = new LivreManager();
         $myView = new View("statistiques", "front");
         $myView->assignTitle("Statistiques générales");
+        $livre = $livreManager->getAllLivre();
+        $myView->assign("livres", $livre);
 
         //récupère les missions des joueurs non archivé et rattaché à un compte
         $statMissionClassement = $this->statMissionSelected(true,null,[["typeCategorie","=",2]],true);
         if(!empty($statMissionClassement))
         {
-            $myView->assign("statMissionClassementLabel", $statMissionClassement["label"]);
-            $myView->assign("statMissionClassementData", $statMissionClassement["data"]);
+            $myView->assign("statMissionClassement", $statMissionClassement);
         }
 
         //Récupère les points des missions des joueurs non archivé et rattaché à un compte
@@ -41,8 +45,7 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
         $statMissionParPointClassement = $this->statMissionPoints($condition);
         if(!empty($statMissionClassement))
         {
-            $myView->assign("statMissionClassementParPointLabel", $statMissionParPointClassement["label"]);
-            $myView->assign("statMissionClassementParPointData", $statMissionParPointClassement["data"]);
+            $myView->assign("statMissionClassementParPoint", $statMissionParPointClassement);
         }
         //Message d'avertissement
         $avertissement = "Attention, les statistiques générales sont effectués grace aux données fournies par la communauté.<br/>
@@ -57,8 +60,11 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
     public function getStatistiqueUtilisateurAction()
     {
         Helper::checkConnected();
+        $livreManager = new LivreManager();
         $myView = new View("statistiques", "front");
         $myView->assignTitle("Statistiques utilisateurs");
+        $livre = $livreManager->getAllLivre();
+        $myView->assign("livres", $livre);
         $joueurManager = new JoueurManager();
 
         //Récupère les joueurs non archivé rattaché à l'utilisateur connecté
@@ -97,8 +103,7 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
         $statMissionClassement = $this->statMissionSelected(true,$_SESSION["idUtilisateur1"],[["typeCategorie","=",2]],true);
         if(!empty($statMissionClassement))
         {
-            $myView->assign("statMissionClassementLabel", $statMissionClassement["label"]);
-            $myView->assign("statMissionClassementData", $statMissionClassement["data"]);
+            $myView->assign("statMissionClassement", $statMissionClassement);
         }
 
         //Récupère les points des missions des joueurs non archivé et rattaché au compte utilisateur connecté
@@ -109,8 +114,7 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
         $statMissionParPointClassement = $this->statMissionPoints($condition);
         if(!empty($statMissionClassement))
         {
-            $myView->assign("statMissionClassementParPointLabel", $statMissionParPointClassement["label"]);
-            $myView->assign("statMissionClassementParPointData", $statMissionParPointClassement["data"]);
+            $myView->assign("statMissionClassementParPoint", $statMissionParPointClassement);
         }
     }
 
@@ -120,9 +124,13 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
 
         //Récupère les missions des joueurs 
         $missionClassement= $missionManager->getMissionChooseByJoueur($activeOnly,$idUtilisateur,$conditions,$onlyMember);
-
         //Récupère toutes les missions
-        $allMission = $missionManager->getManyMission(["nomMission"],$conditions,$activeOnly);
+        $allMission = $missionManager->getManyMission(["nomMission","codeLivre"],$conditions,$activeOnly);
+        foreach ($allMission as $key => $value)
+        {
+            $mission = $value["nomMission"]." ".$value["codeLivre"];
+            $allMission[$key]["nomMission"] = $mission;
+        }
 
         if(!empty($missionClassement) && !empty($allMission))
         {
@@ -136,7 +144,7 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
             //Ajoute 1 à l'index correspondant au nom de la mission
             foreach ($missionClassement as $mission)
             {
-                $statMissionClassement[$mission->getNomMission()] ++;
+                $statMissionClassement[$mission->getNomMission()." ".$mission->getCodeLivre()] ++;
             }
 
             //trie de tableau en décroissant
@@ -151,8 +159,9 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
                 $statMissionClassementData[] = $value;
             }
             $statMissionClassement = array();
-            $statMissionClassement["label"] = htmlspecialchars(json_encode($statMissionClassementLabel));
-            $statMissionClassement["data"] = json_encode($statMissionClassementData);
+            $statMissionClassement["label"] = $statMissionClassementLabel;
+            $statMissionClassement["data"] = $statMissionClassementData;
+            $statMissionClassement = htmlspecialchars(json_encode($statMissionClassement));
             return $statMissionClassement;
         }
         return null;
@@ -164,10 +173,20 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
         $pointManager = new PointManager();
 
         //Récupère les points des missions
-        $missionClassementPoints= $pointManager->getPoint(["nomMission","nombrePoint"],$conditions);
+        $missionClassementPoints= $pointManager->getPoint(["nomMission","nombrePoint","codeLivre"],$conditions);
+        foreach ($missionClassementPoints as $key => $value)
+        {
+            $mission = $value["nomMission"]." ".$value["codeLivre"];
+            $missionClassementPoints[$key]["nomMission"] = $mission;
+        }
 
         //Récupère toutes les missions
-        $allMission = $missionManager->getManyMission(["nomMission"],null,$activeOnly);
+        $allMission = $missionManager->getManyMission(["nomMission","codeLivre"],null,$activeOnly);
+        foreach ($allMission as $key => $value)
+        {
+            $mission = $value["nomMission"]." ".$value["codeLivre"];
+            $allMission[$key]["nomMission"] = $mission;
+        }
 
         if(!empty($missionClassementPoints) && !empty($allMission))
         {
@@ -196,8 +215,9 @@ class StatistiqueController extends \warhammerScoreBoard\core\Controller
                 $statMissionClassementData[] = $value;
             }
             $statMissionClassement = array();
-            $statMissionClassement["label"] = htmlspecialchars(json_encode($statMissionClassementLabel));
-            $statMissionClassement["data"] = json_encode($statMissionClassementData);
+            $statMissionClassement["label"] = $statMissionClassementLabel;
+            $statMissionClassement["data"] = $statMissionClassementData;
+            $statMissionClassement = htmlspecialchars(json_encode($statMissionClassement));
             return $statMissionClassement;
         }
         return null;

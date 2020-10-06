@@ -76,6 +76,12 @@ class GetDataMission
                 "type"=>"data",
                 "admin"=>true
             ],
+            "livre"=>[
+                "label"=>"Livre : ",
+                "value"=>$mission->getNomLivre(),
+                "type"=>"data",
+                "admin"=>true
+            ],
             "archived"=>[
                 "label"=>"Archivé : ",
                 "value"=>$archived,

@@ -11,10 +11,10 @@ use warhammerScoreBoard\getData\GetDataNav;
     <link rel="stylesheet" href="../../public/css/grille.css">
     <link rel="stylesheet" href="../../public/css/style.css">
 	<title>Warhammer 40000 score-board</title>
-
+    <script src="../../public/lib/jquery-3.5.1.min.js"></script>
 </head>
 <body>
-      <header>
+    <header>
           <div class="row container header" >
                   <div class="col-sm-3">
 <!--                      <div class="col-inner header">-->
@@ -27,8 +27,8 @@ use warhammerScoreBoard\getData\GetDataNav;
                       </div>
                   </div>
               </div>
-      </header>
-      <div class="row container core">
+    </header>
+        <div class="row container core">
           <div class="col-sm-3">
               <div class="col-inner nav">
                   <nav>
@@ -46,17 +46,16 @@ use warhammerScoreBoard\getData\GetDataNav;
             </div>
       </div>
 
-      <footer>
+    <footer>
           <nav class="footer" >
               <a href="<?= Helper::getUrl("Home","getMentionLegal")?>">Mentions légales</a>
                  |
               <a href="<?= Helper::getUrl("Home","getCharte")?>">Charte</a>
 
         </nav>
-      </footer>
-
-  <script src="../../public/lib/jquery-3.5.1.min.js"></script>
-  <script src="../../public/script/activeSelectedDisabled.js"></script>
-  <script src="../../public/script/disableSubmit.js"></script>
+    </footer>
+    <script src="../../public/script/activeSelectedDisabled.js"></script>
+    <script src="../../public/script/disableSubmit.js"></script>
+    <script src="../../public/script/hiddenMissionByLivre.js"></script>
 </body>
 </html>

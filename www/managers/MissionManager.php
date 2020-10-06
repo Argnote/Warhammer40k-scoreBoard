@@ -23,6 +23,7 @@ class MissionManager extends Manager
         $requete->querySelect($data);
         $requete->queryFrom();
         $requete->queryJoin("mission","categorie","idCategorie","idCategorie");
+        $requete->queryJoin("mission", "livre", "idLivre", "idLivre");
         if(!empty($conditions))
         {
             foreach ($conditions as $condition )
@@ -44,6 +45,7 @@ class MissionManager extends Manager
         $requete->querySelect(["*"]);
         $requete->queryFrom();
         $requete->queryJoin("mission","categorie","idCategorie","idCategorie");
+        $requete->queryJoin("mission", "livre", "idLivre", "idLivre");
         $requete->queryWhere("idMission","=", $idMission);
         if($activeOnly == true)
         {
@@ -81,10 +83,11 @@ class MissionManager extends Manager
     public function getMissionChooseByJoueur(bool $activeOnly = true, int $idUtilisateur = null, array $conditions = null, bool $onlyMember = true)
     {
         $requete = new QueryBuilder(Mission::class, "mission");
-        $requete->querySelect(["nomMission"]);
+        $requete->querySelect(["nomMission","codeLivre"]);
         $requete->queryFrom();
         $requete->queryJoin("mission","joueur_has_mission","idMission","idMission");
         $requete->queryJoin("mission","categorie","idCategorie","idCategorie");
+        $requete->queryJoin("mission", "livre", "idLivre", "idLivre");
 
         $requeteIn = new QueryBuilder(Joueur::class, "joueur");
         $requeteIn->querySelect(["idJoueur"]);

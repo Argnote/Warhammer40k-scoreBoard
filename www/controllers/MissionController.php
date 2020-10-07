@@ -83,9 +83,9 @@ class MissionController extends Controller
             {
                 $mission = new Mission();
                 $mission = $mission->hydrate($_POST);
-                print_r($mission);
+//                print_r($mission);
                 $idMission = $missionManager->save($mission);
-                //$this->redirectTo("Mission", "getMission","?idMission=".$idMission);
+                $this->redirectTo("Mission", "getMission","?idMission=".$idMission);
             }
             else
             {
